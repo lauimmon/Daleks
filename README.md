@@ -1,2 +1,2 @@
 # Daleks
-Tämä on Ohjelmoinnin harjoitustyön Daleks-peli
+Ohjelmoinnin harjoitustyö: Daleks-peli

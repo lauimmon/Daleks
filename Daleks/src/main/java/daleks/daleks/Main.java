@@ -25,10 +25,11 @@ public class Main {
         System.out.println(dalek.getRuutu().toString());
         
         Dalek dalek1 = new Dalek(new Ruutu(1,2));
-        System.out.println(dalek1.getRuutu().toString());
-        dalek1.liiku(1, 0);
+        Ruutu ruutu1 = dalek1.getRuutu();
+        System.out.println(ruutu1.toString());
+        dalek1.liiku(new Ruutu(2,2));
         
-        System.out.println(dalek1.getRuutu().toString());
+        System.out.println(ruutu1.toString());
     }
     
 }

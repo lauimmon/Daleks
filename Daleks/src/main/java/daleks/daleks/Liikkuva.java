@@ -26,8 +26,7 @@ public abstract class Liikkuva implements Comparator<Liikkuva>, Comparable<Liikk
     }
     
     public void liiku(int x, int y) {
-        ruutu.setX(ruutu.getX()+x);
-        ruutu.setY(ruutu.getY()+y);
+        ruutu = new Ruutu(ruutu.getX()+x, ruutu.getY()+y);
     }
 
     public Ruutu getRuutu() {

@@ -16,7 +16,7 @@ public class Main {
 
     
     public static void main(String[] args) {
-        Pelilauta lauta = new Pelilauta();
+        Pelilauta lauta = new Pelilauta(10,10);
         
         Dalek dalek = new Dalek(new Ruutu(1,2));
         Dalek dalek1 = new Dalek(new Ruutu(2,2));

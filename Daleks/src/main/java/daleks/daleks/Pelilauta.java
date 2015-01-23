@@ -11,14 +11,33 @@ import java.util.*;
 
 public class Pelilauta {
     
-    List<Liikkuva> hahmot;
+    private List<Liikkuva> hahmot;
+    private int kokoX;
+    private int kokoY;
 
-    public Pelilauta() {
+    public Pelilauta(int xkoko, int ykoko) {
         this.hahmot = new ArrayList<Liikkuva>();
+        kokoX = xkoko;
+        kokoY = ykoko;
+    }
+
+    public int getKokoX() {
+        return kokoX;
+    }
+
+    public int getKokoY() {
+        return kokoY;
+    }
+    
+    public boolean onkoRuutuLaudalla(Ruutu ruutu) {
+         return ruutu.getX() <= kokoX &&  ruutu.getY() <= kokoY
+                && ruutu.getX() > 0 && ruutu.getY() > 0;
     }
     
     public void lisaaHahmoLaudalle(Liikkuva hahmo) {
-        hahmot.add(hahmo);
+        if (onkoRuutuLaudalla(hahmo.getRuutu())) {
+            hahmot.add(hahmo);
+        }
     }
     
     public void tulostaHahmot() {
@@ -47,6 +66,13 @@ public class Pelilauta {
             }
         }
         return Tyyppi.TYHJA;
+    }
+    
+    public void liikuta(Liikkuva liikkuva, int x, int y){
+        Ruutu ruutu = new Ruutu(liikkuva.getRuutu().getX() + x, liikkuva.getRuutu().getY() + y);
+        if (onkoRuutuLaudalla(ruutu)) {
+            liikkuva.liiku(ruutu);
+        }
     }
     
 }

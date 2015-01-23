@@ -45,4 +45,26 @@ public class PelilautaTest {
         
         assertEquals(lauta.hahmot, new ArrayList<Liikkuva>());
     }
+    
+    @Test
+    public void lisattyHahmoLoytyyLaudalta() {
+        Pelilauta lauta = new Pelilauta();
+        Dalek dalek = new Dalek(new Ruutu(1,1));
+        lauta.lisaaHahmoLaudalle(dalek);
+        
+        assertTrue(lauta.onkoHahmoLaudalla(dalek));
+    }
+    
+    
+    @Test
+    public void pelilaudallaOlevanHahmonRuutuMuuttuuKunSitaLiikutetaan() {
+        Pelilauta lauta = new Pelilauta();
+        Dalek dalek = new Dalek(new Ruutu(1,1));
+        lauta.lisaaHahmoLaudalle(dalek);
+        dalek.liiku(1, 1);
+        
+        assertTrue(lauta.onkoHahmoLaudalla(dalek));
+    }
+    
+    
 }

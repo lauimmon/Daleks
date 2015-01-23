@@ -26,5 +26,27 @@ public class Pelilauta {
             System.out.println(liikkuva);
         }
     }
+
+    public List<Liikkuva> getHahmot() {
+        return hahmot;
+    }
+    
+    public boolean onkoHahmoLaudalla(Liikkuva hahmo) {
+        for (Liikkuva liikkuva : hahmot) {
+            if (liikkuva.equals(hahmo)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public Tyyppi minkaTyyppinenHahmoOnRuudussa(Ruutu ruutu) {
+        for (Liikkuva liikkuva : hahmot) {
+            if (liikkuva.getRuutu().equals(ruutu)) {
+                return liikkuva.getTyyppi();
+            }
+        }
+        return Tyyppi.TYHJA;
+    }
     
 }

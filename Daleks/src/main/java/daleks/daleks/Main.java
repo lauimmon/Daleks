@@ -6,7 +6,7 @@
 
 package daleks.daleks;
 
-import java.util.Arrays;
+import java.util.*;
 
 /**
  *
@@ -24,13 +24,7 @@ public class Main {
         lauta.lisaaHahmoLaudalle(dalek);
         lauta.lisaaHahmoLaudalle(dalek1);
         
-        lauta.tulostaHahmot();
-        
-        dalek1.liiku(1,1);
-        
-        lauta.tulostaHahmot();
-        
-        
+        List<Liikkuva> hahmot = lauta.getHahmot();
         
     }
     

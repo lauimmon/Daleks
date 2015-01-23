@@ -4,4 +4,4 @@
 
 **20.1.2015:** 1,5 tuntia luokkien luomista
 
-**22.1.2015:** 3,5 tuntia testien tekoa ja luokkien muokkausta ja laajentamista
+**22.1.2015:** 4 tuntia testien tekoa ja luokkien muokkausta ja laajentamista

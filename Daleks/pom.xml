@@ -36,7 +36,7 @@
                 <configuration>
                     <instrumentation>
                         <includes>
-                            <include>daleks.logiikka/*.class</include>
+                            <include>daleks.daleks/*.class</include>
                         </includes>
                     </instrumentation>
                 </configuration>
@@ -48,10 +48,10 @@
                 <version>0.30</version>
                 <configuration>
                     <targetClasses>
-                        <param>daleks.logiikka.*</param>
+                        <param>daleks.daleks.*</param>
                     </targetClasses>
                     <targetTests>
-                        <param>daleks.logiikka.*</param>
+                        <param>daleks.daleks.*</param>
                     </targetTests>
                 </configuration>
             </plugin>

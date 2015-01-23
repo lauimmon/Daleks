@@ -5,3 +5,5 @@
 **20.1.2015:** 1,5 tuntia luokkien luomista
 
 **22.1.2015:** 4 tuntia testien tekoa ja luokkien muokkausta ja laajentamista
+
+**23.1.2015:** 1,5 tuntia uuden Pelilauta-luokan luomista ja testien tekoa

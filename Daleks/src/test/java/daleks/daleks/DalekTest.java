@@ -82,7 +82,7 @@ public class DalekTest {
     public void kuollutDalekEiLiiku1() {
         Dalek dalek = new Dalek(new Ruutu(1,2));
         Ruutu aloitusruutu = dalek.getRuutu();
-//        dalek.kuole();
+        dalek.kuole();
         dalek.liiku(10,0);
         
         assertEquals(aloitusruutu, dalek.getRuutu());

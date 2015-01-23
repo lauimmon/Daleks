@@ -94,4 +94,12 @@ public class RuutuTest {
         
         assertEquals(ruudut[0], ruutu2);
     }
+    
+    @Test
+    public void ruutujenEtaisyysOikein() {
+        Ruutu ruutu1 = new Ruutu(0,1);
+        Ruutu ruutu2 = new Ruutu(3,1);
+        
+        assertTrue(3 == ruutu1.etaisyysRuudusta(ruutu2));
+    }
 }

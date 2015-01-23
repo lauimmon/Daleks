@@ -18,9 +18,9 @@ import org.junit.Test;
  *
  * @author lauimmon
  */
-public class LiikuvaTest {
+public class LiikkuvaTest {
     
-    public LiikuvaTest() {
+    public LiikkuvaTest() {
     }
     
     @BeforeClass

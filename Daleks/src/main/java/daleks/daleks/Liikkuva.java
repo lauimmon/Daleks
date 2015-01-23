@@ -41,7 +41,11 @@ public abstract class Liikkuva implements Comparator<Liikkuva>, Comparable<Liikk
         return tyyppi;
     }
 
-    
+    @Override
+    public String toString() {
+        return tyyppi.toString() + " " + ruutu.toString();
+    }
+
 
     @Override
     public int compare(Liikkuva l1, Liikkuva l2) {

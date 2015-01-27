@@ -8,4 +8,4 @@
 
 **23.1.2015:** 3 tuntia uuden Pelilauta-luokan luomista ja testien tekoa
 
-**27.1.2015:** 4 tuntia Käyttöliittymä-luokan tekoa ja Pelilauta-luokan ja sen testien laajennusta
+**27.1.2015:** 6 tuntia Käyttöliittymä-luokan tekoa sekä Pelilauta-luokan ja sen testien laajennusta

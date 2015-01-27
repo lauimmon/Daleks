@@ -35,7 +35,7 @@ public class Pelilauta {
     }
     
     public void lisaaHahmoLaudalle(Liikkuva hahmo) {
-        if (onkoRuutuLaudalla(hahmo.getRuutu())) {
+        if (onkoRuutuLaudalla(hahmo.getRuutu()) && minkaTyyppinenHahmoOnRuudussa(hahmo.getRuutu()).equals(Tyyppi.TYHJA)) {
             hahmot.add(hahmo);
         }
     }
@@ -49,9 +49,29 @@ public class Pelilauta {
             System.out.println(liikkuva);
         }
     }
+    
+    public void tulostaLauta() {
+        Map<Ruutu, Tyyppi> ruudut = getRuudut();
+        for (int i = 0; i < kokoX; i++) {
+            for (int j = 0; j < kokoY; j++) {
+                if (ruudut.containsKey(new Ruutu(i, j))) {
+                    System.out.print(ruudut.get(new Ruutu(i, j)).toString());
+                } else  System.out.print(Tyyppi.TYHJA.toString());
+            }
+            System.out.println();
+        }
+    }
 
     public List<Liikkuva> getHahmot() {
         return hahmot;
+    }
+    
+    public Map<Ruutu, Tyyppi> getRuudut() {
+        Map<Ruutu, Tyyppi> tulos = new TreeMap<Ruutu, Tyyppi>();
+        for (Liikkuva liikkuva : hahmot) {
+            tulos.put(liikkuva.getRuutu(), liikkuva.getTyyppi());
+        }
+        return tulos;
     }
     
     public boolean onkoHahmoLaudalla(Liikkuva hahmo) {
@@ -72,10 +92,16 @@ public class Pelilauta {
         return Tyyppi.TYHJA;
     }
     
-    public void liikuta(Liikkuva liikkuva, int x, int y){
-        Ruutu ruutu = new Ruutu(liikkuva.getRuutu().getX() + x, liikkuva.getRuutu().getY() + y);
+    public void liikutaPelaajaa(int x, int y){
+        Ruutu ruutu = new Ruutu(getPelaaja().getRuutu().getX() + x, getPelaaja().getRuutu().getY() + y);
         if (onkoRuutuLaudalla(ruutu)) {
-            liikkuva.liiku(ruutu);
+            getPelaaja().liiku(ruutu);
+        }
+    }
+    
+    public void liikutaPelaajaa(Ruutu ruutu){
+        if (onkoRuutuLaudalla(ruutu)) {
+            getPelaaja().liiku(ruutu);
         }
     }
     
@@ -91,10 +117,14 @@ public class Pelilauta {
     public void rajaytaPommi(){
         Ruutu pelaajanRuutu = getPelaaja().getRuutu();
         List<Ruutu> ruudut = ymparoivatRuudut(pelaajanRuutu);
+        List<Liikkuva> poistettavat = new ArrayList<Liikkuva>();
         for (Liikkuva liikkuva : hahmot) {
             if (ruudut.contains(liikkuva.getRuutu())) {
-                poistaHahmoLaudalta(liikkuva);
+                poistettavat.add(liikkuva);
             }
+        }
+        for (Liikkuva liikkuva : poistettavat) {
+            poistaHahmoLaudalta(liikkuva);
         }
     }
 
@@ -103,7 +133,7 @@ public class Pelilauta {
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 Ruutu ruutu1 = new Ruutu(ruutu.getX()+i, ruutu.getY()+j);
-                if (i != 0 && j != 0 && onkoRuutuLaudalla(ruutu1)) {
+                if (!(i == 0 && j == 0) && onkoRuutuLaudalla(ruutu1)) {
                     ruudut.add(ruutu1);
                 }
             }
@@ -118,6 +148,22 @@ public class Pelilauta {
             if (minkaTyyppinenHahmoOnRuudussa(ruutu).equals(Tyyppi.TYHJA)) {
                 getPelaaja().liiku(ruutu);
                 return;
+            }
+        }
+    }
+    
+    public void liikutaDalekejaPelaajaaPain() {
+        Ruutu pelaajanRuutu = getPelaaja().getRuutu();
+        for (Liikkuva liikkuva : hahmot) {
+            if (liikkuva.getTyyppi().equals(Tyyppi.DALEK)) {
+                List<Ruutu> dalekinYmparoivatRuudut = ymparoivatRuudut(liikkuva.getRuutu());
+                Ruutu parasRuutu = dalekinYmparoivatRuudut.get(0);
+                for (Ruutu ruutu : dalekinYmparoivatRuudut) {
+                    if (ruutu.etaisyysRuudusta(pelaajanRuutu) < parasRuutu.etaisyysRuudusta(pelaajanRuutu)) {
+                        parasRuutu = ruutu;
+                    }
+                }
+                liikkuva.liiku(parasRuutu);
             }
         }
     }

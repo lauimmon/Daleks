@@ -138,7 +138,7 @@ public class PelilautaTest {
         Pelilauta lauta = new Pelilauta(10,20);
         Pelaaja pelaaja = new Pelaaja(new Ruutu(0,1));
         lauta.lisaaHahmoLaudalle(pelaaja);
-        lauta.liikuta(pelaaja, -1, 0);
+        lauta.liikutaPelaajaa( -1, 0);
         
         assertEquals(pelaaja.getRuutu(), new Ruutu(0,1));
     }

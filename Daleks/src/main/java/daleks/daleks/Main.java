@@ -16,15 +16,9 @@ public class Main {
 
     
     public static void main(String[] args) {
-        Pelilauta lauta = new Pelilauta(10,10);
+        Kayttoliittyma kali = new Kayttoliittyma(new Pelilauta(10,20),10);
+        kali.run();    
         
-        Dalek dalek = new Dalek(new Ruutu(1,2));
-        Dalek dalek1 = new Dalek(new Ruutu(2,2));
-        
-        lauta.lisaaHahmoLaudalle(dalek);
-        lauta.lisaaHahmoLaudalle(dalek1);
-        
-        List<Liikkuva> hahmot = lauta.getHahmot();
         
     }
     

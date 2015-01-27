@@ -43,8 +43,6 @@ public class Ruutu implements Comparator<Ruutu>, Comparable<Ruutu> {
         return "(" + x + ", " + y + ')';
     }
     
-    
-    
     public double etaisyysRuudusta(Ruutu ruutu) {
         return Math.sqrt(Math.pow(this.x - ruutu.getX(), 2)
                 + Math.pow(this.y - ruutu.getY(), 2));

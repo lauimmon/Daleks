@@ -6,10 +6,41 @@
 
 package daleks.daleks;
 
+import static org.junit.Assert.*;
+import org.junit.Test;
+
 /**
  *
  * @author lauimmon
  */
 public class TyyppiTest {
+    
+    @Test
+    public void toStringToimiiOikeinKunTyyppiOnPelaaja() {
+        Tyyppi tyyppi = Tyyppi.PELAAJA;
+        
+        assertEquals(tyyppi.toString(), "P");
+    }
+    
+    @Test
+    public void toStringToimiiOikeinKunTyyppiOnDalek() {
+        Tyyppi tyyppi = Tyyppi.DALEK;
+        
+        assertEquals(tyyppi.toString(), "@");
+    }
+    
+    @Test
+    public void toStringToimiiOikeinKunTyyppiOnKuollutDalek() {
+        Tyyppi tyyppi = Tyyppi.KUOLLUTDALEK;
+        
+        assertEquals(tyyppi.toString(), "#");
+    }
+    
+    @Test
+    public void toStringToimiiOikeinKunTyyppiOnTyhja() {
+        Tyyppi tyyppi = Tyyppi.TYHJA;
+        
+        assertEquals(tyyppi.toString(), ".");
+    }
     
 }

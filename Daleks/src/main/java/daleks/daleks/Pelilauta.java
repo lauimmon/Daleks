@@ -119,7 +119,7 @@ public class Pelilauta {
         List<Ruutu> ruudut = ymparoivatRuudut(pelaajanRuutu);
         List<Liikkuva> poistettavat = new ArrayList<Liikkuva>();
         for (Liikkuva liikkuva : hahmot) {
-            if (ruudut.contains(liikkuva.getRuutu())) {
+            if (ruudut.contains(liikkuva.getRuutu()) && liikkuva.getTyyppi().equals(Tyyppi.DALEK)) {
                 poistettavat.add(liikkuva);
             }
         }
@@ -164,6 +164,18 @@ public class Pelilauta {
                     }
                 }
                 liikkuva.liiku(parasRuutu);
+            }
+        }
+        tapaTormanneetDalekit();
+    }
+
+    private void tapaTormanneetDalekit() {
+        for (int i = 0; i < hahmot.size(); i++) {
+            for (int j = i+1; j < hahmot.size(); j++) {
+                if (hahmot.get(i).getRuutu().equals(hahmot.get(j).getRuutu()) && !hahmot.get(i).getTyyppi().equals(Tyyppi.PELAAJA) && !hahmot.get(j).getTyyppi().equals(Tyyppi.PELAAJA)) {
+                    hahmot.get(i).kuole();
+                    hahmot.get(j).kuole();
+                }
             }
         }
     }

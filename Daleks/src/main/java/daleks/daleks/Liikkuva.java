@@ -73,7 +73,7 @@ public abstract class Liikkuva implements Comparator<Liikkuva>, Comparable<Liikk
         return 1;
     }
     
-    
+    public abstract void kuole();
     
     
     

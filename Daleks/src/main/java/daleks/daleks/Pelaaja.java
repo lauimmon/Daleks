@@ -17,6 +17,9 @@ public class Pelaaja extends Liikkuva {
         setTyyppi(Tyyppi.PELAAJA);
     }
 
+    public void kuole() {
+        System.out.println("Hävisit pelin!");
+    }
 
     
 }

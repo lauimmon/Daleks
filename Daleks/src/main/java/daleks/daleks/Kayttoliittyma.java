@@ -7,6 +7,8 @@
 package daleks.daleks;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -21,6 +23,9 @@ public class Kayttoliittyma {
 
     public Kayttoliittyma(Pelilauta pelilauta, int dalekienMaara) {
         lauta = pelilauta;
+        pommit = 1;
+        teleportit = 1;
+        
         Random random = new Random();
         while (lauta.getHahmot().size() != dalekienMaara) {
             lauta.lisaaHahmoLaudalle(new Dalek(new Ruutu(random.nextInt(lauta.getKokoX()), random.nextInt(lauta.getKokoY()))));
@@ -30,24 +35,59 @@ public class Kayttoliittyma {
     
     public void run() {
         while (true) {
-            pommit = 1;
-            teleportit = 1;
 
             lauta.tulostaHahmot();
             lauta.tulostaLauta();
 
-//            Scanner lukija = new Scanner(System.in);
-//            String kasky = lukija.nextLine();
+            Scanner lukija = new Scanner(System.in);
+            String kasky = lukija.nextLine();
             
-            suoritaKasky("r");
+            suoritaKasky(kasky);
+            
+            if (havisikoPelaaja()) {
+                lauta.tulostaHahmot();
+                lauta.tulostaLauta();
+                lauta.getPelaaja().kuole();
+                break;
+            }
             
             lauta.liikutaDalekejaPelaajaaPain();
+            
+            if (havisikoPelaaja()) {
+                lauta.tulostaHahmot();
+                lauta.tulostaLauta();
+                lauta.getPelaaja().kuole();
+                break;
+            }
+            
+            
+            if (voittikoPelaaja()) {
+                lauta.tulostaHahmot();
+                lauta.tulostaLauta();
+                System.out.println("Voitit pelin!");
+                break;
+            }
+            
+            System.out.println("pommeja"+pommit);
+            System.out.println("teleportteja"+teleportit);
+            
+            
         }
     }
 
     private void suoritaKasky(String kasky) {
-        if (kasky.equals("r")) lauta.rajaytaPommi(); 
-        else if (kasky.equals("t")) lauta.teleporttaaPelaaja();
+        if (kasky.equals("r")) {
+            if (pommit != 0) {
+                lauta.rajaytaPommi();
+                pommit--;
+            }
+        } 
+        else if (kasky.equals("t")) {
+            if (teleportit != 0) {
+                lauta.teleporttaaPelaaja();
+                teleportit--;
+            }
+        }
         else if (kasky.equals("q")) lauta.liikutaPelaajaa(-1, -1);
         else if (kasky.equals("w")) lauta.liikutaPelaajaa(-1, 0);
         else if (kasky.equals("e")) lauta.liikutaPelaajaa(-1, 1);
@@ -56,7 +96,51 @@ public class Kayttoliittyma {
         else if (kasky.equals("z")) lauta.liikutaPelaajaa(1, -1); 
         else if (kasky.equals("x")) lauta.liikutaPelaajaa(1, 0);
         else if (kasky.equals("c")) lauta.liikutaPelaajaa(1, 1);
+        else if (kasky.equals("j")) jaaPaikoilleen();
             
+    }
+
+    private void jaaPaikoilleen() {
+        while (true) {
+            lauta.liikutaDalekejaPelaajaaPain();
+            lauta.tulostaHahmot();
+            lauta.tulostaLauta();
+            if (havisikoPelaaja()) {
+                lauta.getPelaaja().kuole();
+                break;
+            }
+            if (voittikoPelaaja()) {
+                System.out.println("Voitit pelin!");
+                break;
+            }
+            
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Kayttoliittyma.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    private boolean havisikoPelaaja() {
+        Ruutu pelaajanRuutu = lauta.getPelaaja().getRuutu();
+        List<Liikkuva> hahmot = lauta.getHahmot();
+        for (Liikkuva liikkuva : hahmot) {
+            if (liikkuva.getRuutu().equals(pelaajanRuutu) && !liikkuva.getTyyppi().equals(Tyyppi.PELAAJA)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean voittikoPelaaja() {
+        Map<Ruutu, Tyyppi> ruudut = lauta.getRuudut();
+        for (Tyyppi tyyppi : ruudut.values()) {
+            if (tyyppi.equals(Tyyppi.DALEK)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     

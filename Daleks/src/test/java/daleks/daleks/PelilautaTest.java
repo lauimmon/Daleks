@@ -114,7 +114,7 @@ public class PelilautaTest {
         Dalek dalek = new Dalek(new Ruutu(1,1));
         lauta.lisaaHahmoLaudalle(dalek);
         
-        assertEquals(lauta.minkaTyyppinenHahmoOnRuudussa(new Ruutu(1,1)), Tyyppi.DALEK);
+        assertEquals(lauta.mikaTyyppiRuudussa(new Ruutu(1,1)), Tyyppi.DALEK);
     }
     
     @Test
@@ -123,14 +123,14 @@ public class PelilautaTest {
         Pelaaja pelaaja = new Pelaaja(new Ruutu(1,1));
         lauta.lisaaHahmoLaudalle(pelaaja);
         
-        assertEquals(lauta.minkaTyyppinenHahmoOnRuudussa(new Ruutu(1,1)), Tyyppi.PELAAJA);
+        assertEquals(lauta.mikaTyyppiRuudussa(new Ruutu(1,1)), Tyyppi.PELAAJA);
     }
     
     @Test
     public void palauttaaTyhjanRuudunTyypinOikein() {
         Pelilauta lauta = new Pelilauta(10,20);
         
-        assertEquals(lauta.minkaTyyppinenHahmoOnRuudussa(new Ruutu(1,1)), Tyyppi.TYHJA);
+        assertEquals(lauta.mikaTyyppiRuudussa(new Ruutu(1,1)), Tyyppi.TYHJA);
     }
     
     @Test

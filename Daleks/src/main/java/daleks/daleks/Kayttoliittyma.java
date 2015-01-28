@@ -36,8 +36,7 @@ public class Kayttoliittyma {
     public void run() {
         while (true) {
 
-            lauta.tulostaHahmot();
-            lauta.tulostaLauta();
+            tulostaTilanne();
 
             Scanner lukija = new Scanner(System.in);
             String kasky = lukija.nextLine();
@@ -45,8 +44,8 @@ public class Kayttoliittyma {
             suoritaKasky(kasky);
             
             if (havisikoPelaaja()) {
-                lauta.tulostaHahmot();
-                lauta.tulostaLauta();
+                tulostaTilanne();
+                System.out.println("Hävisit pelin!");
                 lauta.getPelaaja().kuole();
                 break;
             }
@@ -54,25 +53,26 @@ public class Kayttoliittyma {
             lauta.liikutaDalekejaPelaajaaPain();
             
             if (havisikoPelaaja()) {
-                lauta.tulostaHahmot();
-                lauta.tulostaLauta();
+                tulostaTilanne();
+                System.out.println("Hävisit pelin!");
                 lauta.getPelaaja().kuole();
                 break;
             }
             
             
             if (voittikoPelaaja()) {
-                lauta.tulostaHahmot();
-                lauta.tulostaLauta();
+                tulostaTilanne();
                 System.out.println("Voitit pelin!");
                 break;
             }
-            
-            System.out.println("pommeja"+pommit);
-            System.out.println("teleportteja"+teleportit);
-            
-            
         }
+    }
+
+    private void tulostaTilanne() {
+        lauta.tulostaHahmot();
+        lauta.tulostaLauta();
+        System.out.println("pommeja: "+pommit);
+        System.out.println("teleportteja: "+teleportit);
     }
 
     private void suoritaKasky(String kasky) {
@@ -96,17 +96,16 @@ public class Kayttoliittyma {
         else if (kasky.equals("z")) lauta.liikutaPelaajaa(1, -1); 
         else if (kasky.equals("x")) lauta.liikutaPelaajaa(1, 0);
         else if (kasky.equals("c")) lauta.liikutaPelaajaa(1, 1);
-        else if (kasky.equals("j")) jaaPaikoilleen();
+        else if (kasky.equals("p")) pysyPaikoillaan();
             
     }
 
-    private void jaaPaikoilleen() {
+    private void pysyPaikoillaan() {
         while (true) {
             lauta.liikutaDalekejaPelaajaaPain();
-            lauta.tulostaHahmot();
-            lauta.tulostaLauta();
+            tulostaTilanne();
             if (havisikoPelaaja()) {
-                lauta.getPelaaja().kuole();
+                System.out.println("Hävisit pelin!");
                 break;
             }
             if (voittikoPelaaja()) {

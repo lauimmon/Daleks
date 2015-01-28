@@ -18,8 +18,20 @@ public class Pelaaja extends Liikkuva {
     }
 
     public void kuole() {
-        System.out.println("Hävisit pelin!");
+        setTyyppi(Tyyppi.KUOLLUTPELAAJA);
     }
 
-    
+    @Override
+    public void liiku(int x, int y) {
+        if (getTyyppi() == Tyyppi.PELAAJA) {
+            super.liiku(x, y);
+        }
+    }
+
+    @Override
+    public void liiku(Ruutu ruutu) {
+        if (getTyyppi() == Tyyppi.PELAAJA) {
+            super.liiku(ruutu);
+        }
+    }
 }

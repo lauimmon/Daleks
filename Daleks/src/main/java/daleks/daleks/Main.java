@@ -16,7 +16,10 @@ public class Main {
 
     
     public static void main(String[] args) {
-        Kayttoliittyma kali = new Kayttoliittyma(new Pelilauta(10,20),10);
+        int korkeus = 10;
+        int leveys = 20;
+        int dalekienMaara = 10;
+        Kayttoliittyma kali = new Kayttoliittyma(new Pelilauta(korkeus,leveys),dalekienMaara);
         kali.run();    
         
         

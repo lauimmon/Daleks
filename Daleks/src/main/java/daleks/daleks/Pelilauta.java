@@ -35,7 +35,7 @@ public class Pelilauta {
     }
     
     public void lisaaHahmoLaudalle(Liikkuva hahmo) {
-        if (onkoRuutuLaudalla(hahmo.getRuutu()) && minkaTyyppinenHahmoOnRuudussa(hahmo.getRuutu()).equals(Tyyppi.TYHJA)) {
+        if (onkoRuutuLaudalla(hahmo.getRuutu()) && mikaTyyppiRuudussa(hahmo.getRuutu()).equals(Tyyppi.TYHJA)) {
             hahmot.add(hahmo);
         }
     }
@@ -74,16 +74,7 @@ public class Pelilauta {
         return tulos;
     }
     
-    public boolean onkoHahmoLaudalla(Liikkuva hahmo) {
-        for (Liikkuva liikkuva : hahmot) {
-            if (liikkuva.equals(hahmo)) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    public Tyyppi minkaTyyppinenHahmoOnRuudussa(Ruutu ruutu) {
+    public Tyyppi mikaTyyppiRuudussa(Ruutu ruutu) {
         for (Liikkuva liikkuva : hahmot) {
             if (liikkuva.getRuutu().equals(ruutu)) {
                 return liikkuva.getTyyppi();
@@ -93,22 +84,27 @@ public class Pelilauta {
     }
     
     public void liikutaPelaajaa(int x, int y){
-        Ruutu ruutu = new Ruutu(getPelaaja().getRuutu().getX() + x, getPelaaja().getRuutu().getY() + y);
-        if (onkoRuutuLaudalla(ruutu)) {
-            getPelaaja().liiku(ruutu);
+        Liikkuva pelaaja = getPelaaja();
+        Ruutu ruutu = new Ruutu(pelaaja.getRuutu().getX() + x, pelaaja.getRuutu().getY() + y);
+        if (onkoRuutuLaudalla(ruutu) && !mikaTyyppiRuudussa(ruutu).equals(Tyyppi.KUOLLUTDALEK)) {
+            pelaaja.liiku(ruutu);
         }
+        osuukoPelaajaDalekiin();
     }
-    
-    public void liikutaPelaajaa(Ruutu ruutu){
-        if (onkoRuutuLaudalla(ruutu)) {
-            getPelaaja().liiku(ruutu);
+
+    private void osuukoPelaajaDalekiin() {
+        Liikkuva pelaaja = getPelaaja();
+        for (Liikkuva hahmo : hahmot) {
+            if (hahmo.getRuutu().equals(pelaaja.getRuutu()) && !hahmo.getTyyppi().equals(Tyyppi.PELAAJA)) {
+                pelaaja.kuole();
+            }
         }
     }
     
     public Liikkuva getPelaaja() {
-        for (Liikkuva liikkuva : hahmot) {
-            if (liikkuva.getTyyppi().equals(Tyyppi.PELAAJA)) {
-                return liikkuva;
+        for (Liikkuva hahmo : hahmot) {
+            if (hahmo.getTyyppi().equals(Tyyppi.PELAAJA) || hahmo.getTyyppi().equals(Tyyppi.KUOLLUTPELAAJA)) {
+                return hahmo;
             }
         }
         return null;
@@ -118,13 +114,13 @@ public class Pelilauta {
         Ruutu pelaajanRuutu = getPelaaja().getRuutu();
         List<Ruutu> ruudut = ymparoivatRuudut(pelaajanRuutu);
         List<Liikkuva> poistettavat = new ArrayList<Liikkuva>();
-        for (Liikkuva liikkuva : hahmot) {
-            if (ruudut.contains(liikkuva.getRuutu()) && liikkuva.getTyyppi().equals(Tyyppi.DALEK)) {
-                poistettavat.add(liikkuva);
+        for (Liikkuva hahmo : hahmot) {
+            if (ruudut.contains(hahmo.getRuutu()) && hahmo.getTyyppi().equals(Tyyppi.DALEK)) {
+                poistettavat.add(hahmo);
             }
         }
-        for (Liikkuva liikkuva : poistettavat) {
-            poistaHahmoLaudalta(liikkuva);
+        for (Liikkuva hahmo : poistettavat) {
+            poistaHahmoLaudalta(hahmo);
         }
     }
 
@@ -145,7 +141,7 @@ public class Pelilauta {
         Random random = new Random();
         while (true) {
             Ruutu ruutu = new Ruutu(random.nextInt(kokoX), random.nextInt(kokoY));
-            if (minkaTyyppinenHahmoOnRuudussa(ruutu).equals(Tyyppi.TYHJA)) {
+            if (mikaTyyppiRuudussa(ruutu).equals(Tyyppi.TYHJA)) {
                 getPelaaja().liiku(ruutu);
                 return;
             }
@@ -154,19 +150,20 @@ public class Pelilauta {
     
     public void liikutaDalekejaPelaajaaPain() {
         Ruutu pelaajanRuutu = getPelaaja().getRuutu();
-        for (Liikkuva liikkuva : hahmot) {
-            if (liikkuva.getTyyppi().equals(Tyyppi.DALEK)) {
-                List<Ruutu> dalekinYmparoivatRuudut = ymparoivatRuudut(liikkuva.getRuutu());
+        for (Liikkuva hahmo : hahmot) {
+            if (hahmo.getTyyppi().equals(Tyyppi.DALEK)) {
+                List<Ruutu> dalekinYmparoivatRuudut = ymparoivatRuudut(hahmo.getRuutu());
                 Ruutu parasRuutu = dalekinYmparoivatRuudut.get(0);
                 for (Ruutu ruutu : dalekinYmparoivatRuudut) {
                     if (ruutu.etaisyysRuudusta(pelaajanRuutu) < parasRuutu.etaisyysRuudusta(pelaajanRuutu)) {
                         parasRuutu = ruutu;
                     }
                 }
-                liikkuva.liiku(parasRuutu);
+                hahmo.liiku(parasRuutu);
             }
         }
         tapaTormanneetDalekit();
+        osuukoPelaajaDalekiin();
     }
 
     private void tapaTormanneetDalekit() {

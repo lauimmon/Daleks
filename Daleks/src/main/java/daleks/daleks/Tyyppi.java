@@ -12,7 +12,7 @@ package daleks.daleks;
  */
 public enum Tyyppi {
     
-    PELAAJA, DALEK, KUOLLUTDALEK, TYHJA;
+    PELAAJA, KUOLLUTPELAAJA, DALEK, KUOLLUTDALEK, TYHJA;
 
     @Override
     public String toString() {
@@ -22,6 +22,8 @@ public enum Tyyppi {
             return "#";
         } if (this.equals(PELAAJA)) {
             return "P";
+        } if (this.equals(KUOLLUTPELAAJA)) {
+            return "+";
         }
         return ".";
     }

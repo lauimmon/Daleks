@@ -9,3 +9,11 @@
 **23.1.2015:** 3 tuntia uuden Pelilauta-luokan luomista ja testien tekoa
 
 **27.1.2015:** 6 tuntia Käyttöliittymä-luokan tekoa sekä Pelilauta-luokan ja sen testien laajennusta
+
+**28.1.2015:** 1 tunti pieniä lisäyksiä, mm. pelaajan kuole()-metodin lisäys
+
+**29.1.2015:** 5 tuntia testien laajentamista. En keskinyt, miten compare-metodia voi testata. Lisäsin uuden testiluokan käyttöliittymälle. Käyttöliittymän testauksessa tuli ongelma, että kaikki muut metodit kuin run() ovat private, joten niitä ei pysty testata, ja en keksinyt, miten run()-metodia voisi lainkaan testata, koska sen sisällä kysytään pelaajalta syötettä. Pohdin myös miten liian suureksi paisunutta Pelilauta-luokkaa voisi hajottaa osiin, mutta yritykset eivät tuottaneet tulosta.
+
+
+
+

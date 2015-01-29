@@ -94,6 +94,16 @@ public class PelilautaTest {
     }
     
     @Test
+    public void getRuudutPalauttaaOikeinKaikkiRuudutJoissaLiikkuva() {
+        Pelilauta lauta = new Pelilauta(10,20);
+        Dalek dalek = new Dalek(new Ruutu(1,1));
+        lauta.lisaaHahmoLaudalle(dalek);
+        Map<Ruutu, Tyyppi> ruudut = lauta.getRuudut();
+        
+        assertTrue(ruudut.size() == 1 && ruudut.containsKey(new Ruutu(1,1)) && ruudut.containsValue(Tyyppi.DALEK));
+    }
+    
+    @Test
     public void ruutuEiLaudallaJosLiianSuuriX() {
         Pelilauta lauta = new Pelilauta(10,20);
         Ruutu ruutu = new Ruutu(20,1);
@@ -287,7 +297,7 @@ public class PelilautaTest {
     }
     
     @Test
-    public void dalekLiikkuuPelaajaaPain() {
+    public void dalekLiikkuuPelaajaaPain1() {
         Pelilauta lauta = new Pelilauta(10,20);
         Pelaaja pelaaja = new Pelaaja(new Ruutu(0,0));
         lauta.lisaaHahmoLaudalle(pelaaja);
@@ -299,14 +309,55 @@ public class PelilautaTest {
     }
     
     @Test
+    public void dalekLiikkuuPelaajaaPain2() {
+        Pelilauta lauta = new Pelilauta(10,20);
+        Pelaaja pelaaja = new Pelaaja(new Ruutu(5,5));
+        lauta.lisaaHahmoLaudalle(pelaaja);
+        Dalek dalek = new Dalek(new Ruutu(1,1));
+        lauta.lisaaHahmoLaudalle(dalek);
+        lauta.liikutaDalekejaPelaajaaPain();
+        
+        assertEquals(dalek.getRuutu(), new Ruutu(2,2));
+    }
+    
+    @Test
     public void tormaavatDalekitKuolevat() {
         Pelilauta lauta = new Pelilauta(10,20);
         Pelaaja pelaaja = new Pelaaja(new Ruutu(0,0));
         lauta.lisaaHahmoLaudalle(pelaaja);
-        Dalek dalek = new Dalek(new Ruutu(2,2));
-        lauta.lisaaHahmoLaudalle(dalek);
+        Dalek dalek1 = new Dalek(new Ruutu(0,2));
+        lauta.lisaaHahmoLaudalle(dalek1);
+        Dalek dalek2 = new Dalek(new Ruutu(1,2));
+        lauta.lisaaHahmoLaudalle(dalek2);
+        
         lauta.liikutaDalekejaPelaajaaPain();
         
-        assertEquals(dalek.getRuutu(), new Ruutu(1,1));
+        assertTrue(dalek1.getTyyppi() == Tyyppi.KUOLLUTDALEK && dalek2.getTyyppi() == Tyyppi.KUOLLUTDALEK);
+    }
+    
+    @Test
+    public void dalekEiKuoleTormatessaanPelaajaan() {
+        Pelilauta lauta = new Pelilauta(10,20);
+        Pelaaja pelaaja = new Pelaaja(new Ruutu(0,0));
+        lauta.lisaaHahmoLaudalle(pelaaja);
+        Dalek dalek1 = new Dalek(new Ruutu(0,1));
+        lauta.lisaaHahmoLaudalle(dalek1);
+        
+        lauta.liikutaDalekejaPelaajaaPain();
+        
+        assertTrue(dalek1.getTyyppi() == Tyyppi.DALEK);
+    }
+    
+    @Test
+    public void dalekEiKuolePelaajanTormatessaDalekiin() {
+        Pelilauta lauta = new Pelilauta(10,20);
+        Pelaaja pelaaja = new Pelaaja(new Ruutu(0,0));
+        lauta.lisaaHahmoLaudalle(pelaaja);
+        Dalek dalek1 = new Dalek(new Ruutu(0,1));
+        lauta.lisaaHahmoLaudalle(dalek1);
+        
+        lauta.liikutaPelaajaa(0, 1);
+        
+        assertTrue(dalek1.getTyyppi() == Tyyppi.DALEK);
     }
 }

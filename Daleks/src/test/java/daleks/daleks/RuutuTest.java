@@ -54,7 +54,7 @@ public class RuutuTest {
     }
     
     @Test
-    public void asettaaXnOikein() {
+    public void setXAsettaaXnOikein() {
         Ruutu ruutu = new Ruutu(1,2);
         ruutu.setX(3);
         
@@ -62,12 +62,61 @@ public class RuutuTest {
     }
     
     @Test
-    public void asettaaYnOikein() {
+    public void setYasettaaYnOikein() {
         Ruutu ruutu = new Ruutu(1,2);
         ruutu.setY(3);
         
         assertEquals(3, ruutu.getY());
     }
+    
+    @Test
+    public void equalsVertaaRuutujaOikeinKunRuudutSamat() {
+        Ruutu ruutu1 = new Ruutu(1,2);
+        Ruutu ruutu2 = new Ruutu(1,2);
+        
+        assertTrue(ruutu1.equals(ruutu2));
+    }
+    
+    @Test
+    public void equalsVertaaRuutujaOikeinKunRuudutEri() {
+        Ruutu ruutu1 = new Ruutu(1,2);
+        Ruutu ruutu2 = new Ruutu(2,2);
+        
+        assertFalse(ruutu1.equals(ruutu2));
+    }
+    
+    @Test
+    public void equalsVertaaRuutuaOikeinNullinKanssa() {
+        Ruutu ruutu1 = new Ruutu(1,2);
+        
+        assertFalse(ruutu1.equals(null));
+    }
+    
+    @Test
+    public void equalsVertaaRuutuaOikeinToisenLuokanOlioon() {
+        Ruutu ruutu1 = new Ruutu(1,2);
+        Liikkuva pelaaja = new Pelaaja(new Ruutu(1,2));
+        
+        assertFalse(ruutu1.equals(pelaaja));
+    }
+    
+    @Test
+    public void hashcodetSamatKunKaksiSamaaRuutua() {
+        Ruutu ruutu1 = new Ruutu(1,2);
+        Ruutu ruutu2 = new Ruutu(1,2);
+        
+        assertTrue(ruutu1.hashCode() == ruutu2.hashCode());
+    }
+    
+    @Test
+    public void hashcodetEriKunKaksiEriRuutua() {
+        Ruutu ruutu1 = new Ruutu(1,2);
+        Ruutu ruutu2 = new Ruutu(2,1);
+        
+        assertFalse(ruutu1.hashCode() == ruutu2.hashCode());
+    }
+    
+   
     
     @Test
     public void vertaaRuutujaOikeinKunSamatRuudut() {

@@ -22,15 +22,16 @@ public class Kayttoliittyma {
     private int teleportit;
 
     public Kayttoliittyma(Pelilauta pelilauta, int dalekienMaara) {
+        
         lauta = pelilauta;
         pommit = 1;
         teleportit = 1;
         
         Random random = new Random();
-        while (lauta.getHahmot().size() != dalekienMaara) {
+        lauta.lisaaHahmoLaudalle(new Pelaaja(new Ruutu(random.nextInt(lauta.getKokoX()), random.nextInt(lauta.getKokoY()))));
+        while (lauta.getHahmot().size() != dalekienMaara + 1) {
             lauta.lisaaHahmoLaudalle(new Dalek(new Ruutu(random.nextInt(lauta.getKokoX()), random.nextInt(lauta.getKokoY()))));
         }
-        lauta.lisaaHahmoLaudalle(new Pelaaja(new Ruutu(random.nextInt(lauta.getKokoX()), random.nextInt(lauta.getKokoY()))));
     }
     
     public void run() {
@@ -142,9 +143,4 @@ public class Kayttoliittyma {
         return true;
     }
 
-    
-    
-    
-    
-    
 }

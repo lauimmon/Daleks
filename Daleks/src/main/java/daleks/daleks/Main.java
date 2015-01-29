@@ -21,7 +21,7 @@ public class Main {
         int dalekienMaara = 10;
         Kayttoliittyma kali = new Kayttoliittyma(new Pelilauta(korkeus,leveys),dalekienMaara);
         kali.run();    
-        
+    
         
     }
     

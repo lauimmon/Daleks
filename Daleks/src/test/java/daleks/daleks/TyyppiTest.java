@@ -21,6 +21,13 @@ public class TyyppiTest {
         
         assertEquals(tyyppi.toString(), "P");
     }
+   
+    @Test
+    public void toStringToimiiOikeinKunTyyppiOnKuollutPelaaja() {
+        Tyyppi tyyppi = Tyyppi.KUOLLUTPELAAJA;
+        
+        assertEquals(tyyppi.toString(), "+");
+    }
     
     @Test
     public void toStringToimiiOikeinKunTyyppiOnDalek() {
@@ -42,5 +49,6 @@ public class TyyppiTest {
         
         assertEquals(tyyppi.toString(), ".");
     }
+    
     
 }

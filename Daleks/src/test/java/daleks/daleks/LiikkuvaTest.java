@@ -7,6 +7,7 @@
 package daleks.daleks;
 
 import java.util.*;
+import junit.framework.Assert;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
@@ -38,18 +39,74 @@ public class LiikkuvaTest {
     @After
     public void tearDown() {
     }
-
+    
     @Test
-    public void liikkuvatJarjestyvatRuutujensaMukaanOikein() {
-        Dalek dalek = new Dalek(new Ruutu(1,2));
-        Pelaaja pelaaja = new Pelaaja(new Ruutu(2,2));
+    public void konstruktoriAsettaaRuudunOikein() {
+        Liikkuva dalek = new Dalek(new Ruutu(1,2));
         
-        Liikkuva[] liikkuvat = new Liikkuva[2];
-        liikkuvat[0] = dalek;
-        liikkuvat[1] = pelaaja;
-        
-        Arrays.sort(liikkuvat);
-        
-        assertEquals(liikkuvat[0], dalek);
+        assertEquals(dalek.getRuutu(), new Ruutu(1,2));
     }
+    
+    @Test
+    public void vertaileeLiikkuviaOikeinKunSamatRuudut() {
+        Liikkuva dalek = new Dalek(new Ruutu(1,2));
+        Liikkuva pelaaja = new Pelaaja(new Ruutu(1,2));
+        
+        
+        assertTrue(dalek.compareTo(pelaaja)==0);
+    }
+    
+    @Test
+    public void vertaileeLiikkuviaOikeinKunSamaY() {
+        Liikkuva dalek = new Dalek(new Ruutu(1,2));
+        Liikkuva pelaaja = new Pelaaja(new Ruutu(2,2));
+        
+        
+        assertTrue(dalek.compareTo(pelaaja)<0);
+    }
+    
+    @Test
+    public void vertaileeLiikkuviaOikeinKunSamaX() {
+        Liikkuva dalek = new Dalek(new Ruutu(2,1));
+        Liikkuva pelaaja = new Pelaaja(new Ruutu(2,2));
+        
+        
+        assertTrue(dalek.compareTo(pelaaja)<0);
+    }
+    
+    @Test
+    public void vertaileeLiikkuviaOikeinKunEriXJaY() {
+        Liikkuva dalek = new Dalek(new Ruutu(0,7));
+        Liikkuva pelaaja = new Pelaaja(new Ruutu(1,2));
+        
+        
+        assertTrue(dalek.compareTo(pelaaja)<0);
+    }
+    
+    @Test
+    public void vertaileeLiikkuviaOikeinEqualsMetodilla() {
+        Liikkuva dalek = new Dalek(new Ruutu(0,7));
+        Liikkuva pelaaja = new Pelaaja(new Ruutu(1,2));
+        
+        
+        assertFalse(pelaaja.equals(dalek));
+    }
+    
+    
+    @Test
+    public void liikkuvaLiikkuuOikein1() {
+        Liikkuva dalek = new Dalek(new Ruutu(0,7));
+        dalek.liiku(new Ruutu(1,1));
+        
+        assertEquals(dalek.getRuutu(), new Ruutu(1,1));
+    }
+    
+    @Test
+    public void liikkuvaLiikkuuOikein2() {
+        Liikkuva dalek = new Dalek(new Ruutu(0,7));
+        dalek.liiku(1,1);
+        
+        assertEquals(dalek.getRuutu(), new Ruutu(1,8));
+    }
+    
 }

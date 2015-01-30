@@ -349,12 +349,13 @@ public class PelilautaTest {
     }
     
     @Test
-    public void dalekEiKuolePelaajanTormatessaDalekiin() {
+    public void dalekEiKuolePelaajanTormatessaSiihen() {
         Pelilauta lauta = new Pelilauta(10,20);
-        Pelaaja pelaaja = new Pelaaja(new Ruutu(0,0));
-        lauta.lisaaHahmoLaudalle(pelaaja);
+        
         Dalek dalek1 = new Dalek(new Ruutu(0,1));
         lauta.lisaaHahmoLaudalle(dalek1);
+        Pelaaja pelaaja = new Pelaaja(new Ruutu(0,0));
+        lauta.lisaaHahmoLaudalle(pelaaja);
         
         lauta.liikutaPelaajaa(0, 1);
         

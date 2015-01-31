@@ -80,6 +80,7 @@ public class Pelilauta {
                 } else  System.out.print(Tyyppi.TYHJA.toString());
             }
             System.out.println();
+            System.out.println();
         }
     }
     

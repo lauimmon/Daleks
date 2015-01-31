@@ -35,6 +35,7 @@ public class Kayttoliittyma {
     }
     
     public void run() {
+        tulostaOhjeet();
         while (true) {
 
             tulostaTilanne();
@@ -141,6 +142,10 @@ public class Kayttoliittyma {
             }
         }
         return true;
+    }
+
+    private void tulostaOhjeet() {
+        System.out.println("Ohjeet: \n\nYlös W, alas X, vasemmalle A, oikealle D. \nVinottain liikkuminen Q, E, Z ja C. Paikallaan pysyminen S. \n\nPommin räjäytys R, teleporttaus T. \n\nNäppäimellä P voit jäädä paikalleen koko loppuajaksi\n");
     }
 
 }

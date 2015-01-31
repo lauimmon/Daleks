@@ -73,6 +73,7 @@ public class Kayttoliittyma {
     private void tulostaTilanne() {
         lauta.tulostaHahmot();
         lauta.tulostaLauta();
+        System.out.println();
         System.out.println("pommeja: "+pommit);
         System.out.println("teleportteja: "+teleportit);
     }

@@ -41,6 +41,7 @@ public class Kayttoliittyma {
             tulostaTilanne();
 
             Scanner lukija = new Scanner(System.in);
+            System.out.print(">");
             String kasky = lukija.nextLine();
             
             suoritaKasky(kasky);
@@ -146,7 +147,7 @@ public class Kayttoliittyma {
     }
 
     private void tulostaOhjeet() {
-        System.out.println("Ohjeet: \n\nYlös W, alas X, vasemmalle A, oikealle D. \nVinottain liikkuminen Q, E, Z ja C. Paikallaan pysyminen S. \n\nPommin räjäytys R, teleporttaus T. \n\nNäppäimellä P voit jäädä paikalleen koko loppuajaksi\n");
+        System.out.println("Ohjeet: \nTavoitteenasi pelaajana (P) on paeta dalekeja (@) ja saada ne törmäämään toisiinsa tai kuolleisiin dalekeihin (#), jolloin ne kuolevat. \nVoitat kun kaikki dalekit kuolevat ja häviät jos dalek saa sinut kiinni. Kuolleet dalekit eivät liiku. \n\nOhjaus:\nYlös W, alas X, vasemmalle A, oikealle D. Vinottain liikkuminen Q, E, Z ja C. Paikallaan pysyminen S. \n\nPommin räjäytys R, teleporttaus T. \n\nNäppäimellä P voit jäädä paikalleen koko loppuajaksi.\n\n");
     }
 
 }

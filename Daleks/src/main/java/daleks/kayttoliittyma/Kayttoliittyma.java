@@ -4,8 +4,11 @@
  * and open the template in the editor.
  */
 
-package daleks.daleks;
+package daleks.kayttoliittyma;
 
+
+import daleks.daleks.*;
+import daleks.logiikka.Peli;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,20 +20,20 @@ import java.util.logging.Logger;
 
 public class Kayttoliittyma {
     
-    private Pelilauta lauta;
+    private Peli peli;
     private int pommit;
     private int teleportit;
 
     public Kayttoliittyma(Pelilauta pelilauta, int dalekienMaara) {
         
-        lauta = pelilauta;
         pommit = 1;
         teleportit = 1;
+        peli = new Peli(pelilauta);
         
         Random random = new Random();
-        lauta.lisaaHahmoLaudalle(new Pelaaja(new Ruutu(random.nextInt(lauta.getKokoX()), random.nextInt(lauta.getKokoY()))));
-        while (lauta.getHahmot().size() != dalekienMaara + 1) {
-            lauta.lisaaHahmoLaudalle(new Dalek(new Ruutu(random.nextInt(lauta.getKokoX()), random.nextInt(lauta.getKokoY()))));
+        peli.lisaaHahmo(new Pelaaja(new Ruutu(random.nextInt(peli.getLauta().getKokoX()), random.nextInt(peli.getLauta().getKokoY()))));
+        while (peli.getHahmot().size() != dalekienMaara + 1) {
+            peli.lisaaHahmo(new Dalek(new Ruutu(random.nextInt(peli.getLauta().getKokoX()), random.nextInt(peli.getLauta().getKokoY()))));
         }
     }
     
@@ -40,35 +43,28 @@ public class Kayttoliittyma {
 
             tulostaTilanne();
 
-<<<<<<< HEAD
             boolean suoritettu = false;
             while (!suoritettu) {
                 Scanner lukija = new Scanner(System.in);
+                System.out.print(">");
                 String kasky = lukija.nextLine();
 
                 suoritettu = suoritaKasky(kasky);
             }
-=======
-            Scanner lukija = new Scanner(System.in);
-            System.out.print(">");
-            String kasky = lukija.nextLine();
-            
-            suoritaKasky(kasky);
->>>>>>> 3caccf5ae8a0fcc44bf73476c61d100712062bee
             
             if (havisikoPelaaja()) {
                 tulostaTilanne();
                 System.out.println("Hävisit pelin!");
-                lauta.getPelaaja().kuole();
+                peli.getPelaaja().kuole();
                 break;
             }
             
-            lauta.liikutaDalekejaPelaajaaPain();
+            peli.liikutaDalekejaPelaajaaPain();
             
             if (havisikoPelaaja()) {
                 tulostaTilanne();
                 System.out.println("Hävisit pelin!");
-                lauta.getPelaaja().kuole();
+                peli.getPelaaja().kuole();
                 break;
             }
             
@@ -82,9 +78,7 @@ public class Kayttoliittyma {
     }
 
     private void tulostaTilanne() {
-        lauta.tulostaHahmot();
-        lauta.tulostaLauta();
-        System.out.println();
+        peli.tulostaLauta();
         System.out.println("pommeja: "+pommit);
         System.out.println("teleportteja: "+teleportit);
     }
@@ -93,30 +87,31 @@ public class Kayttoliittyma {
         try {
             if (kasky.equals("r")) {
                 if (pommit != 0) {
-                    lauta.rajaytaPommi();
+                    peli.rajaytaPommi();
                     pommit--;
                 } else {
-                    throw new IllegalArgumentException("Et voi käyttää pommia");
+                    throw new IllegalArgumentException("Ei pommeja jäljellä!");
                 }
             }
             else if (kasky.equals("t")) {
                 if (teleportit != 0) {
-                    lauta.teleporttaaPelaaja();
+                    peli.teleporttaaPelaaja();
                     teleportit--;
                 } else {
-                    throw new IllegalArgumentException("Et voi käyttää teleporttia");
+                    throw new IllegalArgumentException("Ei teleportteja jäljellä!");
                 }
             }
-            else if (kasky.equals("q")) lauta.liikutaPelaajaa(-1, -1);
-            else if (kasky.equals("w")) lauta.liikutaPelaajaa(-1, 0);
-            else if (kasky.equals("e")) lauta.liikutaPelaajaa(-1, 1);
-            else if (kasky.equals("a")) lauta.liikutaPelaajaa(0, -1);
-            else if (kasky.equals("d")) lauta.liikutaPelaajaa(0, 1);
-            else if (kasky.equals("z")) lauta.liikutaPelaajaa(1, -1); 
-            else if (kasky.equals("x")) lauta.liikutaPelaajaa(1, 0);
-            else if (kasky.equals("c")) lauta.liikutaPelaajaa(1, 1);
+            else if (kasky.equals("q")) peli.liikutaPelaajaa(-1, -1);
+            else if (kasky.equals("w")) peli.liikutaPelaajaa(-1, 0);
+            else if (kasky.equals("e")) peli.liikutaPelaajaa(-1, 1);
+            else if (kasky.equals("a")) peli.liikutaPelaajaa(0, -1);
+            else if (kasky.equals("d")) peli.liikutaPelaajaa(0, 1);
+            else if (kasky.equals("z")) peli.liikutaPelaajaa(1, -1); 
+            else if (kasky.equals("x")) peli.liikutaPelaajaa(1, 0);
+            else if (kasky.equals("c")) peli.liikutaPelaajaa(1, 1);
+            else if (kasky.equals("s")) {}
             else if (kasky.equals("p")) pysyPaikoillaan();
-            else throw new IllegalArgumentException("Väärä syöte");
+            else throw new IllegalArgumentException("Väärä syöte!");
         } catch(IllegalArgumentException i) {
             System.out.println(i.getMessage());
             return false;
@@ -126,7 +121,7 @@ public class Kayttoliittyma {
 
     private void pysyPaikoillaan() {
         while (true) {
-            lauta.liikutaDalekejaPelaajaaPain();
+            peli.liikutaDalekejaPelaajaaPain();
             tulostaTilanne();
             if (havisikoPelaaja()) {
                 System.out.println("Hävisit pelin!");
@@ -146,8 +141,8 @@ public class Kayttoliittyma {
     }
 
     private boolean havisikoPelaaja() {
-        Ruutu pelaajanRuutu = lauta.getPelaaja().getRuutu();
-        List<Liikkuva> hahmot = lauta.getHahmot();
+        Ruutu pelaajanRuutu = peli.getPelaaja().getRuutu();
+        List<Liikkuva> hahmot = peli.getHahmot();
         for (Liikkuva liikkuva : hahmot) {
             if (liikkuva.getRuutu().equals(pelaajanRuutu) && !liikkuva.getTyyppi().equals(Tyyppi.PELAAJA)) {
                 return true;
@@ -157,7 +152,7 @@ public class Kayttoliittyma {
     }
 
     private boolean voittikoPelaaja() {
-        Map<Ruutu, Tyyppi> ruudut = lauta.getRuudut();
+        Map<Ruutu, Tyyppi> ruudut = peli.getRuudut();
         for (Tyyppi tyyppi : ruudut.values()) {
             if (tyyppi.equals(Tyyppi.DALEK)) {
                 return false;
@@ -165,7 +160,7 @@ public class Kayttoliittyma {
         }
         return true;
     }
-
+    
     private void tulostaOhjeet() {
         System.out.println("Ohjeet: \nTavoitteenasi pelaajana (P) on paeta dalekeja (@) ja saada ne törmäämään toisiinsa tai kuolleisiin dalekeihin (#), jolloin ne kuolevat. \nVoitat kun kaikki dalekit kuolevat ja häviät jos dalek saa sinut kiinni. Kuolleet dalekit eivät liiku. \n\nOhjaus:\nYlös W, alas X, vasemmalle A, oikealle D. Vinottain liikkuminen Q, E, Z ja C. Paikallaan pysyminen S. \n\nPommin räjäytys R, teleporttaus T. \n\nNäppäimellä P voit jäädä paikalleen koko loppuajaksi.\n\n");
     }

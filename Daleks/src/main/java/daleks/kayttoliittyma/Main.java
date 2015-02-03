@@ -4,8 +4,10 @@
  * and open the template in the editor.
  */
 
-package daleks.daleks;
+package daleks.kayttoliittyma;
+import daleks.daleks.Pelilauta;
 
+import daleks.kayttoliittyma.Kayttoliittyma;
 import java.util.*;
 
 /**

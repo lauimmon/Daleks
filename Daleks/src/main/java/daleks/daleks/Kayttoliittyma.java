@@ -39,10 +39,13 @@ public class Kayttoliittyma {
 
             tulostaTilanne();
 
-            Scanner lukija = new Scanner(System.in);
-            String kasky = lukija.nextLine();
-            
-            suoritaKasky(kasky);
+            boolean suoritettu = false;
+            while (!suoritettu) {
+                Scanner lukija = new Scanner(System.in);
+                String kasky = lukija.nextLine();
+
+                suoritettu = suoritaKasky(kasky);
+            }
             
             if (havisikoPelaaja()) {
                 tulostaTilanne();
@@ -76,29 +79,39 @@ public class Kayttoliittyma {
         System.out.println("teleportteja: "+teleportit);
     }
 
-    private void suoritaKasky(String kasky) {
-        if (kasky.equals("r")) {
-            if (pommit != 0) {
-                lauta.rajaytaPommi();
-                pommit--;
+    private boolean suoritaKasky(String kasky) {
+        try {
+            if (kasky.equals("r")) {
+                if (pommit != 0) {
+                    lauta.rajaytaPommi();
+                    pommit--;
+                } else {
+                    throw new IllegalArgumentException("Et voi käyttää pommia");
+                }
             }
-        } 
-        else if (kasky.equals("t")) {
-            if (teleportit != 0) {
-                lauta.teleporttaaPelaaja();
-                teleportit--;
+            else if (kasky.equals("t")) {
+                if (teleportit != 0) {
+                    lauta.teleporttaaPelaaja();
+                    teleportit--;
+                } else {
+                    throw new IllegalArgumentException("Et voi käyttää teleporttia");
+                }
             }
+            else if (kasky.equals("q")) lauta.liikutaPelaajaa(-1, -1);
+            else if (kasky.equals("w")) lauta.liikutaPelaajaa(-1, 0);
+            else if (kasky.equals("e")) lauta.liikutaPelaajaa(-1, 1);
+            else if (kasky.equals("a")) lauta.liikutaPelaajaa(0, -1);
+            else if (kasky.equals("d")) lauta.liikutaPelaajaa(0, 1);
+            else if (kasky.equals("z")) lauta.liikutaPelaajaa(1, -1); 
+            else if (kasky.equals("x")) lauta.liikutaPelaajaa(1, 0);
+            else if (kasky.equals("c")) lauta.liikutaPelaajaa(1, 1);
+            else if (kasky.equals("p")) pysyPaikoillaan();
+            else throw new IllegalArgumentException("Väärä syöte");
+        } catch(IllegalArgumentException i) {
+            System.out.println(i.getMessage());
+            return false;
         }
-        else if (kasky.equals("q")) lauta.liikutaPelaajaa(-1, -1);
-        else if (kasky.equals("w")) lauta.liikutaPelaajaa(-1, 0);
-        else if (kasky.equals("e")) lauta.liikutaPelaajaa(-1, 1);
-        else if (kasky.equals("a")) lauta.liikutaPelaajaa(0, -1);
-        else if (kasky.equals("d")) lauta.liikutaPelaajaa(0, 1);
-        else if (kasky.equals("z")) lauta.liikutaPelaajaa(1, -1); 
-        else if (kasky.equals("x")) lauta.liikutaPelaajaa(1, 0);
-        else if (kasky.equals("c")) lauta.liikutaPelaajaa(1, 1);
-        else if (kasky.equals("p")) pysyPaikoillaan();
-            
+        return true;
     }
 
     private void pysyPaikoillaan() {

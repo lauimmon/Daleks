@@ -6,8 +6,11 @@
 
 package daleks.logiikka;
 
-import daleks.daleks.*;
+import daleks.luokat.*;
+import daleks.kayttoliittyma.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,10 +20,22 @@ public class Peli {
     
     private Pelilauta lauta;
     private List<Liikkuva> hahmot;
+    private int pommit;
+    private int teleportit;
 
-    public Peli(Pelilauta lauta) {
-        this.lauta = lauta;
+    public Peli(Pelilauta pelilauta, int dalekienMaara) {
+        lauta = pelilauta;
         hahmot = new ArrayList<Liikkuva>();
+        pommit = 1;
+        teleportit = 1;
+        
+        Random random = new Random();
+        lisaaHahmo(new Pelaaja(new Ruutu(random.nextInt(lauta.getKokoX()), random.nextInt(lauta.getKokoY()))));
+        while (hahmot.size() != dalekienMaara + 1) {
+            lisaaHahmo(new Dalek(new Ruutu(random.nextInt(lauta.getKokoX()), random.nextInt(lauta.getKokoY()))));
+        }
+        
+        tulostaOhjeet();
     }
     
     public Pelilauta getLauta() {
@@ -29,6 +44,14 @@ public class Peli {
     
     public List<Liikkuva> getHahmot() {
         return hahmot;
+    }
+
+    public int getPommit() {
+        return pommit;
+    }
+
+    public int getTeleportit() {
+        return teleportit;
     }
     
     public Liikkuva getPelaaja() {
@@ -94,28 +117,40 @@ public class Peli {
     }
     
     public void teleporttaaPelaaja() {
-        Random random = new Random();
-        while (true) {
-            Ruutu ruutu = new Ruutu(random.nextInt(lauta.getKokoX()), random.nextInt(lauta.getKokoY()));
-            if (mikaTyyppiRuudussa(ruutu).equals(Tyyppi.TYHJA)) {
-                getPelaaja().liiku(ruutu);
-                return;
+        if (teleportit != 0) {
+            teleportit--;
+            Random random = new Random();
+            while (true) {
+                Ruutu ruutu = new Ruutu(random.nextInt(lauta.getKokoX()), random.nextInt(lauta.getKokoY()));
+                if (mikaTyyppiRuudussa(ruutu).equals(Tyyppi.TYHJA)) {
+                    getPelaaja().liiku(ruutu);
+                    return;
+                }
             }
+        } else {
+            throw new IllegalArgumentException("Ei teleportteja jäljellä!");
         }
+        
     }
 
-    public void rajaytaPommi(){
-        Ruutu pelaajanRuutu = getPelaaja().getRuutu();
-        List<Ruutu> ruudut = lauta.ymparoivatRuudut(pelaajanRuutu);
-        List<Liikkuva> poistettavat = new ArrayList<Liikkuva>();
-        for (Liikkuva hahmo : getHahmot()) {
-            if (ruudut.contains(hahmo.getRuutu()) && hahmo.getTyyppi().equals(Tyyppi.DALEK)) {
-                poistettavat.add(hahmo);
+    public void rajaytaPommi() throws IllegalArgumentException {
+        if (pommit != 0) {
+            pommit--;
+            Ruutu pelaajanRuutu = getPelaaja().getRuutu();
+            List<Ruutu> ruudut = lauta.ymparoivatRuudut(pelaajanRuutu);
+            List<Liikkuva> poistettavat = new ArrayList<Liikkuva>();
+            for (Liikkuva hahmo : getHahmot()) {
+                if (ruudut.contains(hahmo.getRuutu()) && hahmo.getTyyppi().equals(Tyyppi.DALEK)) {
+                    poistettavat.add(hahmo);
+                }
             }
+            for (Liikkuva hahmo : poistettavat) {
+                poistaHahmo(hahmo);
+            }
+        } else {
+            throw new IllegalArgumentException("Ei pommeja jäljellä!");
         }
-        for (Liikkuva hahmo : poistettavat) {
-            poistaHahmo(hahmo);
-        }
+        
     }
     
     public void liikutaDalekejaPelaajaaPain() {
@@ -153,7 +188,7 @@ public class Peli {
         }
     }
     
-    public void tulostaLauta() {
+    public void tulostaTilanne() {
         Map<Ruutu, Tyyppi> ruudut = getRuudut();
         for (int i = 0; i < lauta.getKokoX(); i++) {
             for (int j = 0; j < lauta.getKokoY(); j++) {
@@ -163,11 +198,73 @@ public class Peli {
             }
             System.out.println();
         }
+        System.out.println("pommeja: "+pommit);
+        System.out.println("teleportteja: "+teleportit);
     }
 
-    
+    public void pysyPaikoillaan() {
+        while (true) {
+            liikutaDalekejaPelaajaaPain();
+            tulostaTilanne();
+            if (havisikoPelaaja()) break;
+            if (voittikoPelaaja()) break;
+            
+            odotaSekunti();
+        }
+    }
 
+    public boolean havisikoPelaaja() {
+        Ruutu pelaajanRuutu = getPelaaja().getRuutu();
+        List<Liikkuva> hahmot = getHahmot();
+        for (Liikkuva liikkuva : hahmot) {
+            if (liikkuva.getRuutu().equals(pelaajanRuutu) && !liikkuva.getTyyppi().equals(Tyyppi.PELAAJA)) {
+                System.out.println("Hävisit pelin!");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean voittikoPelaaja() {
+        Map<Ruutu, Tyyppi> ruudut = getRuudut();
+        for (Tyyppi tyyppi : ruudut.values()) {
+            if (tyyppi.equals(Tyyppi.DALEK)) {
+                return false;
+            }
+        }
+        System.out.println("Voitit pelin!");
+        return true;
+    }
     
+    public boolean paivitaTilanne() {
+        tulostaTilanne();
+        if (havisikoPelaaja()) {
+            getPelaaja().kuole();
+            return false;
+        }
+        liikutaDalekejaPelaajaaPain();
+        odotaSekunti();
+        tulostaTilanne();
+        if (havisikoPelaaja()) {
+            getPelaaja().kuole();
+            return false;
+        }
+        if (voittikoPelaaja()) {
+            return false;
+        }
+        return true;
+    }
+
+    private void odotaSekunti() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Peli.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
+    public void tulostaOhjeet() {
+        System.out.println("Ohjeet: \nTavoitteenasi pelaajana (P) on paeta dalekeja (@) ja saada ne törmäämään toisiinsa tai kuolleisiin dalekeihin (#), jolloin ne kuolevat. \nVoitat kun kaikki dalekit kuolevat ja häviät jos dalek saa sinut kiinni. Kuolleet dalekit eivät liiku. \n\nOhjaus:\nYlös W, alas X, vasemmalle A, oikealle D. Vinottain liikkuminen Q, E, Z ja C. Paikallaan pysyminen S. \n\nPommin räjäytys R, teleporttaus T. \n\nNäppäimellä P voit jäädä paikalleen koko loppuajaksi.\n\n");
+    }
     
 }

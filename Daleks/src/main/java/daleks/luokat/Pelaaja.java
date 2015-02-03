@@ -4,39 +4,34 @@
  * and open the template in the editor.
  */
 
-package daleks.daleks;
+package daleks.luokat;
 
 /**
  *
  * @author lauimmon
  */
-public class Dalek extends Liikkuva {
+public class Pelaaja extends Liikkuva {
 
-    public Dalek(Ruutu ruutu) {
+    public Pelaaja(Ruutu ruutu) {
         super(ruutu);
-        setTyyppi(Tyyppi.DALEK);
+        setTyyppi(Tyyppi.PELAAJA);
     }
-    
+
     public void kuole() {
-        setTyyppi(Tyyppi.KUOLLUTDALEK);
+        setTyyppi(Tyyppi.KUOLLUTPELAAJA);
     }
-    
+
     @Override
     public void liiku(int x, int y) {
-        if (getTyyppi() == Tyyppi.DALEK) {
+        if (getTyyppi() == Tyyppi.PELAAJA) {
             super.liiku(x, y);
         }
     }
 
     @Override
     public void liiku(Ruutu ruutu) {
-        if (getTyyppi() == Tyyppi.DALEK) {
+        if (getTyyppi() == Tyyppi.PELAAJA) {
             super.liiku(ruutu);
         }
     }
-    
-   
-    
-    
-    
 }

@@ -7,7 +7,7 @@
 package daleks.kayttoliittyma;
 
 
-import daleks.daleks.*;
+import daleks.luokat.Pelilauta;
 import daleks.logiikka.Peli;
 import java.util.*;
 import java.util.logging.Level;
@@ -21,28 +21,14 @@ import java.util.logging.Logger;
 public class Kayttoliittyma {
     
     private Peli peli;
-    private int pommit;
-    private int teleportit;
 
     public Kayttoliittyma(Pelilauta pelilauta, int dalekienMaara) {
-        
-        pommit = 1;
-        teleportit = 1;
-        peli = new Peli(pelilauta);
-        
-        Random random = new Random();
-        peli.lisaaHahmo(new Pelaaja(new Ruutu(random.nextInt(peli.getLauta().getKokoX()), random.nextInt(peli.getLauta().getKokoY()))));
-        while (peli.getHahmot().size() != dalekienMaara + 1) {
-            peli.lisaaHahmo(new Dalek(new Ruutu(random.nextInt(peli.getLauta().getKokoX()), random.nextInt(peli.getLauta().getKokoY()))));
-        }
+        peli = new Peli(pelilauta, dalekienMaara);
     }
     
     public void run() {
-        tulostaOhjeet();
+        peli.tulostaTilanne();
         while (true) {
-
-            tulostaTilanne();
-
             boolean suoritettu = false;
             while (!suoritettu) {
                 Scanner lukija = new Scanner(System.in);
@@ -52,55 +38,14 @@ public class Kayttoliittyma {
                 suoritettu = suoritaKasky(kasky);
             }
             
-            if (havisikoPelaaja()) {
-                tulostaTilanne();
-                System.out.println("Hävisit pelin!");
-                peli.getPelaaja().kuole();
-                break;
-            }
-            
-            peli.liikutaDalekejaPelaajaaPain();
-            
-            if (havisikoPelaaja()) {
-                tulostaTilanne();
-                System.out.println("Hävisit pelin!");
-                peli.getPelaaja().kuole();
-                break;
-            }
-            
-            
-            if (voittikoPelaaja()) {
-                tulostaTilanne();
-                System.out.println("Voitit pelin!");
-                break;
-            }
+            if (!peli.paivitaTilanne()) break;
         }
     }
-
-    private void tulostaTilanne() {
-        peli.tulostaLauta();
-        System.out.println("pommeja: "+pommit);
-        System.out.println("teleportteja: "+teleportit);
-    }
-
-    private boolean suoritaKasky(String kasky) {
+    
+    private boolean suoritaKasky(String kasky) throws IllegalArgumentException {
         try {
-            if (kasky.equals("r")) {
-                if (pommit != 0) {
-                    peli.rajaytaPommi();
-                    pommit--;
-                } else {
-                    throw new IllegalArgumentException("Ei pommeja jäljellä!");
-                }
-            }
-            else if (kasky.equals("t")) {
-                if (teleportit != 0) {
-                    peli.teleporttaaPelaaja();
-                    teleportit--;
-                } else {
-                    throw new IllegalArgumentException("Ei teleportteja jäljellä!");
-                }
-            }
+            if (kasky.equals("r")) peli.rajaytaPommi();
+            else if (kasky.equals("t")) peli.teleporttaaPelaaja();
             else if (kasky.equals("q")) peli.liikutaPelaajaa(-1, -1);
             else if (kasky.equals("w")) peli.liikutaPelaajaa(-1, 0);
             else if (kasky.equals("e")) peli.liikutaPelaajaa(-1, 1);
@@ -110,7 +55,7 @@ public class Kayttoliittyma {
             else if (kasky.equals("x")) peli.liikutaPelaajaa(1, 0);
             else if (kasky.equals("c")) peli.liikutaPelaajaa(1, 1);
             else if (kasky.equals("s")) {}
-            else if (kasky.equals("p")) pysyPaikoillaan();
+            else if (kasky.equals("p")) peli.pysyPaikoillaan();
             else throw new IllegalArgumentException("Väärä syöte!");
         } catch(IllegalArgumentException i) {
             System.out.println(i.getMessage());
@@ -118,51 +63,4 @@ public class Kayttoliittyma {
         }
         return true;
     }
-
-    private void pysyPaikoillaan() {
-        while (true) {
-            peli.liikutaDalekejaPelaajaaPain();
-            tulostaTilanne();
-            if (havisikoPelaaja()) {
-                System.out.println("Hävisit pelin!");
-                break;
-            }
-            if (voittikoPelaaja()) {
-                System.out.println("Voitit pelin!");
-                break;
-            }
-            
-            try {
-                Thread.sleep(1500);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Kayttoliittyma.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
-
-    private boolean havisikoPelaaja() {
-        Ruutu pelaajanRuutu = peli.getPelaaja().getRuutu();
-        List<Liikkuva> hahmot = peli.getHahmot();
-        for (Liikkuva liikkuva : hahmot) {
-            if (liikkuva.getRuutu().equals(pelaajanRuutu) && !liikkuva.getTyyppi().equals(Tyyppi.PELAAJA)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean voittikoPelaaja() {
-        Map<Ruutu, Tyyppi> ruudut = peli.getRuudut();
-        for (Tyyppi tyyppi : ruudut.values()) {
-            if (tyyppi.equals(Tyyppi.DALEK)) {
-                return false;
-            }
-        }
-        return true;
-    }
-    
-    private void tulostaOhjeet() {
-        System.out.println("Ohjeet: \nTavoitteenasi pelaajana (P) on paeta dalekeja (@) ja saada ne törmäämään toisiinsa tai kuolleisiin dalekeihin (#), jolloin ne kuolevat. \nVoitat kun kaikki dalekit kuolevat ja häviät jos dalek saa sinut kiinni. Kuolleet dalekit eivät liiku. \n\nOhjaus:\nYlös W, alas X, vasemmalle A, oikealle D. Vinottain liikkuminen Q, E, Z ja C. Paikallaan pysyminen S. \n\nPommin räjäytys R, teleporttaus T. \n\nNäppäimellä P voit jäädä paikalleen koko loppuajaksi.\n\n");
-    }
-
 }

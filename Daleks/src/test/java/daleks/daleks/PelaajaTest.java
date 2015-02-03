@@ -6,6 +6,9 @@
 
 package daleks.daleks;
 
+import daleks.luokat.Pelaaja;
+import daleks.luokat.Tyyppi;
+import daleks.luokat.Ruutu;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

@@ -6,6 +6,10 @@
 
 package daleks.daleks;
 
+import daleks.luokat.Liikkuva;
+import daleks.luokat.Pelaaja;
+import daleks.luokat.Dalek;
+import daleks.luokat.Ruutu;
 import java.util.*;
 import junit.framework.Assert;
 import org.junit.After;

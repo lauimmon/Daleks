@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package daleks.daleks;
+package daleks.luokat;
 
 import java.util.Comparator;
 

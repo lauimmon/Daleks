@@ -6,6 +6,7 @@
 
 package daleks.daleks;
 
+import daleks.luokat.Tyyppi;
 import static org.junit.Assert.*;
 import org.junit.Test;
 

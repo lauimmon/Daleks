@@ -4,11 +4,10 @@
  * and open the template in the editor.
  */
 
-package daleks.kayttoliittyma;
-import daleks.daleks.Pelilauta;
+package daleks.daleks;
 
-import daleks.kayttoliittyma.Kayttoliittyma;
-import java.util.*;
+import daleks.kayttoliittyma.*;
+import daleks.luokat.Pelilauta;
 
 /**
  *
@@ -22,9 +21,7 @@ public class Main {
         int leveys = 20;
         int dalekienMaara = 10;
         Kayttoliittyma kali = new Kayttoliittyma(new Pelilauta(korkeus,leveys),dalekienMaara);
-        kali.run();    
-    
-        
+        kali.run();
     }
     
 }

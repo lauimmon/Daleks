@@ -6,7 +6,9 @@ package daleks.daleks;
  * and open the template in the editor.
  */
 
-import daleks.daleks.*;
+import daleks.luokat.Tyyppi;
+import daleks.luokat.Dalek;
+import daleks.luokat.Ruutu;
 import java.util.Arrays;
 import org.junit.After;
 import org.junit.AfterClass;

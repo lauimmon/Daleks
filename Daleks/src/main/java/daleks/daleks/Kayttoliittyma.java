@@ -35,10 +35,12 @@ public class Kayttoliittyma {
     }
     
     public void run() {
+        tulostaOhjeet();
         while (true) {
 
             tulostaTilanne();
 
+<<<<<<< HEAD
             boolean suoritettu = false;
             while (!suoritettu) {
                 Scanner lukija = new Scanner(System.in);
@@ -46,6 +48,13 @@ public class Kayttoliittyma {
 
                 suoritettu = suoritaKasky(kasky);
             }
+=======
+            Scanner lukija = new Scanner(System.in);
+            System.out.print(">");
+            String kasky = lukija.nextLine();
+            
+            suoritaKasky(kasky);
+>>>>>>> 3caccf5ae8a0fcc44bf73476c61d100712062bee
             
             if (havisikoPelaaja()) {
                 tulostaTilanne();
@@ -75,6 +84,7 @@ public class Kayttoliittyma {
     private void tulostaTilanne() {
         lauta.tulostaHahmot();
         lauta.tulostaLauta();
+        System.out.println();
         System.out.println("pommeja: "+pommit);
         System.out.println("teleportteja: "+teleportit);
     }
@@ -154,6 +164,10 @@ public class Kayttoliittyma {
             }
         }
         return true;
+    }
+
+    private void tulostaOhjeet() {
+        System.out.println("Ohjeet: \nTavoitteenasi pelaajana (P) on paeta dalekeja (@) ja saada ne törmäämään toisiinsa tai kuolleisiin dalekeihin (#), jolloin ne kuolevat. \nVoitat kun kaikki dalekit kuolevat ja häviät jos dalek saa sinut kiinni. Kuolleet dalekit eivät liiku. \n\nOhjaus:\nYlös W, alas X, vasemmalle A, oikealle D. Vinottain liikkuminen Q, E, Z ja C. Paikallaan pysyminen S. \n\nPommin räjäytys R, teleporttaus T. \n\nNäppäimellä P voit jäädä paikalleen koko loppuajaksi.\n\n");
     }
 
 }

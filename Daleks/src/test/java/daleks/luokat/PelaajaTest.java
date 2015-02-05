@@ -37,7 +37,7 @@ public class PelaajaTest {
     
     @Before
     public void setUp() {
-        Pelaaja pelaaja = new Pelaaja(new Ruutu(1,2));
+        pelaaja = new Pelaaja(new Ruutu(1,2));
     }
     
     @After

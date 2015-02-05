@@ -38,7 +38,7 @@ public class RuutuTest {
     
     @Before
     public void setUp() {
-        Ruutu ruutu = new Ruutu(1,2);
+        ruutu = new Ruutu(1,2);
     }
     
     @After
@@ -158,14 +158,14 @@ public class RuutuTest {
     public void ruutujenEtaisyysOikeinKunSamaX() {
         Ruutu ruutu2 = new Ruutu(1,5);
         
-        assertTrue(4 == ruutu.etaisyysRuudusta(ruutu2));
+        assertTrue(3 == ruutu.etaisyysRuudusta(ruutu2));
     }
     
     @Test
     public void ruutujenEtaisyysOikeinKunSamaY() {
         Ruutu ruutu2 = new Ruutu(3,2);
         
-        assertTrue(3 == ruutu.etaisyysRuudusta(ruutu2));
+        assertTrue(2 == ruutu.etaisyysRuudusta(ruutu2));
     }
     
     @Test

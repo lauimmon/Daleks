@@ -37,7 +37,7 @@ public class PelilautaTest {
     
     @Before
     public void setUp() {
-        Pelilauta lauta = new Pelilauta(10,20);
+        lauta = new Pelilauta(10,20);
     }
     
     @After

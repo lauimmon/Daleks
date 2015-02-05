@@ -6,17 +6,17 @@
 
 package daleks.logiikka;
 
-import daleks.luokat.Pelilauta;
 import daleks.logiikka.Peli;
+import daleks.luokat.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -27,7 +27,6 @@ public class PeliTest {
     private Peli peli;
     
     public PeliTest() {
-        peli = new Peli(new Pelilauta(10,20), 0);
     }
     
     @BeforeClass
@@ -40,26 +39,47 @@ public class PeliTest {
     
     @Before
     public void setUp() {
+        peli = new Peli(new Pelilauta(10,20), 1);
     }
     
     @After
     public void tearDown() {
     }
 
-//    @Test
-//    public void konstruktoriLuoTyhjanListanHahmoista() {
-//        assertEquals(peli.getHahmot(), new ArrayList<Liikkuva>());
-//    }
-//    
-//    @Test
-//    public void getPelaajaPalauttaaPelaajan() {
-//        Dalek dalek = new Dalek(new Ruutu(1,1));
-//        peli.lisaaHahmo(dalek);
-//        Pelaaja pelaaja = new Pelaaja(new Ruutu(2,1));
-//        peli.lisaaHahmo(pelaaja);
-//        
-//        assertEquals(peli.getPelaaja(), pelaaja);
-//    }
+    @Test
+    public void konstruktoriLuoOikeanMaaranDalekejaKunAnnetaanDalekienMaaraksiYksi() {
+        assertEquals(peli.getHahmot().size(), 2);
+    }
+    
+    @Test
+    public void konstruktoriLuoOikeanMaaranDalekejaKunAnnetaanDalekienMaaraksiNolla() {
+        peli = new Peli(new Pelilauta(10,20),0);
+        assertEquals(peli.getHahmot().size(), 1);
+    }
+    
+    @Test
+    public void konstruktoriLuoOikeanMaaranDalekejaKunAnnetaanDalekienMaaraksiPuoletLaudanRuutujenMaarasta() {
+        peli = new Peli(new Pelilauta(10,20),100);
+        assertEquals(peli.getHahmot().size(), 101);
+    }
+    
+    @Test
+    public void konstruktoriLuoOikeanMaaranDalekejaKunAnnetaanDalekienMaaraksiEnemmänKuinLaudanRuutujenMaara() {
+        peli = new Peli(new Pelilauta(10,20),300);
+        assertEquals(peli.getHahmot().size(), 200);
+    }
+    
+    
+    
+    @Test
+    public void getPelaajaPalauttaaPelaajan() {
+        Dalek dalek = new Dalek(new Ruutu(1,1));
+        peli.lisaaHahmo(dalek);
+        Pelaaja pelaaja = new Pelaaja(new Ruutu(2,1));
+        peli.lisaaHahmo(pelaaja);
+        
+        assertEquals(peli.getPelaaja(), pelaaja);
+    }
 //    
 //    @Test
 //    public void getPelaajaPalauttaaNullJosPelaajaaEiOleLaudalla() {

@@ -27,6 +27,8 @@ public class Peli {
     /**
      * Pelille asetetaan luotaessa lauta, yksi pelaaja-olio ja haluttu määrä dalekeja.
      * Pelaajan ja dalekien ruudut arvotaan.
+     * Jos dalekienMaara on suurempi tai yhtä suuri kuin laudan ruutujen
+     * määrä, lopetetaan dalekien luominen kun lauta on täynnä.
      * Pommien ja teleporttien määrä asetetaan ykköseksi.
      * 
      * @param pelilauta pelille asetettava lauta
@@ -40,7 +42,7 @@ public class Peli {
         
         Random random = new Random();
         lisaaHahmo(new Pelaaja(new Ruutu(random.nextInt(lauta.getKokoX()), random.nextInt(lauta.getKokoY()))));
-        while (hahmot.size() != dalekienMaara + 1) {
+        while (hahmot.size() != Math.min(dalekienMaara + 1, lauta.getKokoX()*lauta.getKokoY())) {
             lisaaHahmo(new Dalek(new Ruutu(random.nextInt(lauta.getKokoX()), random.nextInt(lauta.getKokoY()))));
         }
         
@@ -266,6 +268,7 @@ public class Peli {
      * Metodi tulostaa laudan.
      */
     public void tulostaTilanne() {
+        tulostaHahmot();
         Map<Ruutu, Tyyppi> ruudut = getRuudut();
         for (int i = 0; i < lauta.getKokoX(); i++) {
             for (int j = 0; j < lauta.getKokoY(); j++) {
@@ -279,6 +282,13 @@ public class Peli {
         System.out.println("teleportteja: "+teleportit);
     }
 
+    private void tulostaHahmot() {
+        List<Liikkuva> hahmot = getHahmot();
+        for (Liikkuva hahmo : hahmot) {
+            System.out.println(hahmo.toString());
+        }
+    }
+    
     /**
      * Metodi liikuttaa dalekeja pelaajaa päin niin kauan kunnes
      * peli loppuu. Joka kerta dalekien liikkumisen jälkeen tulostetaan
@@ -287,17 +297,18 @@ public class Peli {
      * etenemistä.
      */
     public void pysyPaikoillaan() {
+        liikutaDalekejaPelaajaaPain();
         while (true) {
-            liikutaDalekejaPelaajaaPain();
             tulostaTilanne();
             if (havisikoPelaaja()) break;
             if (voittikoPelaaja()) break;
+            liikutaDalekejaPelaajaaPain();
             
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Peli.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            }
         }
     }
 
@@ -312,7 +323,6 @@ public class Peli {
         List<Liikkuva> hahmot = getHahmot();
         for (Liikkuva liikkuva : hahmot) {
             if (liikkuva.getRuutu().equals(pelaajanRuutu) && !liikkuva.getTyyppi().equals(Tyyppi.PELAAJA)) {
-                System.out.println("Hävisit pelin!");
                 return true;
             }
         }
@@ -332,7 +342,6 @@ public class Peli {
                 return false;
             }
         }
-        System.out.println("Voitit pelin!");
         return true;
     }
     
@@ -342,5 +351,7 @@ public class Peli {
     public void tulostaOhjeet() {
         System.out.println("Ohjeet: \nTavoitteenasi pelaajana (P) on paeta dalekeja (@) ja saada ne törmäämään toisiinsa tai kuolleisiin dalekeihin (#), jolloin ne kuolevat. \nVoitat kun kaikki dalekit kuolevat ja häviät jos dalek saa sinut kiinni. Kuolleet dalekit eivät liiku. \n\nOhjaus:\nYlös W, alas X, vasemmalle A, oikealle D. Vinottain liikkuminen Q, E, Z ja C. Paikallaan pysyminen S. \n\nPommin räjäytys R, teleporttaus T. \n\nNäppäimellä P voit jäädä paikalleen koko loppuajaksi.\n\n");
     }
+
+    
     
 }

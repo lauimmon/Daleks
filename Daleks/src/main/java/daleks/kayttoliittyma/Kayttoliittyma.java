@@ -48,12 +48,19 @@ public class Kayttoliittyma {
     
     private boolean liikutaDalekejaJaTarkistaLoppuukoPeli() {
         peli.tulostaTilanne();
-        if (tarkistaHavisikoPelaaja()) return false;
+        if (tarkistaHavisikoPelaaja()) {
+            System.out.println("Hävisit pelin!");
+            return false;
+        }
         peli.liikutaDalekejaPelaajaaPain();
         odotaSekunti();
         peli.tulostaTilanne();
-        if (tarkistaHavisikoPelaaja()) return false;
+        if (tarkistaHavisikoPelaaja()) {
+            System.out.println("Hävisit pelin!");
+            return false;
+        }
         if (peli.voittikoPelaaja()) {
+            System.out.println("Voitit pelin!");
             return false;
         }
         return true;

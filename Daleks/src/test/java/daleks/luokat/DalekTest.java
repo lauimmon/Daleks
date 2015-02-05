@@ -26,7 +26,6 @@ public class DalekTest {
     private Dalek dalek;
     
     public DalekTest() {
-        
     }
     
     @BeforeClass
@@ -39,7 +38,7 @@ public class DalekTest {
     
     @Before
     public void setUp() {
-        Dalek dalek = new Dalek(new Ruutu(1,2));
+        dalek = new Dalek(new Ruutu(1,2));
     }
     
     @After

@@ -13,7 +13,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Peli-luokka sisältää kaiken pelin logiikan. Se hoitaa Liikuvien liikuttelun ym. toiminnot.
+ * 
  * @author lauimmon
  */
 public class Peli {
@@ -23,6 +24,14 @@ public class Peli {
     private int pommit;
     private int teleportit;
 
+    /**
+     * Pelille asetetaan luotaessa lauta, yksi pelaaja-olio ja haluttu määrä dalekeja.
+     * Pelaajan ja dalekien ruudut arvotaan.
+     * Pommien ja teleporttien määrä asetetaan ykköseksi.
+     * 
+     * @param pelilauta pelille asetettava lauta
+     * @param dalekienMaara eli kuinka monta dalekia peliin luodaan
+     */
     public Peli(Pelilauta pelilauta, int dalekienMaara) {
         lauta = pelilauta;
         hahmot = new ArrayList<Liikkuva>();
@@ -54,6 +63,11 @@ public class Peli {
         return teleportit;
     }
     
+    /**
+     * Metodi hakee Pelissä olevien Liikkuvien joukosta Pelaajan.
+     * 
+     * @return palauttaa pelaajan
+     */
     public Liikkuva getPelaaja() {
         for (Liikkuva hahmo : hahmot) {
             if (hahmo.getTyyppi().equals(Tyyppi.PELAAJA) || hahmo.getTyyppi().equals(Tyyppi.KUOLLUTPELAAJA)) {
@@ -63,6 +77,11 @@ public class Peli {
         return null;
     }
     
+    /**
+     * Metodi käy kaikki pelin Liikkuvat läpi ja järjestää ne ruutujensa mukaan.
+     * 
+     * @return palauttaa mapin, johon Liikkuvat on järjestetty ruutujensa suuruusjärjestyksen mukaan
+     */
     public Map<Ruutu, Tyyppi> getRuudut() {
         Map<Ruutu, Tyyppi> tulos = new TreeMap<Ruutu, Tyyppi>();
         for (Liikkuva liikkuva : hahmot) {
@@ -71,16 +90,33 @@ public class Peli {
         return tulos;
     }
 
+    /**
+     * Metodi lisää Liikkuva-olion peliin
+     * 
+     * @param hahmo Liikkuva, joka halutaan lisätä
+     */
     public void lisaaHahmo(Liikkuva hahmo) {
         if (lauta.onkoRuutuLaudalla(hahmo.getRuutu())) {
             hahmot.add(hahmo);
         }
     }
-    
+    /**
+     * Metodi poistaa Liikkuva-olion pelistä
+     * 
+     * @param hahmo Liikkuva, joka halutaan poistaa
+     */
     public void poistaHahmo(Liikkuva hahmo) {
         hahmot.remove(hahmo);
     }
     
+    /**
+     * Metodilla selvitetään onko laudan tietyssä ruudussa Liikkuva-oliota vai ei.
+     * 
+     * @param ruutu, minkä tyyppi halutaan selvittää
+     * @return palauttaa ruudussa olevan Liikkuvan tyypin tai tyhjän tyypin, 
+     * jos ruudussa ei ole ketään
+     * 
+     */
     public Tyyppi mikaTyyppiRuudussa(Ruutu ruutu) {
         for (Liikkuva liikkuva : hahmot) {
             if (liikkuva.getRuutu().equals(ruutu)) {
@@ -90,6 +126,12 @@ public class Peli {
         return Tyyppi.TYHJA;
     }
 
+    /**
+     * Metodi liikuttaa pelissä olevaa pelaajaa.
+     * 
+     * @param x, miten monta ruutua pelaajaa siirretään korkeussuunnassa
+     * @param y, miten monta ruutua pelaajaa siirretään leveyssuunnassa
+     */
     public void liikutaPelaajaa(int x, int y){
         Liikkuva pelaaja = getPelaaja();
         Ruutu ruutu = new Ruutu(pelaaja.getRuutu().getX() + x, pelaaja.getRuutu().getY() + y);
@@ -99,6 +141,11 @@ public class Peli {
         osuukoPelaajaDalekiin();
     }
     
+    /**
+     * Metodi liikuttaa pelissä olevaa pelaajaa.
+     * 
+     * @param ruutu, mihin ruutuun pelaaja halutaan liikuttaa
+     */
     public void liikutaPelaajaa(Ruutu ruutu){
         Liikkuva pelaaja = getPelaaja();
         if (lauta.onkoRuutuLaudalla(ruutu) && !mikaTyyppiRuudussa(ruutu).equals(Tyyppi.KUOLLUTDALEK)) {
@@ -107,6 +154,10 @@ public class Peli {
         osuukoPelaajaDalekiin();
     }
     
+    /**
+     * Metodi selvittää onko pelaaja jonkun dalekin kanssa samassa ruudussa.
+     * Jos pelaajan ruudussa on myös dalek, pelaaja kuolee.
+     */
     private void osuukoPelaajaDalekiin() {
         Liikkuva pelaaja = getPelaaja();
         for (Liikkuva hahmo : getHahmot()) {
@@ -116,6 +167,15 @@ public class Peli {
         }
     }
     
+    /**
+     * Metodi siirtää pelaajan satunnaiseen ruutuun laudalla.
+     * Arvottu ruutu ei voi olla sellainen, jossa on jo joku, mutta
+     * se voi olla ruutu, jonka viereisessä ruudussa on dalek.
+     * Metodi ei siirrä pelaajaa jos teleportit ovat pelissä loppu.
+     * Teleporttaaminen vähentää teleporttien määrä yhdellä.
+     * 
+     * @throws IllegalArgumentException kun teleportteja ei ole jäljellä
+     */
     public void teleporttaaPelaaja() {
         if (teleportit != 0) {
             teleportit--;
@@ -133,6 +193,14 @@ public class Peli {
         
     }
 
+    /**
+     * Metodi räjäyttää pommin, joka hävittää kaikki dalekit, jotka ovat
+     * jossain pelaajan ruudun viereisistä ruuduista.
+     * Metodi ei räjäytä pommia, jos pommit ovat pelissä loppu.
+     * Pommin räjäyttäminen vähentää pommien määrä yhdellä
+     * 
+     * @throws IllegalArgumentException kun pommeja ei ole jäljellä
+     */
     public void rajaytaPommi() throws IllegalArgumentException {
         if (pommit != 0) {
             pommit--;
@@ -153,6 +221,13 @@ public class Peli {
         
     }
     
+    /**
+     * Metodi liikuttaa kaikkia pelissä olevia eläviä dalekeja 
+     * yhden ruudun pelaajaa päin.
+     * Jos dalekit törmäävät liikkumisen seurauksena toisiinsa,
+     * ne kuolevat.
+     * Lopuksi tarkistetaan onko joku dalek liikkunut pelaajan ruutuun.
+     */
     public void liikutaDalekejaPelaajaaPain() {
         Ruutu pelaajanRuutu = getPelaaja().getRuutu();
         for (Liikkuva hahmo : getHahmot()) {
@@ -171,6 +246,11 @@ public class Peli {
         osuukoPelaajaDalekiin();
     }
     
+    /**
+     * Metodi, jota liikutaDalekejaPelaajaaPain käyttää.
+     * Metodi käy läpi listan pelin Liikkuvista ja tappaa dalekit,
+     * jotka ovat samassa ruudussa.
+     */
     private void tapaTormanneetDalekit() {
         for (int i = 0; i < hahmot.size(); i++) {
             for (int j = i+1; j < hahmot.size(); j++) {
@@ -181,13 +261,10 @@ public class Peli {
             }
         }
     }
-
-    public void tulostaHahmot() {
-        for (Liikkuva liikkuva : hahmot) {
-            System.out.println(liikkuva);
-        }
-    }
     
+    /**
+     * 
+     */
     public void tulostaTilanne() {
         Map<Ruutu, Tyyppi> ruudut = getRuudut();
         for (int i = 0; i < lauta.getKokoX(); i++) {

@@ -9,7 +9,12 @@ package daleks.luokat;
 import java.util.*;
 
 /**
- *
+ * Abstrakti luokka Liikkuva edustaa kaikkia pelilaudalla liikkuvia olioita.
+ * Luokat Pelaaja ja Dalek perivät Liikkuva-luokan.
+ * Kaikki liikkuvat toteuttavat metodit liiku ja kuole.
+ * Liiku-metodiin voi antaa kahdenlaisia syötteitä, joko ruudun mihin
+ * halutaan tai ruutumäärät mitä korkeus- ja leveyssuunnassa halutaan liikkua.
+ * 
  * @author lauimmon
  */
 public abstract class Liikkuva implements Comparator<Liikkuva>, Comparable<Liikkuva> {
@@ -17,14 +22,30 @@ public abstract class Liikkuva implements Comparator<Liikkuva>, Comparable<Liikk
     private Ruutu ruutu;
     private Tyyppi tyyppi;
 
+    /**
+     * Konstruktorissa Liikkuvalle asetetaan ruutu.
+     * 
+     * @param ruutu on Liikkuvalle asetettava ruutu
+     */
     public Liikkuva(Ruutu ruutu) {
         this.ruutu = ruutu;
     }
     
+    /**
+     * Metodi liikuttaa Liikkuvan haluttuun ruutuun.
+     * 
+     * @param ruutu johon Liikkuva halutaan liikuttaa 
+     */
     public void liiku(Ruutu ruutu) {
         this.ruutu = ruutu;
     }
     
+    /**
+     * Metodi liikuttaa Liikkuvaa halutun ruutumäärän korkeus- ja leveyssuunnassa.
+     * 
+     * @param x, miten monta ruutua liikutaan korkeussuunnassa
+     * @param y, miten monta ruutua liikutaan leveyssuunnassa
+     */
     public void liiku(int x, int y) {
         ruutu = new Ruutu(ruutu.getX()+x, ruutu.getY()+y);
     }
@@ -73,6 +94,9 @@ public abstract class Liikkuva implements Comparator<Liikkuva>, Comparable<Liikk
         return 1;
     }
     
+    /**
+     * Kaikilla Liikkuvilla on metodi kuole, joka muuttaa Liikkuvan tyypin.
+     */
     public abstract void kuole();
     
     

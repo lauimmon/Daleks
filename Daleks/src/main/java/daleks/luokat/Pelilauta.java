@@ -8,12 +8,24 @@ package daleks.luokat;
 
 import java.util.*;
 
+/**
+ * Pelilauta-luokka kuvaa pelin pelilautaa. Sillä on korkeus ja leveys.
+ * Sisältää joitakin metodeja, joilla voidaan käsitellä laudalla olevia ruutuja.
+ * 
+ * @author lauimmon
+ */
 
 public class Pelilauta {
     
     private final int kokoX;
     private final int kokoY;
 
+    /**
+     * Konstruktorissa laudalle asetetaan korkeus ja leveys.
+     * 
+     * @param xkoko on laudan korkeus
+     * @param ykoko on laudan leveys
+     */
     public Pelilauta(int xkoko, int ykoko) {
         kokoX = xkoko;
         kokoY = ykoko;
@@ -27,11 +39,23 @@ public class Pelilauta {
         return kokoY;
     }
     
+    /**
+     * Metodi selvittää onko annettu ruutu laudan sisällä.
+     * 
+     * @param ruutu selvitettävä ruutu
+     * @return palauttaa true, jos ruutu on laudalla, false jos ei
+     */
     public boolean onkoRuutuLaudalla(Ruutu ruutu) {
          return ruutu.getX() < kokoX &&  ruutu.getY() < kokoY
                 && ruutu.getX() >= 0 && ruutu.getY() >= 0;
     }
 
+    /**
+     * Metodi selvittää mitä ruutuja annetun ruudun ympärillä on.
+     * 
+     * @param ruutu, minkä ympäriltä ruudut halutaan tietää
+     * @return lista ympäröivistä ruuduista
+     */
     public List<Ruutu> ymparoivatRuudut(Ruutu ruutu) {
         List<Ruutu> ruudut = new ArrayList<Ruutu>();
         for (int i = -1; i <= 1; i++) {

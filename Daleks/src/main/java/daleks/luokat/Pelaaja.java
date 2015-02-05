@@ -7,20 +7,39 @@
 package daleks.luokat;
 
 /**
- *
+ * Pelissä pelaaja liikuttaa Pelaaja-luokan oliota.
+ * Pelaaja perii Liikkuva-luokan ja sen kuole ja liiku -metodit.
+ * 
  * @author lauimmon
  */
 public class Pelaaja extends Liikkuva {
 
+    /**
+     * Konstruktorissa pelaaja asetetaan eläväksi ja sille asetetaan ruutu.
+     * Ruudun asettamiseen käytetään Liikkuvan konstruktoria.
+     * 
+     * @param ruutu on pelaajalle asetettava ruutu
+     */
+    
     public Pelaaja(Ruutu ruutu) {
         super(ruutu);
         setTyyppi(Tyyppi.PELAAJA);
     }
 
+    /**
+     * Metodi muuttaa pelaajan tyypin kuolleeksi.
+     */
     public void kuole() {
         setTyyppi(Tyyppi.KUOLLUTPELAAJA);
     }
 
+    /**
+     * Metodi liikuttaa pelaajaa vain jos se on elossa.
+     * Metodi suorittaa Liikkuva-luokan liiku(x,y) -metodin.
+     * 
+     * @param x on ruutumäärä, joka halutaan korkeussuunnassa liikkua
+     * @param y on ruutumäärä, joka halutaan leveyssuunnassa liikkua
+     */
     @Override
     public void liiku(int x, int y) {
         if (getTyyppi() == Tyyppi.PELAAJA) {
@@ -28,6 +47,12 @@ public class Pelaaja extends Liikkuva {
         }
     }
 
+    /**
+     * Metodi liikuttaa pelaajaa vain jos se on elossa.
+     * Metodi suorittaa Liikkuva-luokan liiku(ruutu) -metodin.
+     * 
+     * @param ruutu tavoiteruutu johon halutaan liikkua
+     */
     @Override
     public void liiku(Ruutu ruutu) {
         if (getTyyppi() == Tyyppi.PELAAJA) {

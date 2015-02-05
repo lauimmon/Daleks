@@ -7,7 +7,10 @@
 package daleks.luokat;
 
 /**
- *
+ * Enumluokka, jota käytetään sekä Liikkuvien, että Ruutujen tyyppien kuvaamiseen.
+ * Liikkuvien eri tyyppejä ovat pelaaja, dalek, kuollutPelaaja ja kuollutDalek.
+ * Ruudun tyyppi voi olla Ruudussa olevan Liikkuvan tyyppi tai tyhjä.
+ * 
  * @author lauimmon
  */
 public enum Tyyppi {

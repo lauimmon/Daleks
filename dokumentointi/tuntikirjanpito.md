@@ -18,4 +18,6 @@
 
 **31.1.2015:** puoli tuntia ohjeiden tekoa peliin
 
-**3.2.2015:** viisi tuntia paketteihin jakoa ja uuden Peli-luokan tekoa sekä koodikatselmmoinnin kirjoittamista
+**3.2.2015:** Viisi tuntia paketteihin jakoa ja uuden Peli-luokan tekoa sekä koodikatselmmoinnin kirjoittamista
+
+**5.2.2015:** 1,5 tuntia javadocin tekoa

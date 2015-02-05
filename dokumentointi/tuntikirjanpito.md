@@ -14,6 +14,8 @@
 
 **29.1.2015:** 5 tuntia testien laajentamista. En keskinyt, miten compare-metodia voi testata. Lisäsin uuden testiluokan käyttöliittymälle. Käyttöliittymän testauksessa tuli ongelma, että kaikki muut metodit kuin run() ovat private, joten niitä ei pysty testata, ja en keksinyt, miten run()-metodia voisi lainkaan testata, koska sen sisällä kysytään pelaajalta syötettä. Pohdin myös miten liian suureksi paisunutta Pelilauta-luokkaa voisi hajottaa osiin, mutta yritykset eivät tuottaneet tulosta.
 
+**30.1.2015:** puoli tuntia koodikatselmointi-ohjelmaan tutustumista
 
+**31.1.2015:** puoli tuntia ohjeiden tekoa peliin
 
-
+**3.2.2015:** viisi tuntia paketteihin jakoa ja uuden Peli-luokan tekoa sekä koodikatselmmoinnin kirjoittamista

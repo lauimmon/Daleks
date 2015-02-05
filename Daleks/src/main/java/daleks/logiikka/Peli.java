@@ -263,7 +263,7 @@ public class Peli {
     }
     
     /**
-     * 
+     * Metodi tulostaa laudan.
      */
     public void tulostaTilanne() {
         Map<Ruutu, Tyyppi> ruudut = getRuudut();
@@ -279,6 +279,13 @@ public class Peli {
         System.out.println("teleportteja: "+teleportit);
     }
 
+    /**
+     * Metodi liikuttaa dalekeja pelaajaa päin niin kauan kunnes
+     * peli loppuu. Joka kerta dalekien liikkumisen jälkeen tulostetaan
+     * lauta ja tarkistetaan onko peli päättynyt. Tulostusten välissä
+     * odotetaan aina sekunti, jotta pelaaja pystyy seurata tilanteen
+     * etenemistä.
+     */
     public void pysyPaikoillaan() {
         while (true) {
             liikutaDalekejaPelaajaaPain();
@@ -286,10 +293,20 @@ public class Peli {
             if (havisikoPelaaja()) break;
             if (voittikoPelaaja()) break;
             
-            odotaSekunti();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Peli.class.getName()).log(Level.SEVERE, null, ex);
+        }
         }
     }
 
+    /**
+     * Metodi tarkistaa onko pelaaja hävinnyt pelin, eli onko
+     * pelaaja samassa ruudussa kuin joku dalek.
+     * 
+     * @return true jos pelaaja hävisi, false jos ei hävinnyt
+     */
     public boolean havisikoPelaaja() {
         Ruutu pelaajanRuutu = getPelaaja().getRuutu();
         List<Liikkuva> hahmot = getHahmot();
@@ -302,6 +319,12 @@ public class Peli {
         return false;
     }
 
+    /**
+     * Metodi tarkistaa onko pelaaja voittanut pelin, eli onko
+     * kaikki dalekit kuolleet.
+     * 
+     * @return true jos pelaaja voitti, false jos pelaaja ei voittanut
+     */
     public boolean voittikoPelaaja() {
         Map<Ruutu, Tyyppi> ruudut = getRuudut();
         for (Tyyppi tyyppi : ruudut.values()) {
@@ -313,33 +336,9 @@ public class Peli {
         return true;
     }
     
-    public boolean paivitaTilanne() {
-        tulostaTilanne();
-        if (havisikoPelaaja()) {
-            getPelaaja().kuole();
-            return false;
-        }
-        liikutaDalekejaPelaajaaPain();
-        odotaSekunti();
-        tulostaTilanne();
-        if (havisikoPelaaja()) {
-            getPelaaja().kuole();
-            return false;
-        }
-        if (voittikoPelaaja()) {
-            return false;
-        }
-        return true;
-    }
-
-    private void odotaSekunti() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Peli.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
+    /**
+     * Metodi tulostaa pelin ohjeet.
+     */
     public void tulostaOhjeet() {
         System.out.println("Ohjeet: \nTavoitteenasi pelaajana (P) on paeta dalekeja (@) ja saada ne törmäämään toisiinsa tai kuolleisiin dalekeihin (#), jolloin ne kuolevat. \nVoitat kun kaikki dalekit kuolevat ja häviät jos dalek saa sinut kiinni. Kuolleet dalekit eivät liiku. \n\nOhjaus:\nYlös W, alas X, vasemmalle A, oikealle D. Vinottain liikkuminen Q, E, Z ja C. Paikallaan pysyminen S. \n\nPommin räjäytys R, teleporttaus T. \n\nNäppäimellä P voit jäädä paikalleen koko loppuajaksi.\n\n");
     }

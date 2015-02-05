@@ -22,24 +22,57 @@ public class Kayttoliittyma {
     
     private Peli peli;
 
-    public Kayttoliittyma(Pelilauta pelilauta, int dalekienMaara) {
-        peli = new Peli(pelilauta, dalekienMaara);
+    public Kayttoliittyma(int korkeus, int leveys, int dalekienMaara) {
+        peli = new Peli(new Pelilauta(korkeus, leveys), dalekienMaara);
     }
     
     public void run() {
         peli.tulostaTilanne();
         while (true) {
-            boolean suoritettu = false;
-            while (!suoritettu) {
-                Scanner lukija = new Scanner(System.in);
-                System.out.print(">");
-                String kasky = lukija.nextLine();
-
-                suoritettu = suoritaKasky(kasky);
-            }
+            otaPelaajanSyote();
             
-            if (!peli.paivitaTilanne()) break;
+            if (!liikutaDalekejaJaTarkistaLoppuukoPeli()) break;
         }
+    }
+
+    private void otaPelaajanSyote() throws IllegalArgumentException {
+        boolean suoritettu = false;
+        while (!suoritettu) {
+            Scanner lukija = new Scanner(System.in);
+            System.out.print(">");
+            String kasky = lukija.nextLine();
+            
+            suoritettu = suoritaKasky(kasky);
+        }
+    }
+    
+    private boolean liikutaDalekejaJaTarkistaLoppuukoPeli() {
+        peli.tulostaTilanne();
+        if (tarkistaHavisikoPelaaja()) return false;
+        peli.liikutaDalekejaPelaajaaPain();
+        odotaSekunti();
+        peli.tulostaTilanne();
+        if (tarkistaHavisikoPelaaja()) return false;
+        if (peli.voittikoPelaaja()) {
+            return false;
+        }
+        return true;
+    }
+
+    private void odotaSekunti() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Peli.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private boolean tarkistaHavisikoPelaaja() {
+        if (peli.havisikoPelaaja()) {
+            peli.getPelaaja().kuole();
+            return true;
+        }
+        return false;
     }
     
     private boolean suoritaKasky(String kasky) throws IllegalArgumentException {

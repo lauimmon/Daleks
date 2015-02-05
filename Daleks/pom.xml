@@ -41,10 +41,10 @@
                 <version>0.30</version>
                 <configuration>
                     <targetClasses>
-                        <param>daleks.daleks.*</param>
+                        <param>daleks.*</param>
                     </targetClasses>
                     <targetTests>
-                        <param>daleks.daleks.*</param>
+                        <param>daleks.*</param>
                     </targetTests>
                 </configuration>
             </plugin>

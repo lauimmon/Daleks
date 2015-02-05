@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package daleks.daleks;
+package daleks.luokat;
 
 import daleks.luokat.Pelaaja;
 import daleks.luokat.Tyyppi;
@@ -22,6 +22,8 @@ import static org.junit.Assert.*;
  */
 public class PelaajaTest {
     
+    private Pelaaja pelaaja;
+    
     public PelaajaTest() {
     }
     
@@ -35,6 +37,7 @@ public class PelaajaTest {
     
     @Before
     public void setUp() {
+        Pelaaja pelaaja = new Pelaaja(new Ruutu(1,2));
     }
     
     @After
@@ -43,21 +46,16 @@ public class PelaajaTest {
 
     @Test
     public void pelaajanKonstruktoriAsettaaRuudunOikein() {
-        Pelaaja pelaaja = new Pelaaja(new Ruutu(1,2));
-        
         assertEquals(new Ruutu(1,2), pelaaja.getRuutu());
     }
     
     @Test
     public void pelaajanKonstruktoriAsettaaTyypinOikein() {
-        Pelaaja pelaaja = new Pelaaja(new Ruutu(1,2));
-        
         assertEquals(Tyyppi.PELAAJA, pelaaja.getTyyppi());
     }
     
     @Test
     public void pelaajaLiikkuuOikein1() {
-        Pelaaja pelaaja = new Pelaaja(new Ruutu(1,2));
         pelaaja.liiku(0, 1);
         
         assertEquals(new Ruutu(1,3), pelaaja.getRuutu());
@@ -65,7 +63,6 @@ public class PelaajaTest {
     
     @Test
     public void pelaajaLiikkuuOikein2() {
-        Pelaaja pelaaja = new Pelaaja(new Ruutu(1,2));
         pelaaja.liiku(new Ruutu(10,10));
         
         assertEquals(new Ruutu(10,10), pelaaja.getRuutu());

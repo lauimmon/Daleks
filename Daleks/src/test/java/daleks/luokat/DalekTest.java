@@ -1,4 +1,4 @@
-package daleks.daleks;
+package daleks.luokat;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -23,7 +23,10 @@ import org.junit.Test;
  */
 public class DalekTest {
     
+    private Dalek dalek;
+    
     public DalekTest() {
+        
     }
     
     @BeforeClass
@@ -36,6 +39,7 @@ public class DalekTest {
     
     @Before
     public void setUp() {
+        Dalek dalek = new Dalek(new Ruutu(1,2));
     }
     
     @After
@@ -44,21 +48,16 @@ public class DalekTest {
     
     @Test
     public void dalekinKonstruktoriAsettaaRuudunOikein() {
-        Dalek dalek = new Dalek(new Ruutu(1,2));
-        
         assertEquals(new Ruutu(1,2), dalek.getRuutu());
     }
     
     @Test
     public void dalekinKonstruktoriAsettaaTyypinOikein() {
-        Dalek dalek = new Dalek(new Ruutu(1,2));
-        
         assertEquals(Tyyppi.DALEK, dalek.getTyyppi());
     }
     
     @Test
     public void dalekLiikkuuOikein1() {
-        Dalek dalek = new Dalek(new Ruutu(1,2));
         dalek.liiku(1, 0);
         
         assertEquals(new Ruutu(2,2), dalek.getRuutu());
@@ -66,7 +65,6 @@ public class DalekTest {
     
     @Test
     public void dalekLiikkuuOikein2() {
-        Dalek dalek = new Dalek(new Ruutu(1,2));
         dalek.liiku(new Ruutu(10,10));
         
         assertEquals(new Ruutu(10,10), dalek.getRuutu());
@@ -74,7 +72,6 @@ public class DalekTest {
     
     @Test
     public void dalekinTyyppiMuuttuuKuolleeksiDalekiksiKunDalekKuolee() {
-        Dalek dalek = new Dalek(new Ruutu(1,2));
         dalek.kuole();
         
         assertEquals(Tyyppi.KUOLLUTDALEK, dalek.getTyyppi());
@@ -82,7 +79,6 @@ public class DalekTest {
     
     @Test
     public void kuollutDalekEiLiiku1() {
-        Dalek dalek = new Dalek(new Ruutu(1,2));
         Ruutu aloitusruutu = dalek.getRuutu();
         dalek.kuole();
         dalek.liiku(10,0);
@@ -92,7 +88,6 @@ public class DalekTest {
     
     @Test
     public void kuollutDalekEiLiiku2() {
-        Dalek dalek = new Dalek(new Ruutu(1,2));
         Ruutu aloitusruutu = dalek.getRuutu();
         dalek.kuole();
         dalek.liiku(new Ruutu(10,10));

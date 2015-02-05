@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package daleks.daleks;
+package daleks.luokat;
 
 import daleks.luokat.Liikkuva;
 import daleks.luokat.Pelaaja;

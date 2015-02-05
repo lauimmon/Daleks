@@ -297,12 +297,11 @@ public class Peli {
      * etenemistä.
      */
     public void pysyPaikoillaan() {
-        liikutaDalekejaPelaajaaPain();
         while (true) {
-            tulostaTilanne();
+            liikutaDalekejaPelaajaaPain();
             if (havisikoPelaaja()) break;
             if (voittikoPelaaja()) break;
-            liikutaDalekejaPelaajaaPain();
+            tulostaTilanne();
             
             try {
                 Thread.sleep(1000);

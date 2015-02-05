@@ -31,7 +31,7 @@ public class Kayttoliittyma {
         while (true) {
             otaPelaajanSyote();
             
-            if (!liikutaDalekejaJaTarkistaLoppuukoPeli()) break;
+            if (liikutaDalekejaJaTarkistaLoppuukoPeli()) break;
         }
     }
 
@@ -48,22 +48,25 @@ public class Kayttoliittyma {
     
     private boolean liikutaDalekejaJaTarkistaLoppuukoPeli() {
         peli.tulostaTilanne();
-        if (tarkistaHavisikoPelaaja()) {
-            System.out.println("Hävisit pelin!");
-            return false;
-        }
+        if (loppuukoPeli()) return true;
         peli.liikutaDalekejaPelaajaaPain();
         odotaSekunti();
         peli.tulostaTilanne();
-        if (tarkistaHavisikoPelaaja()) {
+        if (loppuukoPeli()) return true;
+        return false;
+    }
+
+    private boolean loppuukoPeli() {
+        if (peli.havisikoPelaaja()) {
+            peli.getPelaaja().kuole();
             System.out.println("Hävisit pelin!");
-            return false;
+            return true;
         }
         if (peli.voittikoPelaaja()) {
             System.out.println("Voitit pelin!");
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     private void odotaSekunti() {
@@ -72,14 +75,6 @@ public class Kayttoliittyma {
         } catch (InterruptedException ex) {
             Logger.getLogger(Peli.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    private boolean tarkistaHavisikoPelaaja() {
-        if (peli.havisikoPelaaja()) {
-            peli.getPelaaja().kuole();
-            return true;
-        }
-        return false;
     }
     
     private boolean suoritaKasky(String kasky) throws IllegalArgumentException {

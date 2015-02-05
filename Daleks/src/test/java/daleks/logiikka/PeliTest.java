@@ -11,6 +11,7 @@ import daleks.luokat.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
@@ -69,73 +70,68 @@ public class PeliTest {
         assertEquals(peli.getHahmot().size(), 200);
     }
     
-    
-    
     @Test
     public void getPelaajaPalauttaaPelaajan() {
-        Dalek dalek = new Dalek(new Ruutu(1,1));
-        peli.lisaaHahmo(dalek);
-        Pelaaja pelaaja = new Pelaaja(new Ruutu(2,1));
-        peli.lisaaHahmo(pelaaja);
-        
-        assertEquals(peli.getPelaaja(), pelaaja);
+        assertEquals(peli.getPelaaja().getTyyppi(), Tyyppi.PELAAJA);
     }
-//    
-//    @Test
-//    public void getPelaajaPalauttaaNullJosPelaajaaEiOleLaudalla() {
-//        Dalek dalek = new Dalek(new Ruutu(1,1));
-//        peli.lisaaHahmo(dalek);
-//        Pelaaja pelaaja = new Pelaaja(new Ruutu(2,1));
-//        
-//        assertEquals(peli.getPelaaja(), null);
-//    }
-//    
-//    @Test
-//    public void getPelaajaPalauttaaKuolleenPelaajan() {
-//        Dalek dalek = new Dalek(new Ruutu(1,1));
-//        peli.lisaaHahmo(dalek);
-//        Pelaaja pelaaja = new Pelaaja(new Ruutu(2,1));
-//        peli.lisaaHahmo(pelaaja);
-//        pelaaja.kuole();
-//        
-//        assertEquals(peli.getPelaaja(), pelaaja);
-//    }
-//    
-//    @Test
-//    public void getRuudutPalauttaaOikeinKaikkiRuudutJoissaLiikkuva() {
-//        Dalek dalek = new Dalek(new Ruutu(1,1));
-//        peli.lisaaHahmo(dalek);
-//        Map<Ruutu, Tyyppi> ruudut = peli.getRuudut();
-//        
-//        assertTrue(ruudut.size() == 1 && ruudut.containsKey(new Ruutu(1,1)) && ruudut.containsValue(Tyyppi.DALEK));
-//    }
-//    
-//    @Test
-//    public void lisattyHahmoLoytyy() {
-//        Dalek dalek = new Dalek(new Ruutu(1,1));
-//        peli.lisaaHahmo(dalek);
-//        
-//        assertTrue(peli.getHahmot().contains(dalek));
-//    }
-//    
-//    @Test
-//    public void poistaHahmoLaudaltaPoistaaOikenHahmon() {
-//        Dalek dalek1 = new Dalek(new Ruutu(1,1));
-//        Dalek dalek2 = new Dalek(new Ruutu(2,1));
-//        peli.lisaaHahmo(dalek1);
-//        peli.lisaaHahmo(dalek2);
-//        peli.poistaHahmo(dalek1);
-//        
-//        assertTrue(peli.getHahmot().contains(dalek2) && !peli.getHahmot().contains(dalek1));
-//    }
-//    
-//    @Test
-//    public void hahmoaEiLisataJosSenRuutuLaudanUlkopuolella() {
-//        Dalek dalek = new Dalek(new Ruutu(11,1));
-//        peli.lisaaHahmo(dalek);
-//        
-//        assertFalse(peli.getHahmot().contains(dalek));
-//    }
+    
+    @Test
+    public void getPelaajaPalauttaaNullJosPelaajaaEiOleLaudalla() {
+        peli.poistaHahmo(peli.getPelaaja());
+        
+        assertEquals(peli.getPelaaja(), null);
+    }
+    
+    @Test
+    public void getPelaajaPalauttaaKuolleenPelaajan() {
+        peli.getPelaaja().kuole();
+        
+        assertEquals(peli.getPelaaja().getTyyppi(), Tyyppi.KUOLLUTPELAAJA);
+    }
+    
+    @Test
+    public void getRuudutPalauttaaOikeinKaikkiRuudutJoissaLiikkuva() {
+        Map<Ruutu, Tyyppi> ruudut = peli.getRuudut();
+        List<Liikkuva> hahmot = peli.getHahmot();
+        Liikkuva dalek = new Dalek(new Ruutu(0,0));
+        for (Liikkuva hahmo : hahmot) {
+            if (hahmo.getTyyppi().equals(Tyyppi.DALEK)) {
+                dalek = hahmo;
+            }
+        }
+        
+        assertTrue(ruudut.size() == 2 && ruudut.containsKey(peli.getPelaaja().getRuutu()) && ruudut.containsKey(dalek.getRuutu()));
+    }
+    
+    @Test
+    public void lisattyHahmoLoytyy() {
+        Random rand = new Random();
+        Dalek dalek = new Dalek(new Ruutu(1,1));
+        while (true) {
+            if (!peli.getRuudut().containsKey(dalek.getRuutu())) {
+                peli.lisaaHahmo(dalek);
+                break;
+            }
+            dalek.liiku(new Ruutu(rand.nextInt(peli.getLauta().getKokoX()), rand.nextInt(peli.getLauta().getKokoY())));
+        }
+        
+        assertTrue(peli.getHahmot().contains(dalek));
+    }
+    
+    @Test
+    public void poistaHahmoLaudaltaPoistaaOikenHahmon() {
+        peli.poistaHahmo(peli.getPelaaja());
+        
+        assertTrue(peli.getHahmot().size() == 1 && !peli.getHahmot().contains(peli.getPelaaja()));
+    }
+    
+    @Test
+    public void hahmoaEiLisataJosSenRuutuLaudanUlkopuolella() {
+        Dalek dalek = new Dalek(new Ruutu(11,1));
+        peli.lisaaHahmo(dalek);
+        
+        assertFalse(peli.getHahmot().contains(dalek));
+    }
 //    
 //    @Test
 //    public void pelissaOlevanHahmonRuutuMuuttuuKunSitaLiikutetaan() {

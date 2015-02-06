@@ -20,4 +20,6 @@
 
 **3.2.2015:** Viisi tuntia paketteihin jakoa ja uuden Peli-luokan tekoa sekä koodikatselmmoinnin kirjoittamista
 
-**5.2.2015:** 1,5 tuntia javadocin tekoa
+**5.2.2015:** 1,5 tuntia javadocin tekoa ja kaksi tuntia testien tekoa
+
+**6.2.2015:** 2,5 tuntia testien tekoa ja pelilogiikan muokkausta 

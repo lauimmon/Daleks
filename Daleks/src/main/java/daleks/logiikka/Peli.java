@@ -45,8 +45,6 @@ public class Peli {
         while (hahmot.size() != Math.min(dalekienMaara + 1, lauta.getKokoX()*lauta.getKokoY())) {
             lisaaHahmo(new Dalek(new Ruutu(random.nextInt(lauta.getKokoX()), random.nextInt(lauta.getKokoY()))));
         }
-        
-        tulostaOhjeet();
     }
     
     public Pelilauta getLauta() {
@@ -63,6 +61,14 @@ public class Peli {
 
     public int getTeleportit() {
         return teleportit;
+    }
+
+    public void setPommit(int pommit) {
+        this.pommit = pommit;
+    }
+
+    public void setTeleportit(int teleportit) {
+        this.teleportit = teleportit;
     }
     
     /**
@@ -93,22 +99,43 @@ public class Peli {
     }
 
     /**
-     * Metodi lisää Liikkuva-olion peliin
+     * Metodi lisää Liikkuva-olion peliin. Pelissä ei voi olla kaksi pelaajaa.
      * 
      * @param hahmo Liikkuva, joka halutaan lisätä
      */
     public void lisaaHahmo(Liikkuva hahmo) {
         if (lauta.onkoRuutuLaudalla(hahmo.getRuutu())) {
-            hahmot.add(hahmo);
+            if ((hahmo.getTyyppi().equals(Tyyppi.PELAAJA) || hahmo.getTyyppi().equals(Tyyppi.PELAAJA))) {
+                if (getPelaaja() == null) {
+                    hahmot.add(hahmo);
+                }
+            } else {
+                hahmot.add(hahmo);
+            }
         }
     }
     /**
-     * Metodi poistaa Liikkuva-olion pelistä
+     * Metodi poistaa Liikkuva-olion pelistä.
      * 
      * @param hahmo Liikkuva, joka halutaan poistaa
      */
     public void poistaHahmo(Liikkuva hahmo) {
         hahmot.remove(hahmo);
+    }
+    
+    /**
+     * Metodi poistaa listan Liikkuva-olioita.
+     * 
+     * @param lista poistettavat Liikkuva-oliot
+     */
+    public void poistaMontaHahmoa(List<Liikkuva> lista) {
+        List<Liikkuva> poistettavat = new ArrayList<Liikkuva>();
+        for (Liikkuva hahmo : getHahmot()) {
+            poistettavat.add(hahmo);
+        }
+        for (Liikkuva hahmo : poistettavat) {
+            poistaHahmo(hahmo);
+        }
     }
     
     /**
@@ -163,7 +190,8 @@ public class Peli {
     private void osuukoPelaajaDalekiin() {
         Liikkuva pelaaja = getPelaaja();
         for (Liikkuva hahmo : getHahmot()) {
-            if (hahmo.getRuutu().equals(pelaaja.getRuutu()) && !hahmo.getTyyppi().equals(Tyyppi.PELAAJA)) {
+            if (hahmo.getRuutu().equals(pelaaja.getRuutu()) &&
+                    hahmo.getTyyppi().equals(Tyyppi.DALEK)) {
                 pelaaja.kuole();
             }
         }
@@ -205,7 +233,6 @@ public class Peli {
      */
     public void rajaytaPommi() throws IllegalArgumentException {
         if (pommit != 0) {
-            pommit--;
             Ruutu pelaajanRuutu = getPelaaja().getRuutu();
             List<Ruutu> ruudut = lauta.ymparoivatRuudut(pelaajanRuutu);
             List<Liikkuva> poistettavat = new ArrayList<Liikkuva>();
@@ -217,6 +244,7 @@ public class Peli {
             for (Liikkuva hahmo : poistettavat) {
                 poistaHahmo(hahmo);
             }
+            pommit--;
         } else {
             throw new IllegalArgumentException("Ei pommeja jäljellä!");
         }
@@ -264,52 +292,7 @@ public class Peli {
         }
     }
     
-    /**
-     * Metodi tulostaa laudan.
-     */
-    public void tulostaTilanne() {
-        tulostaHahmot();
-        Map<Ruutu, Tyyppi> ruudut = getRuudut();
-        for (int i = 0; i < lauta.getKokoX(); i++) {
-            for (int j = 0; j < lauta.getKokoY(); j++) {
-                if (ruudut.containsKey(new Ruutu(i, j))) {
-                    System.out.print(ruudut.get(new Ruutu(i, j)).toString());
-                } else  System.out.print(Tyyppi.TYHJA.toString());
-            }
-            System.out.println();
-        }
-        System.out.println("pommeja: "+pommit);
-        System.out.println("teleportteja: "+teleportit);
-    }
-
-    private void tulostaHahmot() {
-        List<Liikkuva> hahmot = getHahmot();
-        for (Liikkuva hahmo : hahmot) {
-            System.out.println(hahmo.toString());
-        }
-    }
     
-    /**
-     * Metodi liikuttaa dalekeja pelaajaa päin niin kauan kunnes
-     * peli loppuu. Joka kerta dalekien liikkumisen jälkeen tulostetaan
-     * lauta ja tarkistetaan onko peli päättynyt. Tulostusten välissä
-     * odotetaan aina sekunti, jotta pelaaja pystyy seurata tilanteen
-     * etenemistä.
-     */
-    public void pysyPaikoillaan() {
-        while (true) {
-            liikutaDalekejaPelaajaaPain();
-            if (havisikoPelaaja()) break;
-            if (voittikoPelaaja()) break;
-            tulostaTilanne();
-            
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Peli.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
 
     /**
      * Metodi tarkistaa onko pelaaja hävinnyt pelin, eli onko
@@ -344,12 +327,7 @@ public class Peli {
         return true;
     }
     
-    /**
-     * Metodi tulostaa pelin ohjeet.
-     */
-    public void tulostaOhjeet() {
-        System.out.println("Ohjeet: \nTavoitteenasi pelaajana (P) on paeta dalekeja (@) ja saada ne törmäämään toisiinsa tai kuolleisiin dalekeihin (#), jolloin ne kuolevat. \nVoitat kun kaikki dalekit kuolevat ja häviät jos dalek saa sinut kiinni. Kuolleet dalekit eivät liiku. \n\nOhjaus:\nYlös W, alas X, vasemmalle A, oikealle D. Vinottain liikkuminen Q, E, Z ja C. Paikallaan pysyminen S. \n\nPommin räjäytys R, teleporttaus T. \n\nNäppäimellä P voit jäädä paikalleen koko loppuajaksi.\n\n");
-    }
+    
 
     
     

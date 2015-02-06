@@ -9,6 +9,9 @@ package daleks.kayttoliittyma;
 
 import daleks.luokat.Pelilauta;
 import daleks.logiikka.Peli;
+import daleks.luokat.Liikkuva;
+import daleks.luokat.Ruutu;
+import daleks.luokat.Tyyppi;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,7 +30,8 @@ public class Kayttoliittyma {
     }
     
     public void run() {
-        peli.tulostaTilanne();
+        tulostaOhjeet();
+        tulostaTilanne();
         while (true) {
             otaPelaajanSyote();
             
@@ -47,11 +51,11 @@ public class Kayttoliittyma {
     }
     
     private boolean liikutaDalekejaJaTarkistaLoppuukoPeli() {
-        peli.tulostaTilanne();
+        tulostaTilanne();
         if (loppuukoPeli()) return true;
         peli.liikutaDalekejaPelaajaaPain();
         odotaSekunti();
-        peli.tulostaTilanne();
+        tulostaTilanne();
         if (loppuukoPeli()) return true;
         return false;
     }
@@ -90,12 +94,56 @@ public class Kayttoliittyma {
             else if (kasky.equals("x")) peli.liikutaPelaajaa(1, 0);
             else if (kasky.equals("c")) peli.liikutaPelaajaa(1, 1);
             else if (kasky.equals("s")) {}
-            else if (kasky.equals("p")) peli.pysyPaikoillaan();
+            else if (kasky.equals("p")) pysyPaikoillaan();
             else throw new IllegalArgumentException("Väärä syöte!");
         } catch(IllegalArgumentException i) {
             System.out.println(i.getMessage());
             return false;
         }
         return true;
+    }
+    
+    
+    private void pysyPaikoillaan() {
+        while (true) {
+            peli.liikutaDalekejaPelaajaaPain();
+            if (peli.havisikoPelaaja()) break;
+            if (peli.voittikoPelaaja()) break;
+            tulostaTilanne();
+            
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Peli.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    private void tulostaTilanne() {
+        tulostaHahmot();
+        Map<Ruutu, Tyyppi> ruudut = peli.getRuudut();
+        for (int i = 0; i < peli.getLauta().getKokoX(); i++) {
+            for (int j = 0; j < peli.getLauta().getKokoY(); j++) {
+                if (ruudut.containsKey(new Ruutu(i, j))) {
+                    System.out.print(ruudut.get(new Ruutu(i, j)).toString());
+                } else  System.out.print(Tyyppi.TYHJA.toString());
+            }
+            System.out.println();
+        }
+        System.out.println("pommeja: "+peli.getPommit());
+        System.out.println("teleportteja: "+peli.getTeleportit());
+    }
+
+    private void tulostaHahmot() {
+        List<Liikkuva> hahmot = peli.getHahmot();
+        for (Liikkuva hahmo : hahmot) {
+            System.out.println(hahmo.toString());
+        }
+    }
+    
+    
+    
+    private void tulostaOhjeet() {
+        System.out.println("Ohjeet: \nTavoitteenasi pelaajana (P) on paeta dalekeja (@) ja saada ne törmäämään toisiinsa tai kuolleisiin dalekeihin (#), jolloin ne kuolevat. \nVoitat kun kaikki dalekit kuolevat ja häviät jos dalek saa sinut kiinni. Kuolleet dalekit eivät liiku. \n\nOhjaus:\nYlös W, alas X, vasemmalle A, oikealle D. Vinottain liikkuminen Q, E, Z ja C. Paikallaan pysyminen S. \n\nPommin räjäytys R, teleporttaus T. \n\nNäppäimellä P voit jäädä paikalleen koko loppuajaksi.\n\n");
     }
 }

@@ -23,8 +23,8 @@ public class Pelilauta {
     /**
      * Konstruktorissa laudalle asetetaan korkeus ja leveys.
      * 
-     * @param xkoko on laudan korkeus
-     * @param ykoko on laudan leveys
+     * @param xkoko on laudan leveys
+     * @param ykoko on laudan korkeus
      */
     public Pelilauta(int xkoko, int ykoko) {
         kokoX = xkoko;

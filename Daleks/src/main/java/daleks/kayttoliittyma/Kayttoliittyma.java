@@ -6,144 +6,116 @@
 
 package daleks.kayttoliittyma;
 
-
-import daleks.luokat.Pelilauta;
 import daleks.logiikka.Peli;
-import daleks.luokat.Liikkuva;
-import daleks.luokat.Ruutu;
-import daleks.luokat.Tyyppi;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import daleks.luokat.Pelilauta;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.HeadlessException;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import javax.swing.*;
 
 /**
  *
  * @author lauimmon
  */
-
-public class Kayttoliittyma {
+public class Kayttoliittyma implements Runnable, KeyListener {
     
-    private Peli peli;
-
-    public Kayttoliittyma(int korkeus, int leveys, int dalekienMaara) {
-        peli = new Peli(new Pelilauta(korkeus, leveys), dalekienMaara);
+    private JFrame frame;
+    private Peli peli;   
+    private int sivunPituus;
+    private Piirtoalusta piirtoalusta;
+    
+    public Kayttoliittyma(int leveys, int korkeus, int dalekienMaara) {
+        this.peli= new Peli(new Pelilauta(leveys, korkeus), dalekienMaara);
+        this.sivunPituus = 20;
     }
     
+    @Override
     public void run() {
-        tulostaOhjeet();
-        tulostaTilanne();
-        while (true) {
-            otaPelaajanSyote();
-            
-            if (liikutaDalekejaJaTarkistaLoppuukoPeli()) break;
-        }
+        frame = new JFrame("Daleks");
+        int korkeus = (peli.getLauta().getKokoY()+2)*sivunPituus+30;
+        int leveys = (peli.getLauta().getKokoX()+1)*sivunPituus-8;
+        
+        frame.setPreferredSize(new Dimension(leveys, korkeus));
+  
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+  
+        luoKomponentit(frame.getContentPane());
+  
+        frame.pack();
+        frame.setVisible(true);
     }
-
-    private void otaPelaajanSyote() throws IllegalArgumentException {
-        boolean suoritettu = false;
-        while (!suoritettu) {
-            Scanner lukija = new Scanner(System.in);
-            System.out.print(">");
-            String kasky = lukija.nextLine();
-            
-            suoritettu = suoritaKasky(kasky);
-        }
+  
+    public void luoKomponentit(Container container) {
+        // Huom! Luo ensin piirtoalusta jonka lisäät container-olioon
+        // Luo vasta tämän jälkeen näppäimistönkuuntelija, jonka lisäät frame-oliolle
+        piirtoalusta = new Piirtoalusta(peli, sivunPituus);
+        container.add(piirtoalusta);
+        getFrame().addKeyListener(this);
+    }
+  
+    public Paivitettava getPaivitettava() {
+        return piirtoalusta;
+    }
+  
+    public JFrame getFrame() {
+        return frame;
     }
     
-    private boolean liikutaDalekejaJaTarkistaLoppuukoPeli() {
-        tulostaTilanne();
-        if (loppuukoPeli()) return true;
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_A) {
+            peli.liikutaPelaajaa(-1, 0);
+        } else if (e.getKeyCode() == KeyEvent.VK_W) {
+            peli.liikutaPelaajaa(0, -1);
+        } else if (e.getKeyCode() == KeyEvent.VK_X) {
+            peli.liikutaPelaajaa(0, 1);
+        } else if (e.getKeyCode() == KeyEvent.VK_D) {
+            peli.liikutaPelaajaa(1, 0);
+        } else if (e.getKeyCode() == KeyEvent.VK_Q) {
+            peli.liikutaPelaajaa(-1, -1);
+        } else if (e.getKeyCode() == KeyEvent.VK_E) {
+            peli.liikutaPelaajaa(1, -1);
+        } else if (e.getKeyCode() == KeyEvent.VK_C) {
+            peli.liikutaPelaajaa(1, 1);
+        } else if (e.getKeyCode() == KeyEvent.VK_Z) {
+            peli.liikutaPelaajaa(-1, 1);
+        } else if (e.getKeyCode() == KeyEvent.VK_R) {
+            peli.rajaytaPommi();
+        } else if (e.getKeyCode() == KeyEvent.VK_T) {
+            peli.teleporttaaPelaaja();
+        }
+        paivitaLauta();
+    }
+
+    private void paivitaLauta() {
+        voittikoPelaaja();
+        havisikoPelaaja();
         peli.liikutaDalekejaPelaajaaPain();
-        odotaSekunti();
-        tulostaTilanne();
-        if (loppuukoPeli()) return true;
-        return false;
+        piirtoalusta.paivita();
+        voittikoPelaaja();
+        havisikoPelaaja();
     }
 
-    private boolean loppuukoPeli() {
+    private void havisikoPelaaja() throws HeadlessException {
         if (peli.havisikoPelaaja()) {
-            peli.getPelaaja().kuole();
-            System.out.println("Hävisit pelin!");
-            return true;
+            JOptionPane.showMessageDialog(frame, "Hävisit pelin!");
         }
+    }
+
+    private void voittikoPelaaja() throws HeadlessException {
         if (peli.voittikoPelaaja()) {
-            System.out.println("Voitit pelin!");
-            return true;
-        }
-        return false;
-    }
-
-    private void odotaSekunti() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Peli.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(frame, "Voitit pelin!");
         }
     }
     
-    private boolean suoritaKasky(String kasky) throws IllegalArgumentException {
-        try {
-            if (kasky.equals("r")) peli.rajaytaPommi();
-            else if (kasky.equals("t")) peli.teleporttaaPelaaja();
-            else if (kasky.equals("q")) peli.liikutaPelaajaa(-1, -1);
-            else if (kasky.equals("w")) peli.liikutaPelaajaa(-1, 0);
-            else if (kasky.equals("e")) peli.liikutaPelaajaa(-1, 1);
-            else if (kasky.equals("a")) peli.liikutaPelaajaa(0, -1);
-            else if (kasky.equals("d")) peli.liikutaPelaajaa(0, 1);
-            else if (kasky.equals("z")) peli.liikutaPelaajaa(1, -1); 
-            else if (kasky.equals("x")) peli.liikutaPelaajaa(1, 0);
-            else if (kasky.equals("c")) peli.liikutaPelaajaa(1, 1);
-            else if (kasky.equals("s")) {}
-            else if (kasky.equals("p")) pysyPaikoillaan();
-            else throw new IllegalArgumentException("Väärä syöte!");
-        } catch(IllegalArgumentException i) {
-            System.out.println(i.getMessage());
-            return false;
-        }
-        return true;
-    }
-    
-    
-    private void pysyPaikoillaan() {
-        while (true) {
-            peli.liikutaDalekejaPelaajaaPain();
-            if (peli.havisikoPelaaja()) break;
-            if (peli.voittikoPelaaja()) break;
-            tulostaTilanne();
-            
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Peli.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
-    
-    private void tulostaTilanne() {
-        tulostaHahmot();
-        Map<Ruutu, Tyyppi> ruudut = peli.getRuudut();
-        for (int i = 0; i < peli.getLauta().getKokoX(); i++) {
-            for (int j = 0; j < peli.getLauta().getKokoY(); j++) {
-                if (ruudut.containsKey(new Ruutu(i, j))) {
-                    System.out.print(ruudut.get(new Ruutu(i, j)).toString());
-                } else  System.out.print(Tyyppi.TYHJA.toString());
-            }
-            System.out.println();
-        }
-        System.out.println("pommeja: "+peli.getPommit());
-        System.out.println("teleportteja: "+peli.getTeleportit());
-    }
-
-    private void tulostaHahmot() {
-        List<Liikkuva> hahmot = peli.getHahmot();
-        for (Liikkuva hahmo : hahmot) {
-            System.out.println(hahmo.toString());
-        }
-    }
-    
-    
-    
-    private void tulostaOhjeet() {
-        System.out.println("Ohjeet: \nTavoitteenasi pelaajana (P) on paeta dalekeja (@) ja saada ne törmäämään toisiinsa tai kuolleisiin dalekeihin (#), jolloin ne kuolevat. \nVoitat kun kaikki dalekit kuolevat ja häviät jos dalek saa sinut kiinni. Kuolleet dalekit eivät liiku. \n\nOhjaus:\nYlös W, alas X, vasemmalle A, oikealle D. Vinottain liikkuminen Q, E, Z ja C. Paikallaan pysyminen S. \n\nPommin räjäytys R, teleporttaus T. \n\nNäppäimellä P voit jäädä paikalleen koko loppuajaksi.\n\n");
-    }
 }

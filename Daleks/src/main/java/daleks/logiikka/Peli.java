@@ -7,10 +7,7 @@
 package daleks.logiikka;
 
 import daleks.luokat.*;
-import daleks.kayttoliittyma.*;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Peli-luokka sisältää kaiken pelin logiikan. Se hoitaa Liikuvien liikuttelun ym. toiminnot.

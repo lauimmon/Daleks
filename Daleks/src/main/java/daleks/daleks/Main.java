@@ -7,7 +7,6 @@
 package daleks.daleks;
 
 import daleks.kayttoliittyma.*;
-import daleks.luokat.Pelilauta;
 
 /**
  *
@@ -20,7 +19,7 @@ public class Main {
         int korkeus = 10;
         int leveys = 20;
         int dalekienMaara = 20;
-        Kayttoliittyma kali = new Kayttoliittyma(korkeus,leveys,dalekienMaara);
+        Kayttoliittyma kali = new Kayttoliittyma(leveys,korkeus,dalekienMaara);
         kali.run();
     }
     

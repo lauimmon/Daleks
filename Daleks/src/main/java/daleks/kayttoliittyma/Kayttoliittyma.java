@@ -73,21 +73,21 @@ public class Kayttoliittyma implements Runnable, KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_A) {
+        if (e.getKeyCode() == KeyEvent.VK_NUMPAD4) {
             peli.liikutaPelaajaa(-1, 0);
-        } else if (e.getKeyCode() == KeyEvent.VK_W) {
+        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD8) {
             peli.liikutaPelaajaa(0, -1);
-        } else if (e.getKeyCode() == KeyEvent.VK_X) {
+        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD2) {
             peli.liikutaPelaajaa(0, 1);
-        } else if (e.getKeyCode() == KeyEvent.VK_D) {
+        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD6) {
             peli.liikutaPelaajaa(1, 0);
-        } else if (e.getKeyCode() == KeyEvent.VK_Q) {
+        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD7) {
             peli.liikutaPelaajaa(-1, -1);
-        } else if (e.getKeyCode() == KeyEvent.VK_E) {
+        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD9) {
             peli.liikutaPelaajaa(1, -1);
-        } else if (e.getKeyCode() == KeyEvent.VK_C) {
+        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD3) {
             peli.liikutaPelaajaa(1, 1);
-        } else if (e.getKeyCode() == KeyEvent.VK_Z) {
+        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD1) {
             peli.liikutaPelaajaa(-1, 1);
         } else if (e.getKeyCode() == KeyEvent.VK_R) {
             peli.rajaytaPommi();
@@ -98,24 +98,29 @@ public class Kayttoliittyma implements Runnable, KeyListener {
     }
 
     private void paivitaLauta() {
-        voittikoPelaaja();
-        havisikoPelaaja();
-        peli.liikutaDalekejaPelaajaaPain();
-        piirtoalusta.paivita();
-        voittikoPelaaja();
-        havisikoPelaaja();
+        if (!voittikoPelaaja() && !havisikoPelaaja()) {
+            peli.liikutaDalekejaPelaajaaPain();
+            piirtoalusta.paivita();
+            voittikoPelaaja();
+            havisikoPelaaja();
+        }
+        
     }
 
-    private void havisikoPelaaja() throws HeadlessException {
+    private boolean havisikoPelaaja() throws HeadlessException {
         if (peli.havisikoPelaaja()) {
             JOptionPane.showMessageDialog(frame, "Hävisit pelin!");
+            return true;
         }
+        return false;
     }
 
-    private void voittikoPelaaja() throws HeadlessException {
+    private boolean voittikoPelaaja() throws HeadlessException {
         if (peli.voittikoPelaaja()) {
             JOptionPane.showMessageDialog(frame, "Voitit pelin!");
+            return true;
         }
+        return false;
     }
     
 }

@@ -163,8 +163,8 @@ public class Peli {
         Ruutu ruutu = new Ruutu(pelaaja.getRuutu().getX() + x, pelaaja.getRuutu().getY() + y);
         if (lauta.onkoRuutuLaudalla(ruutu) && !mikaTyyppiRuudussa(ruutu).equals(Tyyppi.KUOLLUTDALEK)) {
             pelaaja.liiku(ruutu);
+            osuukoPelaajaDalekiin();
         }
-        osuukoPelaajaDalekiin();
     }
     
     /**
@@ -176,8 +176,8 @@ public class Peli {
         Liikkuva pelaaja = getPelaaja();
         if (lauta.onkoRuutuLaudalla(ruutu) && !mikaTyyppiRuudussa(ruutu).equals(Tyyppi.KUOLLUTDALEK)) {
             pelaaja.liiku(ruutu);
+            osuukoPelaajaDalekiin();
         }
-        osuukoPelaajaDalekiin();
     }
     
     /**
@@ -190,6 +190,7 @@ public class Peli {
             if (hahmo.getRuutu().equals(pelaaja.getRuutu()) &&
                     hahmo.getTyyppi().equals(Tyyppi.DALEK)) {
                 pelaaja.kuole();
+                return;
             }
         }
     }
@@ -204,7 +205,7 @@ public class Peli {
      * @throws IllegalArgumentException kun teleportteja ei ole jäljellä
      */
     public void teleporttaaPelaaja() {
-        if (teleportit != 0) {
+        if (teleportit > 0) {
             teleportit--;
             Random random = new Random();
             while (true) {
@@ -229,7 +230,7 @@ public class Peli {
      * @throws IllegalArgumentException kun pommeja ei ole jäljellä
      */
     public void rajaytaPommi() throws IllegalArgumentException {
-        if (pommit != 0) {
+        if (pommit > 0) {
             Ruutu pelaajanRuutu = getPelaaja().getRuutu();
             List<Ruutu> ruudut = lauta.ymparoivatRuudut(pelaajanRuutu);
             List<Liikkuva> poistettavat = new ArrayList<Liikkuva>();
@@ -269,8 +270,8 @@ public class Peli {
                 hahmo.liiku(parasRuutu);
             }
         }
-        tapaTormanneetDalekit();
         osuukoPelaajaDalekiin();
+        tapaTormanneetDalekit();
     }
     
     /**
@@ -281,7 +282,9 @@ public class Peli {
     private void tapaTormanneetDalekit() {
         for (int i = 0; i < hahmot.size(); i++) {
             for (int j = i+1; j < hahmot.size(); j++) {
-                if (hahmot.get(i).getRuutu().equals(hahmot.get(j).getRuutu()) && !hahmot.get(i).getTyyppi().equals(Tyyppi.PELAAJA) && !hahmot.get(j).getTyyppi().equals(Tyyppi.PELAAJA)) {
+                if (hahmot.get(i).getRuutu().equals(hahmot.get(j).getRuutu()) && 
+                        !hahmot.get(i).getTyyppi().equals(Tyyppi.PELAAJA) && !hahmot.get(j).getTyyppi().equals(Tyyppi.PELAAJA) &&
+                        !hahmot.get(i).getTyyppi().equals(Tyyppi.KUOLLUTPELAAJA) && !hahmot.get(j).getTyyppi().equals(Tyyppi.KUOLLUTPELAAJA)) {
                     hahmot.get(i).kuole();
                     hahmot.get(j).kuole();
                 }
@@ -299,7 +302,7 @@ public class Peli {
      */
     public boolean havisikoPelaaja() {
         Ruutu pelaajanRuutu = getPelaaja().getRuutu();
-        List<Liikkuva> hahmot = getHahmot();
+        List<Liikkuva> hahmot = this.hahmot;
         for (Liikkuva liikkuva : hahmot) {
             if (liikkuva.getRuutu().equals(pelaajanRuutu) && !liikkuva.getTyyppi().equals(Tyyppi.PELAAJA)) {
                 return true;

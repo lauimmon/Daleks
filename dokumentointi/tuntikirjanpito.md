@@ -23,3 +23,10 @@
 **5.2.2015:** 1,5 tuntia javadocin tekoa ja kaksi tuntia testien tekoa
 
 **6.2.2015:** 2,5 tuntia testien tekoa ja pelilogiikan muokkausta 
+
+**11.2.2015:** 2,5 tuntia graafisen käyttöliittymän tekoa
+
+**12.2.2015:** 2,5 tuntia käyttöliittymän muokkausta ja sekvenssikaavioiden tekoa
+
+**13.2.2015:** Tunti sekvenssi- ja luokkakaavion tekoa
+

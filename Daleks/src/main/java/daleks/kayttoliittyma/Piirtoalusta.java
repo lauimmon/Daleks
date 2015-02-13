@@ -50,8 +50,8 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
             
             g.fill3DRect(sivu * l.getRuutu().getX(), sivu * l.getRuutu().getY(), sivu, sivu, true);
         }
-        g.drawString("Pommeja: "+peli.getPommit()+"    Teleportteja: "+peli.getTeleportit(), 0, (peli.getLauta().getKokoY()+2)*sivu-10);
-  
+        g.drawString("(R)äjähteet: "+peli.getPommit()+"    (T)eleportit: "+peli.getTeleportit(), 0, (peli.getLauta().getKokoY()+2)*sivu-20);
+        g.drawString("(O)hjeet", (peli.getLauta().getKokoX()+1)*sivu-80, (peli.getLauta().getKokoY()+2)*sivu-20);
     }
     
 }

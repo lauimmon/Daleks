@@ -28,7 +28,8 @@ public class Peli {
      * määrä, lopetetaan dalekien luominen kun lauta on täynnä.
      * Pommien ja teleporttien määrä asetetaan ykköseksi.
      * 
-     * @param pelilauta pelille asetettava lauta
+     * @param leveys pelille asetettavan laudan leveys
+     * @param korkeus laudan korkeus
      * @param dalekienMaara eli kuinka monta dalekia peliin luodaan
      */
     public Peli(int leveys, int korkeus, int dalekienMaara) {
@@ -101,8 +102,9 @@ public class Peli {
      * @param hahmo Liikkuva, joka halutaan lisätä
      */
     public void lisaaHahmo(Liikkuva hahmo) {
-        if (lauta.onkoRuutuLaudalla(hahmo.getRuutu())) {
-            if ((hahmo.getTyyppi().equals(Tyyppi.PELAAJA) || hahmo.getTyyppi().equals(Tyyppi.PELAAJA))) {
+        if (lauta.onkoRuutuLaudalla(hahmo.getRuutu()) && mikaTyyppiRuudussa(hahmo.getRuutu()).equals(Tyyppi.TYHJA)) {
+            Tyyppi hahmonTyyppi = hahmo.getTyyppi();
+            if ((hahmonTyyppi.equals(Tyyppi.PELAAJA) || hahmonTyyppi.equals(Tyyppi.KUOLLUTPELAAJA))) {
                 if (getPelaaja() == null) {
                     hahmot.add(hahmo);
                 }

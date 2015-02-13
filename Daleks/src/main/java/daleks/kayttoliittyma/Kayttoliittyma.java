@@ -12,6 +12,8 @@ import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
@@ -24,8 +26,10 @@ public class Kayttoliittyma implements Runnable, KeyListener {
     private Peli peli;   
     private int sivunPituus;
     private Piirtoalusta piirtoalusta;
+    private int dalekienMaara;
     
     public Kayttoliittyma(int leveys, int korkeus, int dalekienMaara) {
+        this.dalekienMaara = dalekienMaara;
         this.peli= new Peli(leveys, korkeus, dalekienMaara);
         this.sivunPituus = 20;
     }
@@ -33,8 +37,8 @@ public class Kayttoliittyma implements Runnable, KeyListener {
     @Override
     public void run() {
         frame = new JFrame("Daleks");
-        int korkeus = (peli.getLauta().getKokoY()+2)*sivunPituus+30;
-        int leveys = (peli.getLauta().getKokoX()+1)*sivunPituus-8;
+        int korkeus = (peli.getLauta().getKokoY()+2)*sivunPituus+20;
+        int leveys = (peli.getLauta().getKokoX()+1)*sivunPituus-5;
         
         frame.setPreferredSize(new Dimension(leveys, korkeus));
   
@@ -44,6 +48,8 @@ public class Kayttoliittyma implements Runnable, KeyListener {
   
         frame.pack();
         frame.setVisible(true);
+        
+        tulostaOhjeet();
     }
   
     public void luoKomponentit(Container container) {
@@ -92,12 +98,20 @@ public class Kayttoliittyma implements Runnable, KeyListener {
             peli.rajaytaPommi();
         } else if (e.getKeyCode() == KeyEvent.VK_T) {
             peli.teleporttaaPelaaja();
+        } else if (e.getKeyCode() == KeyEvent.VK_O) {
+            tulostaOhjeet();
         }
-        paivitaLauta();
+        try {
+            paivitaLauta();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Kayttoliittyma.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    private void paivitaLauta() {
+    private void paivitaLauta() throws InterruptedException {
         if (!voittikoPelaaja() && !havisikoPelaaja()) {
+            piirtoalusta.paivita();
+            Thread.sleep(1500);
             peli.liikutaDalekejaPelaajaaPain();
             piirtoalusta.paivita();
             voittikoPelaaja();
@@ -108,7 +122,13 @@ public class Kayttoliittyma implements Runnable, KeyListener {
 
     private boolean havisikoPelaaja() throws HeadlessException {
         if (peli.havisikoPelaaja()) {
-            JOptionPane.showMessageDialog(frame, "Hävisit pelin!");
+            Object[] kyllaEi = {"Kyllä", "Ei"};
+            
+            int vastaus = JOptionPane.showOptionDialog(frame, "Hävisit pelin!\n\nUusi yritys?", "Daleks", 
+                    JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, kyllaEi, kyllaEi[0]);
+            if (vastaus == 1) {
+                System.exit(0);
+            }
             return true;
         }
         return false;
@@ -116,10 +136,29 @@ public class Kayttoliittyma implements Runnable, KeyListener {
 
     private boolean voittikoPelaaja() throws HeadlessException {
         if (peli.voittikoPelaaja()) {
-            JOptionPane.showMessageDialog(frame, "Voitit pelin!");
+            Object[] kyllaEi = {"Kyllä", "Ei"};
+            
+            int vastaus = JOptionPane.showOptionDialog(frame, "Voitit pelin!\n\nSeuraava kierros?", "Daleks", 
+                    JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, kyllaEi, kyllaEi[0]);
+            if (vastaus == 1) {
+                System.exit(0);
+            }
             return true;
         }
         return false;
+    }
+    
+    private void tulostaOhjeet() {
+        String saannot = "Tervetuloa pelaamaan Daleks-peliä!\n\n"
+                + "Pakene dalekeja ja yritä saada ne törmäämään toisiinsa.\n"
+                + "Dalekit kuolevat jos ne törmäävät toisiinsa ja sinä kuolet jos osut dalekiin.\n"
+                + "Voit tuhota vieressäsi olevat dalekit myös räjäyttämällä pommin.\n"
+                + "Voitat pelin kun kaikki dalekit kuolevat.\n\n"
+                + "Ohjaus:\n\nLiikkuminen numeronäppäimistä.\n"
+                + "8 ylös, 2 alas, 4 vasemmalle, 6 oikealle, 5 pysy paikallaan \nja loput vinottaisiin suuntiin.\n\n"
+                + "R pommin räjäytys\n"
+                + "T teleportti";
+        JOptionPane.showMessageDialog(frame, saannot);
     }
     
 }

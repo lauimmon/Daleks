@@ -31,8 +31,8 @@ public class Peli {
      * @param pelilauta pelille asetettava lauta
      * @param dalekienMaara eli kuinka monta dalekia peliin luodaan
      */
-    public Peli(Pelilauta pelilauta, int dalekienMaara) {
-        lauta = pelilauta;
+    public Peli(int leveys, int korkeus, int dalekienMaara) {
+        lauta = new Pelilauta(leveys, korkeus);
         hahmot = new ArrayList<Liikkuva>();
         pommit = 1;
         teleportit = 1;

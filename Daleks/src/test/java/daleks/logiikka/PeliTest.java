@@ -6,7 +6,6 @@
 
 package daleks.logiikka;
 
-import daleks.logiikka.Peli;
 import daleks.luokat.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +39,7 @@ public class PeliTest {
     
     @Before
     public void setUp() {
-        peli = new Peli(new Pelilauta(10,20), 1);
+        peli = new Peli(10,20, 1);
     }
     
     @After
@@ -54,19 +53,19 @@ public class PeliTest {
     
     @Test
     public void konstruktoriLuoOikeanMaaranDalekejaKunAnnetaanDalekienMaaraksiNolla() {
-        peli = new Peli(new Pelilauta(10,20),0);
+        peli = new Peli(10,20,0);
         assertEquals(peli.getHahmot().size(), 1);
     }
     
     @Test
     public void konstruktoriLuoOikeanMaaranDalekejaKunAnnetaanDalekienMaaraksiPuoletLaudanRuutujenMaarasta() {
-        peli = new Peli(new Pelilauta(10,20),100);
+        peli = new Peli(10,20,100);
         assertEquals(peli.getHahmot().size(), 101);
     }
     
     @Test
     public void konstruktoriLuoOikeanMaaranDalekejaKunAnnetaanDalekienMaaraksiEnemmänKuinLaudanRuutujenMaara() {
-        peli = new Peli(new Pelilauta(10,20),300);
+        peli = new Peli(10,20,300);
         assertEquals(peli.getHahmot().size(), 200);
     }
     

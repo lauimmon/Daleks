@@ -47,6 +47,7 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
             } else if (l.getTyyppi().equals(Tyyppi.KUOLLUTPELAAJA)) {
                 g.setColor(Color.RED);
             }
+            
             g.fill3DRect(sivu * l.getRuutu().getX(), sivu * l.getRuutu().getY(), sivu, sivu, true);
         }
         g.drawString("Pommeja: "+peli.getPommit()+"    Teleportteja: "+peli.getTeleportit(), 0, (peli.getLauta().getKokoY()+2)*sivu-10);

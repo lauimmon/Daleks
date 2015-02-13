@@ -7,7 +7,6 @@
 package daleks.kayttoliittyma;
 
 import daleks.logiikka.Peli;
-import daleks.luokat.Pelilauta;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
@@ -27,7 +26,7 @@ public class Kayttoliittyma implements Runnable, KeyListener {
     private Piirtoalusta piirtoalusta;
     
     public Kayttoliittyma(int leveys, int korkeus, int dalekienMaara) {
-        this.peli= new Peli(new Pelilauta(leveys, korkeus), dalekienMaara);
+        this.peli= new Peli(leveys, korkeus, dalekienMaara);
         this.sivunPituus = 20;
     }
     

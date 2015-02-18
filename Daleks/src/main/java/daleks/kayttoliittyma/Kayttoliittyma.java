@@ -48,8 +48,6 @@ public class Kayttoliittyma implements Runnable, KeyListener {
   
         frame.pack();
         frame.setVisible(true);
-        
-        tulostaOhjeet();
     }
   
     public void luoKomponentit(Container container) {
@@ -78,6 +76,7 @@ public class Kayttoliittyma implements Runnable, KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
+        boolean paivita = true;
         if (e.getKeyCode() == KeyEvent.VK_NUMPAD4) {
             peli.liikutaPelaajaa(-1, 0);
         } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD8) {
@@ -98,20 +97,31 @@ public class Kayttoliittyma implements Runnable, KeyListener {
             peli.rajaytaPommi();
         } else if (e.getKeyCode() == KeyEvent.VK_T) {
             peli.teleporttaaPelaaja();
+        } else if (e.getKeyCode() == KeyEvent.VK_P) {
+            while (true) {
+                paivitaLauta();
+                if (voittikoPelaaja() || havisikoPelaaja()) {
+                    break;
+                }
+            }
+            paivita = false;
         } else if (e.getKeyCode() == KeyEvent.VK_O) {
             tulostaOhjeet();
+            paivita = false;
         }
-        try {
+        if (paivita) {
             paivitaLauta();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Kayttoliittyma.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private void paivitaLauta() throws InterruptedException {
+    private void paivitaLauta() {
         if (!voittikoPelaaja() && !havisikoPelaaja()) {
             piirtoalusta.paivita();
-            Thread.sleep(1500);
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Kayttoliittyma.class.getName()).log(Level.SEVERE, null, ex);
+            }
             peli.liikutaDalekejaPelaajaaPain();
             piirtoalusta.paivita();
             voittikoPelaaja();
@@ -129,6 +139,10 @@ public class Kayttoliittyma implements Runnable, KeyListener {
             if (vastaus == 1) {
                 System.exit(0);
             }
+            if (vastaus == 0) {
+                peli = new Peli(peli.getLauta().getKokoX(), peli.getLauta().getKokoY(), dalekienMaara);
+                
+            }
             return true;
         }
         return false;
@@ -136,13 +150,11 @@ public class Kayttoliittyma implements Runnable, KeyListener {
 
     private boolean voittikoPelaaja() throws HeadlessException {
         if (peli.voittikoPelaaja()) {
-            Object[] kyllaEi = {"Kyllä", "Ei"};
             
-            int vastaus = JOptionPane.showOptionDialog(frame, "Voitit pelin!\n\nSeuraava kierros?", "Daleks", 
-                    JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, kyllaEi, kyllaEi[0]);
-            if (vastaus == 1) {
-                System.exit(0);
-            }
+            JOptionPane.showMessageDialog(frame, "Voitit pelin!\n\nAloita seuraava kierros painamalla OK", "Daleks", 
+                    JOptionPane.INFORMATION_MESSAGE);
+            peli = new Peli(peli.getLauta().getKokoX(), peli.getLauta().getKokoY(), dalekienMaara);
+            
             return true;
         }
         return false;

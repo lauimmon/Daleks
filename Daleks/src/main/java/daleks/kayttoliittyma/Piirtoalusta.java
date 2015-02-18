@@ -26,7 +26,7 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
     }
 
     @Override
-    public void paivita() {
+    public void piirra() {
         repaint();
     }
     
@@ -50,7 +50,7 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
             
             g.fill3DRect(sivu * l.getRuutu().getX(), sivu * l.getRuutu().getY(), sivu, sivu, true);
         }
-        g.drawString("(R)äjähteet: "+peli.getPommit()+"    (T)eleportit: "+peli.getTeleportit(), 0, (peli.getLauta().getKokoY()+2)*sivu-20);
+        g.drawString("(R)äjähteet: "+peli.getPommit()+"    (T)eleportit: "+peli.getTeleportit(), 5, (peli.getLauta().getKokoY()+2)*sivu-20);
         g.drawString("(O)hjeet", (peli.getLauta().getKokoX()+1)*sivu-80, (peli.getLauta().getKokoY()+2)*sivu-20);
     }
     

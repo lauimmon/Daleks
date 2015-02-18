@@ -32,11 +32,11 @@ public class Peli {
      * @param korkeus laudan korkeus
      * @param dalekienMaara eli kuinka monta dalekia peliin luodaan
      */
-    public Peli(int leveys, int korkeus, int dalekienMaara) {
+    public Peli(int leveys, int korkeus, int dalekienMaara, int pommit, int teleportit) {
         lauta = new Pelilauta(leveys, korkeus);
         hahmot = new ArrayList<Liikkuva>();
-        pommit = 1;
-        teleportit = 1;
+        this.pommit = pommit;
+        this.teleportit = teleportit;
         
         Random random = new Random();
         lisaaHahmo(new Pelaaja(new Ruutu(random.nextInt(lauta.getKokoX()), random.nextInt(lauta.getKokoY()))));
@@ -206,7 +206,7 @@ public class Peli {
      * 
      * @throws IllegalArgumentException kun teleportteja ei ole jäljellä
      */
-    public void teleporttaaPelaaja() {
+    public boolean teleporttaaPelaaja() {
         if (teleportit > 0) {
             teleportit--;
             Random random = new Random();
@@ -214,12 +214,11 @@ public class Peli {
                 Ruutu ruutu = new Ruutu(random.nextInt(lauta.getKokoX()), random.nextInt(lauta.getKokoY()));
                 if (mikaTyyppiRuudussa(ruutu).equals(Tyyppi.TYHJA)) {
                     getPelaaja().liiku(ruutu);
-                    return;
+                    return true;
                 }
             }
-        } else {
-            throw new IllegalArgumentException("Ei teleportteja jäljellä!");
         }
+        return false;
         
     }
 
@@ -231,7 +230,7 @@ public class Peli {
      * 
      * @throws IllegalArgumentException kun pommeja ei ole jäljellä
      */
-    public void rajaytaPommi() throws IllegalArgumentException {
+    public boolean rajaytaPommi() {
         if (pommit > 0) {
             Ruutu pelaajanRuutu = getPelaaja().getRuutu();
             List<Ruutu> ruudut = lauta.ymparoivatRuudut(pelaajanRuutu);
@@ -245,10 +244,9 @@ public class Peli {
                 poistaHahmo(hahmo);
             }
             pommit--;
-        } else {
-            throw new IllegalArgumentException("Ei pommeja jäljellä!");
+            return true;
         }
-        
+        return false;
     }
     
     /**

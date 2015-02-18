@@ -11,5 +11,5 @@ package daleks.kayttoliittyma;
  * @author lauimmon
  */
 public interface Paivitettava {
-    void paivita();
+    void piirra();
 }

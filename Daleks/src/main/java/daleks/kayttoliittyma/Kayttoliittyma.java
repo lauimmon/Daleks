@@ -26,11 +26,15 @@ public class Kayttoliittyma implements Runnable, KeyListener {
     private int sivunPituus;
     private Piirtoalusta piirtoalusta;
     private int dalekienMaara;
+    private boolean peliKaynnissa;
+    private boolean pysyPaikoillaan;
     
     public Kayttoliittyma(int leveys, int korkeus, int dalekienMaara) {
         this.dalekienMaara = dalekienMaara;
-        this.peli= new Peli(leveys, korkeus, dalekienMaara);
+        this.peli= new Peli(leveys, korkeus, dalekienMaara, 1, 1);
         this.sivunPituus = 20;
+        peliKaynnissa = true;
+        pysyPaikoillaan = false;
     }
     
     @Override
@@ -47,6 +51,20 @@ public class Kayttoliittyma implements Runnable, KeyListener {
   
         frame.pack();
         frame.setVisible(true);
+        
+        while (peliKaynnissa) {
+            piirtoalusta.piirra();
+            odota(100);
+            if (pysyPaikoillaan) {
+                while (true) {
+                    paivitaLauta();
+                    if (havisikoPelaaja() || voittikoPelaaja()) {
+                        peliKaynnissa = false;
+                        break;
+                    }
+                }
+            }
+        }
     }
   
     public void luoKomponentit(Container container) {
@@ -68,10 +86,8 @@ public class Kayttoliittyma implements Runnable, KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         boolean paivita = true;
-        if (e.getKeyCode() == KeyEvent.VK_NUMPAD4) {
+        if (e.getKeyCode() == KeyEvent.VK_NUMPAD4) 
             peli.liikutaPelaajaa(-1, 0);
-            piirtoalusta.paivita();
-        }
         else if (e.getKeyCode() == KeyEvent.VK_NUMPAD8)
             peli.liikutaPelaajaa(0, -1);
         else if (e.getKeyCode() == KeyEvent.VK_NUMPAD2)
@@ -87,33 +103,32 @@ public class Kayttoliittyma implements Runnable, KeyListener {
         else if (e.getKeyCode() == KeyEvent.VK_NUMPAD1)
             peli.liikutaPelaajaa(-1, 1);
         else if (e.getKeyCode() == KeyEvent.VK_NUMPAD5) {}
-        else if (e.getKeyCode() == KeyEvent.VK_R)
-            peli.rajaytaPommi();
+        else if (e.getKeyCode() == KeyEvent.VK_R) 
+            paivita = peli.rajaytaPommi();
         else if (e.getKeyCode() == KeyEvent.VK_T)
-            peli.teleporttaaPelaaja();
-        else if (e.getKeyCode() == KeyEvent.VK_P) {
-            pysyPaikoillaanLoppuunAsti();
-            paivita = false;
-        } else if (e.getKeyCode() == KeyEvent.VK_O) {
+            paivita = peli.teleporttaaPelaaja();
+        else if (e.getKeyCode() == KeyEvent.VK_P)
+            pysyPaikoillaan = true;
+        else if (e.getKeyCode() == KeyEvent.VK_O) {
             tulostaOhjeet();
             paivita = false;
         } else paivita = false;
         if (paivita) paivitaLauta();
     }
 
-    private void pysyPaikoillaanLoppuunAsti() {
-        while (true) {
-            paivitaLauta();
-            if (voittikoPelaaja() || havisikoPelaaja())
-                break;
-        }
-    }
+//    private void pysyPaikoillaanLoppuunAsti() {
+//        while (true) {
+//            paivitaLauta();
+//            if (voittikoPelaaja() || havisikoPelaaja())
+//                break;
+//        }
+//    }
 
     private void paivitaLauta() {
         havisikoPelaaja();
+        piirtoalusta.piirra();
+        odota(1000);
         peli.liikutaDalekejaPelaajaaPain();
-        //piirtoalusta.paivita();
-        odota(1500);
         voittikoPelaaja();
         havisikoPelaaja();
     }
@@ -128,7 +143,7 @@ public class Kayttoliittyma implements Runnable, KeyListener {
                 System.exit(0);
             }
             if (vastaus == 0) {
-                peli = new Peli(peli.getLauta().getKokoX(), peli.getLauta().getKokoY(), dalekienMaara);
+                peli = new Peli(peli.getLauta().getKokoX(), peli.getLauta().getKokoY(), dalekienMaara, peli.getPommit()+1, peli.getTeleportit()+1);
                 
             }
             return true;
@@ -141,7 +156,7 @@ public class Kayttoliittyma implements Runnable, KeyListener {
             
             JOptionPane.showMessageDialog(frame, "Voitit pelin!\n\nAloita seuraava kierros painamalla OK", "Daleks", 
                     JOptionPane.INFORMATION_MESSAGE);
-            peli = new Peli(peli.getLauta().getKokoX(), peli.getLauta().getKokoY(), dalekienMaara);
+            peli = new Peli(peli.getLauta().getKokoX(), peli.getLauta().getKokoY(), dalekienMaara, peli.getPommit()+1, peli.getTeleportit()+1);
             
             return true;
         }
@@ -149,7 +164,7 @@ public class Kayttoliittyma implements Runnable, KeyListener {
     }
     
     private void tulostaOhjeet() {
-        String saannot = "Tervetuloa pelaamaan Daleks-peliä!\n\n"
+        String ohjeet = "Tervetuloa pelaamaan Daleks-peliä!\n\n"
                 + "Pakene dalekeja ja yritä saada ne törmäämään toisiinsa.\n"
                 + "Dalekit kuolevat jos ne törmäävät toisiinsa ja sinä kuolet jos osut dalekiin.\n"
                 + "Voit tuhota vieressäsi olevat dalekit myös räjäyttämällä pommin.\n"
@@ -158,7 +173,7 @@ public class Kayttoliittyma implements Runnable, KeyListener {
                 + "8 ylös, 2 alas, 4 vasemmalle, 6 oikealle, 5 pysy paikallaan \nja loput vinottaisiin suuntiin.\n\n"
                 + "R pommin räjäytys\n"
                 + "T teleportti";
-        JOptionPane.showMessageDialog(frame, saannot);
+        JOptionPane.showMessageDialog(frame, ohjeet);
     }
 
     private void odota(int aika) {

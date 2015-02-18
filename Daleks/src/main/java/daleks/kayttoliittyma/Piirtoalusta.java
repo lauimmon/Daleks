@@ -19,10 +19,12 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
 
     private Peli peli;
     private int sivu;
+    private int kierros;
     
-    public Piirtoalusta(Peli peli, int ruudunSivunPituus) {
+    public Piirtoalusta(Peli peli, int ruudunSivunPituus, int kierros) {
         this.peli = peli;
         this.sivu = ruudunSivunPituus;
+        this.kierros = kierros;
     }
 
     @Override
@@ -50,8 +52,9 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
             
             g.fill3DRect(sivu * l.getRuutu().getX(), sivu * l.getRuutu().getY(), sivu, sivu, true);
         }
-        g.drawString("(R)äjähteet: "+peli.getPommit()+"    (T)eleportit: "+peli.getTeleportit(), 5, (peli.getLauta().getKokoY()+2)*sivu-20);
+        g.drawString("(R)äjähteet: "+peli.getPommit()+"    (T)eleportit: "+peli.getTeleportit(), 5, (peli.getLauta().getKokoY()+2)*sivu);
         g.drawString("(O)hjeet", (peli.getLauta().getKokoX()+1)*sivu-80, (peli.getLauta().getKokoY()+2)*sivu-20);
+        g.drawString("Kierros " + kierros, 5, (peli.getLauta().getKokoY()+2)*sivu-20);
     }
     
 }

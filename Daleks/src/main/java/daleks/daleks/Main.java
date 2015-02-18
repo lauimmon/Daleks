@@ -18,7 +18,7 @@ public class Main {
     public static void main(String[] args) {
         int korkeus = 10;
         int leveys = 20;
-        int dalekienMaara = 2;
+        int dalekienMaara = 20;
         Kayttoliittyma kali = new Kayttoliittyma(leveys,korkeus,dalekienMaara);
         kali.run();
     }

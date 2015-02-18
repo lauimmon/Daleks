@@ -107,8 +107,10 @@ public class Kayttoliittyma implements Runnable, KeyListener {
             paivita = peli.rajaytaPommi();
         else if (e.getKeyCode() == KeyEvent.VK_T)
             paivita = peli.teleporttaaPelaaja();
-        else if (e.getKeyCode() == KeyEvent.VK_P)
+        else if (e.getKeyCode() == KeyEvent.VK_P) {
             pysyPaikoillaan = true;
+            paivita = false;
+        }
         else if (e.getKeyCode() == KeyEvent.VK_O) {
             tulostaOhjeet();
             paivita = false;
@@ -126,9 +128,9 @@ public class Kayttoliittyma implements Runnable, KeyListener {
 
     private void paivitaLauta() {
         havisikoPelaaja();
-        piirtoalusta.piirra();
         odota(1000);
         peli.liikutaDalekejaPelaajaaPain();
+        piirtoalusta.piirra();
         voittikoPelaaja();
         havisikoPelaaja();
     }

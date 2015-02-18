@@ -9,7 +9,6 @@ package daleks.kayttoliittyma;
 import daleks.logiikka.Peli;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.logging.Level;
@@ -55,15 +54,7 @@ public class Kayttoliittyma implements Runnable, KeyListener {
         // Luo vasta tämän jälkeen näppäimistönkuuntelija, jonka lisäät frame-oliolle
         piirtoalusta = new Piirtoalusta(peli, sivunPituus);
         container.add(piirtoalusta);
-        getFrame().addKeyListener(this);
-    }
-  
-    public Paivitettava getPaivitettava() {
-        return piirtoalusta;
-    }
-  
-    public JFrame getFrame() {
-        return frame;
+        frame.addKeyListener(this);
     }
     
     @Override
@@ -79,58 +70,55 @@ public class Kayttoliittyma implements Runnable, KeyListener {
         boolean paivita = true;
         if (e.getKeyCode() == KeyEvent.VK_NUMPAD4) {
             peli.liikutaPelaajaa(-1, 0);
-        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD8) {
+            piirtoalusta.paivita();
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD8)
             peli.liikutaPelaajaa(0, -1);
-        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD2) {
+        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD2)
             peli.liikutaPelaajaa(0, 1);
-        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD6) {
+        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD6)
             peli.liikutaPelaajaa(1, 0);
-        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD7) {
+        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD7)
             peli.liikutaPelaajaa(-1, -1);
-        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD9) {
+        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD9)
             peli.liikutaPelaajaa(1, -1);
-        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD3) {
+        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD3)
             peli.liikutaPelaajaa(1, 1);
-        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD1) {
+        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD1)
             peli.liikutaPelaajaa(-1, 1);
-        } else if (e.getKeyCode() == KeyEvent.VK_R) {
+        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD5) {}
+        else if (e.getKeyCode() == KeyEvent.VK_R)
             peli.rajaytaPommi();
-        } else if (e.getKeyCode() == KeyEvent.VK_T) {
+        else if (e.getKeyCode() == KeyEvent.VK_T)
             peli.teleporttaaPelaaja();
-        } else if (e.getKeyCode() == KeyEvent.VK_P) {
-            while (true) {
-                paivitaLauta();
-                if (voittikoPelaaja() || havisikoPelaaja()) {
-                    break;
-                }
-            }
+        else if (e.getKeyCode() == KeyEvent.VK_P) {
+            pysyPaikoillaanLoppuunAsti();
             paivita = false;
         } else if (e.getKeyCode() == KeyEvent.VK_O) {
             tulostaOhjeet();
             paivita = false;
-        }
-        if (paivita) {
+        } else paivita = false;
+        if (paivita) paivitaLauta();
+    }
+
+    private void pysyPaikoillaanLoppuunAsti() {
+        while (true) {
             paivitaLauta();
+            if (voittikoPelaaja() || havisikoPelaaja())
+                break;
         }
     }
 
     private void paivitaLauta() {
-        if (!voittikoPelaaja() && !havisikoPelaaja()) {
-            piirtoalusta.paivita();
-            try {
-                Thread.sleep(1500);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Kayttoliittyma.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            peli.liikutaDalekejaPelaajaaPain();
-            piirtoalusta.paivita();
-            voittikoPelaaja();
-            havisikoPelaaja();
-        }
-        
+        havisikoPelaaja();
+        peli.liikutaDalekejaPelaajaaPain();
+        //piirtoalusta.paivita();
+        odota(1500);
+        voittikoPelaaja();
+        havisikoPelaaja();
     }
 
-    private boolean havisikoPelaaja() throws HeadlessException {
+    private boolean havisikoPelaaja() {
         if (peli.havisikoPelaaja()) {
             Object[] kyllaEi = {"Kyllä", "Ei"};
             
@@ -148,7 +136,7 @@ public class Kayttoliittyma implements Runnable, KeyListener {
         return false;
     }
 
-    private boolean voittikoPelaaja() throws HeadlessException {
+    private boolean voittikoPelaaja() {
         if (peli.voittikoPelaaja()) {
             
             JOptionPane.showMessageDialog(frame, "Voitit pelin!\n\nAloita seuraava kierros painamalla OK", "Daleks", 
@@ -171,6 +159,14 @@ public class Kayttoliittyma implements Runnable, KeyListener {
                 + "R pommin räjäytys\n"
                 + "T teleportti";
         JOptionPane.showMessageDialog(frame, saannot);
+    }
+
+    private void odota(int aika) {
+        try {
+            Thread.sleep(aika);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Kayttoliittyma.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

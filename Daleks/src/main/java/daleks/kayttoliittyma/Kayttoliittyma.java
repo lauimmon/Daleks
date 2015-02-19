@@ -46,13 +46,14 @@ public class Kayttoliittyma implements Runnable, KeyListener {
     @Override
     public void run() {
         frame = new JFrame("Daleks");
-        int korkeus = (peli.getLauta().getKokoY()+2)*sivunPituus+40;
-        int leveys = (peli.getLauta().getKokoX()+1)*sivunPituus-5;
-        
+        int korkeus = (peli.getLauta().getKokoY()+2)*sivunPituus+10;
+        int leveys = (peli.getLauta().getKokoX()+1)*sivunPituus-20;
+       
         frame.setPreferredSize(new Dimension(leveys, korkeus));
-  
+        frame.setResizable(false);
+        
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-  
+        
         luoKomponentit(frame.getContentPane());
   
         frame.pack();
@@ -97,6 +98,7 @@ public class Kayttoliittyma implements Runnable, KeyListener {
 
     private void pysyPaikoillaanLoppuunAsti() {
         while (!(havisiko || voittiko)) {
+            odota(600);
             paivitaLauta();
         }
         pysyPaikoillaan = false;
@@ -130,6 +132,23 @@ public class Kayttoliittyma implements Runnable, KeyListener {
         else if (e.getKeyCode() == KeyEvent.VK_NUMPAD1)
             peli.liikutaPelaajaa(-1, 1);
         else if (e.getKeyCode() == KeyEvent.VK_NUMPAD5) {}
+        else if (e.getKeyCode() == KeyEvent.VK_A) 
+            peli.liikutaPelaajaa(-1, 0);
+        else if (e.getKeyCode() == KeyEvent.VK_W)
+            peli.liikutaPelaajaa(0, -1);
+        else if (e.getKeyCode() == KeyEvent.VK_X)
+            peli.liikutaPelaajaa(0, 1);
+        else if (e.getKeyCode() == KeyEvent.VK_D)
+            peli.liikutaPelaajaa(1, 0);
+        else if (e.getKeyCode() == KeyEvent.VK_Q)
+            peli.liikutaPelaajaa(-1, -1);
+        else if (e.getKeyCode() == KeyEvent.VK_E)
+            peli.liikutaPelaajaa(1, -1);
+        else if (e.getKeyCode() == KeyEvent.VK_C)
+            peli.liikutaPelaajaa(1, 1);
+        else if (e.getKeyCode() == KeyEvent.VK_Z)
+            peli.liikutaPelaajaa(-1, 1);
+        else if (e.getKeyCode() == KeyEvent.VK_S) {}
         else if (e.getKeyCode() == KeyEvent.VK_R) 
             paivita = peli.rajaytaPommi();
         else if (e.getKeyCode() == KeyEvent.VK_T)
@@ -148,7 +167,6 @@ public class Kayttoliittyma implements Runnable, KeyListener {
     private void paivitaLauta() {
         havisikoPelaaja();
         if (havisiko) return;
-        odota(600);
         peli.liikutaDalekejaPelaajaaPain();
         piirtoalusta.piirra();
         havisikoPelaaja();

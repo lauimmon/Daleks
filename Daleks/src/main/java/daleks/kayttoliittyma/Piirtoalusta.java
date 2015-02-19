@@ -42,7 +42,11 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
         for (Liikkuva l: peli.getHahmot()) {
             if (l.getTyyppi().equals(Tyyppi.DALEK)) {
                 g.setColor(Color.BLACK);
-                piirraDalekVasemmalle(g, sivu*l.getRuutu().getX(), sivu*l.getRuutu().getY());
+                if (l.getRuutu().getX() < peli.getPelaaja().getRuutu().getX()) {
+                    piirraDalekOikealle(g, sivu*l.getRuutu().getX(), sivu*l.getRuutu().getY());
+                } else {
+                    piirraDalekVasemmalle(g, sivu*l.getRuutu().getX(), sivu*l.getRuutu().getY());
+                }
             } else if (l.getTyyppi().equals(Tyyppi.KUOLLUTDALEK)) {
                 g.setColor(Color.GRAY);
                 piirraKuollutDalek(g,sivu*l.getRuutu().getX(), sivu*l.getRuutu().getY());
@@ -104,45 +108,46 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
     }
     
     private void piirraDalekOikealle(Graphics g, int x, int y) {
-        g.fillRect(24-x-19, y+1, 6, 4);
-        g.fillRect(24-x-12, y+2, 5, 1);
+        int max = peli.getLauta().getKokoX();
+        g.fillRect(sivu+x-19, y+1, 6, 4);
+        g.fillRect(sivu+x-12, y+2, 5, 1);
         
-        g.fillRect(24-x-13, y+2, 1, 6);
-        g.fillRect(24-x-20, y+2, 1, 6);
-        g.fillRect(24-x-16, y+5, 1, 3);
+        g.fillRect(sivu+x-13, y+2, 1, 6);
+        g.fillRect(sivu+x-20, y+2, 1, 6);
+        g.fillRect(sivu+x-16, y+5, 1, 3);
         
-        g.fillRect(24-x-12, y+4, 1, 1);
-        g.fillRect(24-x-21, y+3, 1, 2);
+        g.fillRect(sivu+x-12, y+4, 1, 1);
+        g.fillRect(sivu+x-21, y+3, 1, 2);
         
-        g.fillRect(24-x-21, y+5, 10, 1);
-        g.fillRect(24-x-21, y+8, 10, 1);
-        g.fillRect(24-x-22, y+12, 11, 1);
+        g.fillRect(sivu+x-21, y+5, 10, 1);
+        g.fillRect(sivu+x-21, y+8, 10, 1);
+        g.fillRect(sivu+x-22, y+12, 11, 1);
         
         for (int i = 0; i < 6; i++) {
-            g.fillRect(24-x-12-2*i, y+9, 1, 3);
+            g.fillRect(sivu+x-12-2*i, y+9, 1, 3);
         }
         
-        g.fillRect(24-x-11, y+9, 1, 5);
-        g.fillRect(24-x-10, y+10, 1, 2);
-        g.fillRect(24-x-11, y+10, 9, 1);
-        g.fillRect(24-x-2, y+9, 1, 3);
+        g.fillRect(sivu+x-11, y+9, 1, 5);
+        g.fillRect(sivu+x-10, y+10, 1, 2);
+        g.fillRect(sivu+x-11, y+10, 9, 1);
+        g.fillRect(sivu+x-2, y+9, 1, 3);
         
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 4; j++) {
-                g.fillRect(24-x-11-2*i, y+13+2*j, 1, 1);
-                g.fillRect(24-x-12-2*i, y+14+2*j, 1, 1);
+                g.fillRect(sivu+x-11-2*i, y+13+2*j, 1, 1);
+                g.fillRect(sivu+x-12-2*i, y+14+2*j, 1, 1);
             }
         }
         
         for (int i = 0; i < 4; i++) {
-            g.fillRect(24-x-10, y+16+2*i, 1, 1);
+            g.fillRect(sivu+x-10, y+16+2*i, 1, 1);
         }
         
         for (int i = 0; i < 1; i++) {
-            g.fillRect(24-x-9, y+19+2*i, 1, 1);
+            g.fillRect(sivu+x-9, y+19+2*i, 1, 1);
         }
         
-        g.fillRect(24-x-23, y+21, 16, 2);
+        g.fillRect(sivu+x-23, y+21, 16, 2);
     }
 
     private void piirraKuollutDalek(Graphics g, int x, int y) {

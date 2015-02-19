@@ -39,16 +39,6 @@ public abstract class Liikkuva implements Comparator<Liikkuva>, Comparable<Liikk
     public void liiku(Ruutu ruutu) {
         this.ruutu = ruutu;
     }
-    
-    /**
-     * Metodi liikuttaa Liikkuvaa halutun ruutumäärän korkeus- ja leveyssuunnassa.
-     * 
-     * @param x, miten monta ruutua liikutaan korkeussuunnassa
-     * @param y, miten monta ruutua liikutaan leveyssuunnassa
-     */
-    public void liiku(int x, int y) {
-        ruutu = new Ruutu(ruutu.getX()+x, ruutu.getY()+y);
-    }
 
     public Ruutu getRuutu() {
         return ruutu;

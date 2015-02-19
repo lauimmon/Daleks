@@ -31,20 +31,6 @@ public class Dalek extends Liikkuva {
     public void kuole() {
         setTyyppi(Tyyppi.KUOLLUTDALEK);
     }
-    
-    /**
-     * Liiku-metodi liikuttaa dalekia vain jos se on elossa. 
-     * Metodi suorittaa Liikkuva-luokan metodin liiku(x,y).
-     * 
-     * @param x on ruutumäärä joka liikutaan korkeussuunnassa
-     * @param y on ruutumäärä joka liikutaan leveyssuunnassa
-     */
-    @Override
-    public void liiku(int x, int y) {
-        if (getTyyppi() == Tyyppi.DALEK) {
-            super.liiku(x, y);
-        }
-    }
 
     /**
      * Liiku-metodi liikuttaa dalekia vain jos se on elossa. 

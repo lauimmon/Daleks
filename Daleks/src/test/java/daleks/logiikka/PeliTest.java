@@ -187,7 +187,7 @@ public class PeliTest {
     }
     
     @Test
-    public void liikuttaPelaajanOikeaanRuutuun1() {
+    public void liikuttaPelaajanOikeaanRuutuun() {
         peli.poistaMontaHahmoa(peli.getHahmot());
         
         Pelaaja pelaaja = new Pelaaja(new Ruutu(0,1));
@@ -198,34 +198,12 @@ public class PeliTest {
     }
     
     @Test
-    public void liikuttaPelaajanOikeaanRuutuun2() {
-       peli.poistaMontaHahmoa(peli.getHahmot());
-        
-        Pelaaja pelaaja = new Pelaaja(new Ruutu(3,2));
-        peli.lisaaHahmo(pelaaja);
-        peli.liikutaPelaajaa(new Ruutu(5,5));
-        
-        assertEquals(pelaaja.getRuutu(), new Ruutu(5,5));
-    }
-    
-    @Test
-    public void eiLiikutaPelaajaaJosTavoiteruutuOnLaudanUlkopuolella1() {
+    public void eiLiikutaPelaajaaJosTavoiteruutuOnLaudanUlkopuolella() {
         peli.poistaMontaHahmoa(peli.getHahmot());
         
         Pelaaja pelaaja = new Pelaaja(new Ruutu(0,1));
         peli.lisaaHahmo(pelaaja);
         peli.liikutaPelaajaa( -1, 0);
-        
-        assertEquals(pelaaja.getRuutu(), new Ruutu(0,1));
-    }
-    
-    @Test
-    public void eiLiikutaPelaajaaJosTavoiteruutuOnLaudanUlkopuolella2() {
-        peli.poistaMontaHahmoa(peli.getHahmot());
-        
-        Pelaaja pelaaja = new Pelaaja(new Ruutu(0,1));
-        peli.lisaaHahmo(pelaaja);
-        peli.liikutaPelaajaa(new Ruutu(11,0));
         
         assertEquals(pelaaja.getRuutu(), new Ruutu(0,1));
     }
@@ -334,6 +312,8 @@ public class PeliTest {
     
     @Test
     public void pelaajaTeleporttaaAinaTyhjaanRuutuun() {
+        peli = new Peli(10,20, 1, 1, 1000);
+        
         peli.poistaMontaHahmoa(peli.getHahmot());
         
         Pelaaja pelaaja = new Pelaaja(new Ruutu(0,0));
@@ -342,7 +322,6 @@ public class PeliTest {
         peli.lisaaHahmo(dalek1);
             
         List<Ruutu> loppuRuudut = new ArrayList<Ruutu>();
-        peli.setTeleportit(1000);
         
         for (int i = 0; i < 1000; i++) {
             peli.teleporttaaPelaaja();

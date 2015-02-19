@@ -98,19 +98,11 @@ public class LiikkuvaTest {
     
     
     @Test
-    public void liikkuvaLiikkuuOikein1() {
+    public void liikkuvaLiikkuuOikein() {
         Liikkuva dalek = new Dalek(new Ruutu(0,7));
         dalek.liiku(new Ruutu(1,1));
         
         assertEquals(dalek.getRuutu(), new Ruutu(1,1));
-    }
-    
-    @Test
-    public void liikkuvaLiikkuuOikein2() {
-        Liikkuva dalek = new Dalek(new Ruutu(0,7));
-        dalek.liiku(1,1);
-        
-        assertEquals(dalek.getRuutu(), new Ruutu(1,8));
     }
     
 }

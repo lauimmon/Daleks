@@ -56,14 +56,7 @@ public class DalekTest {
     }
     
     @Test
-    public void dalekLiikkuuOikein1() {
-        dalek.liiku(1, 0);
-        
-        assertEquals(new Ruutu(2,2), dalek.getRuutu());
-    }
-    
-    @Test
-    public void dalekLiikkuuOikein2() {
+    public void dalekLiikkuuOikein() {
         dalek.liiku(new Ruutu(10,10));
         
         assertEquals(new Ruutu(10,10), dalek.getRuutu());
@@ -77,16 +70,7 @@ public class DalekTest {
     }
     
     @Test
-    public void kuollutDalekEiLiiku1() {
-        Ruutu aloitusruutu = dalek.getRuutu();
-        dalek.kuole();
-        dalek.liiku(10,0);
-        
-        assertEquals(aloitusruutu, dalek.getRuutu());
-    }
-    
-    @Test
-    public void kuollutDalekEiLiiku2() {
+    public void kuollutDalekEiLiiku() {
         Ruutu aloitusruutu = dalek.getRuutu();
         dalek.kuole();
         dalek.liiku(new Ruutu(10,10));

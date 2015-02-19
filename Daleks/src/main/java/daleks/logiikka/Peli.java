@@ -60,14 +60,6 @@ public class Peli {
     public int getTeleportit() {
         return teleportit;
     }
-
-    public void setPommit(int pommit) {
-        this.pommit = pommit;
-    }
-
-    public void setTeleportit(int teleportit) {
-        this.teleportit = teleportit;
-    }
     
     /**
      * Metodi hakee Pelissä olevien Liikkuvien joukosta Pelaajan.
@@ -163,19 +155,6 @@ public class Peli {
     public void liikutaPelaajaa(int x, int y){
         Liikkuva pelaaja = getPelaaja();
         Ruutu ruutu = new Ruutu(pelaaja.getRuutu().getX() + x, pelaaja.getRuutu().getY() + y);
-        if (lauta.onkoRuutuLaudalla(ruutu) && !mikaTyyppiRuudussa(ruutu).equals(Tyyppi.KUOLLUTDALEK)) {
-            pelaaja.liiku(ruutu);
-            osuukoPelaajaDalekiin();
-        }
-    }
-    
-    /**
-     * Metodi liikuttaa pelissä olevaa pelaajaa.
-     * 
-     * @param ruutu, mihin ruutuun pelaaja halutaan liikuttaa
-     */
-    public void liikutaPelaajaa(Ruutu ruutu){
-        Liikkuva pelaaja = getPelaaja();
         if (lauta.onkoRuutuLaudalla(ruutu) && !mikaTyyppiRuudussa(ruutu).equals(Tyyppi.KUOLLUTDALEK)) {
             pelaaja.liiku(ruutu);
             osuukoPelaajaDalekiin();

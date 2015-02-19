@@ -35,7 +35,7 @@ public class Kayttoliittyma implements Runnable, KeyListener {
     public Kayttoliittyma(int leveys, int korkeus, int dalekienMaara) {
         this.dalekienMaara = dalekienMaara;
         this.peli= new Peli(leveys, korkeus, dalekienMaara, 1, 1);
-        this.sivunPituus = 20;
+        this.sivunPituus = 24;
         peliKaynnissa = true;
         pysyPaikoillaan = false;
         havisiko = false;
@@ -61,7 +61,7 @@ public class Kayttoliittyma implements Runnable, KeyListener {
         while (true) {
             while (peliKaynnissa) {
                 piirtoalusta.piirra();
-                odota(300);
+                odota(200);
                 if (pysyPaikoillaan) {
                     pysyPaikoillaanLoppuunAsti();
                 }
@@ -96,13 +96,10 @@ public class Kayttoliittyma implements Runnable, KeyListener {
     }
 
     private void pysyPaikoillaanLoppuunAsti() {
-        while (true) {
+        while (!(havisiko || voittiko)) {
             paivitaLauta();
-            if (havisiko || voittiko) {
-                pysyPaikoillaan = false;
-                return;
-            }
         }
+        pysyPaikoillaan = false;
     }
     
     @Override
@@ -151,7 +148,7 @@ public class Kayttoliittyma implements Runnable, KeyListener {
     private void paivitaLauta() {
         havisikoPelaaja();
         if (havisiko) return;
-        odota(800);
+        odota(600);
         peli.liikutaDalekejaPelaajaaPain();
         piirtoalusta.piirra();
         havisikoPelaaja();

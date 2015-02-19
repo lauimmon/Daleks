@@ -55,14 +55,7 @@ public class PelaajaTest {
     }
     
     @Test
-    public void pelaajaLiikkuuOikein1() {
-        pelaaja.liiku(0, 1);
-        
-        assertEquals(new Ruutu(1,3), pelaaja.getRuutu());
-    }
-    
-    @Test
-    public void pelaajaLiikkuuOikein2() {
+    public void pelaajaLiikkuuOikein() {
         pelaaja.liiku(new Ruutu(10,10));
         
         assertEquals(new Ruutu(10,10), pelaaja.getRuutu());

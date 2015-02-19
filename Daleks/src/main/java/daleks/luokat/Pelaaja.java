@@ -35,20 +35,6 @@ public class Pelaaja extends Liikkuva {
 
     /**
      * Metodi liikuttaa pelaajaa vain jos se on elossa.
-     * Metodi suorittaa Liikkuva-luokan liiku(x,y) -metodin.
-     * 
-     * @param x on ruutumäärä, joka halutaan korkeussuunnassa liikkua
-     * @param y on ruutumäärä, joka halutaan leveyssuunnassa liikkua
-     */
-    @Override
-    public void liiku(int x, int y) {
-        if (getTyyppi() == Tyyppi.PELAAJA) {
-            super.liiku(x, y);
-        }
-    }
-
-    /**
-     * Metodi liikuttaa pelaajaa vain jos se on elossa.
      * Metodi suorittaa Liikkuva-luokan liiku(ruutu) -metodin.
      * 
      * @param ruutu tavoiteruutu johon halutaan liikkua

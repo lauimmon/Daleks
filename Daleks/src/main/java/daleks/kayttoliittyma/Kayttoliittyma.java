@@ -205,6 +205,7 @@ public class Kayttoliittyma implements Runnable, KeyListener {
                 + "Voitat pelin kun kaikki dalekit kuolevat.\n\n"
                 + "Ohjaus:\n\nLiikkuminen numeronäppäimistä.\n"
                 + "8 ylös, 2 alas, 4 vasemmalle, 6 oikealle, 5 pysy paikallaan ja loput vinottaisiin suuntiin.\n"
+                + "Tai vaihtoehtoisesti kirjainnäppäimillä QWE,ASD,ZXC\n"
                 + "P näppäimellä voit jäädä paikallesi loppuajaksi.\n\n"
                 + "R pommin räjäytys\n"
                 + "T teleportti";

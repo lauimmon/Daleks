@@ -23,7 +23,7 @@ public class Kayttoliittyma implements Runnable, KeyListener {
     
     private JFrame frame;
     private Peli peli;   
-    private int sivunPituus;
+    private final int sivunPituus;
     private Piirtoalusta piirtoalusta;
     private int dalekienMaara;
     private boolean peliKaynnissa;
@@ -31,16 +31,18 @@ public class Kayttoliittyma implements Runnable, KeyListener {
     private boolean havisiko;
     private boolean voittiko;
     private int kierros;
+    private int pisteet;
     
-    public Kayttoliittyma(int leveys, int korkeus, int dalekienMaara) {
-        this.dalekienMaara = dalekienMaara;
-        this.peli= new Peli(leveys, korkeus, dalekienMaara, 1, 1);
+    public Kayttoliittyma() {
+        this.dalekienMaara = 20;
+        this.peli= new Peli(30, 20, dalekienMaara, 1, 1);
         this.sivunPituus = 24;
         peliKaynnissa = true;
         pysyPaikoillaan = false;
         havisiko = false;
         voittiko = false;
         kierros = 1;
+        pisteet = 0;
     }
     
     @Override
@@ -61,6 +63,7 @@ public class Kayttoliittyma implements Runnable, KeyListener {
         
         while (true) {
             while (peliKaynnissa) {
+                System.out.println(dalekienMaara);
                 piirtoalusta.piirra();
                 odota(200);
                 if (pysyPaikoillaan) {
@@ -71,11 +74,11 @@ public class Kayttoliittyma implements Runnable, KeyListener {
                 }
             }
             if (voittiko) {
-                uusiPeli(peli.getPommit()+1, peli.getTeleportit()+1);
+                uusiPeli(voittiko);
                 voittiko = false;
                 peliKaynnissa = true;
             } else if (havisiko) {
-                uusiPeli(1, 1);
+                uusiPeli(voittiko);
                 havisiko = false;
                 peliKaynnissa = true;
             }
@@ -83,17 +86,39 @@ public class Kayttoliittyma implements Runnable, KeyListener {
     }
     
     public void luoKomponentit(Container container) {
-        piirtoalusta = new Piirtoalusta(peli, sivunPituus, kierros);
+        piirtoalusta = new Piirtoalusta(peli, sivunPituus, kierros, pisteet);
         container.add(piirtoalusta);
         frame.addKeyListener(this);
     }
     
-    private void uusiPeli(int pommit, int teleportit) {
-        peli = new Peli(peli.getLauta().getKokoX(), peli.getLauta().getKokoY(), dalekienMaara, pommit, teleportit);
-        piirtoalusta = new Piirtoalusta(peli, sivunPituus, kierros);
+    private void uusiPeli(boolean uusiKierros) {
+        if (uusiKierros) {
+            pisteet += dalekienMaara*50;
+            lisaaDalekienMaaraa();
+            kierros++;
+            peli = new Peli(peli.getLauta().getKokoX(), peli.getLauta().getKokoY(), dalekienMaara, peli.getPommit()+1, peli.getTeleportit()+1);
+        } else {
+            pisteet = 0;
+            dalekienMaara = 20;
+            kierros = 1;
+            peli = new Peli(peli.getLauta().getKokoX(), peli.getLauta().getKokoY(), dalekienMaara, 1, 1);
+        }
+        
+        piirtoalusta = new Piirtoalusta(peli, sivunPituus, kierros, pisteet);
         frame.getContentPane().add(piirtoalusta);
         frame.pack();
         frame.setVisible(true);
+    }
+
+    private void lisaaDalekienMaaraa() {
+        if (kierros < 3) {
+            dalekienMaara += 5;
+        } else if (kierros < 8) {
+            dalekienMaara += 4;
+        } else if (dalekienMaara < 78) {
+            dalekienMaara += 3;
+        }
+        
     }
 
     private void pysyPaikoillaanLoppuunAsti() {
@@ -184,7 +209,6 @@ public class Kayttoliittyma implements Runnable, KeyListener {
                 System.exit(0);
             }
             havisiko = true;
-            kierros = 1;
         }
     }
 
@@ -193,7 +217,6 @@ public class Kayttoliittyma implements Runnable, KeyListener {
             JOptionPane.showMessageDialog(frame, "Voitit pelin!\n\nAloita seuraava kierros painamalla OK", "Daleks", 
                     JOptionPane.INFORMATION_MESSAGE);
             voittiko = true;
-            kierros++;
         }
     }
     

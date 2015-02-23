@@ -17,14 +17,16 @@ import javax.swing.JPanel;
  */
 public class Piirtoalusta extends JPanel implements Paivitettava {
 
-    private Peli peli;
-    private int sivu;
-    private int kierros;
+    private final Peli peli;
+    private final int sivu;
+    private final int kierros;
+    private final int pisteet;
     
-    public Piirtoalusta(Peli peli, int ruudunSivunPituus, int kierros) {
+    public Piirtoalusta(Peli peli, int ruudunSivunPituus, int kierros, int pisteet) {
         this.peli = peli;
         this.sivu = ruudunSivunPituus;
         this.kierros = kierros;
+        this.pisteet = pisteet;
     }
 
     @Override
@@ -59,8 +61,9 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
             }
         }
         g.drawString("(R)äjähteet: "+peli.getPommit()+"    (T)eleportit: "+peli.getTeleportit(), 5, (peli.getLauta().getKokoY()+2)*sivu);
-        g.drawString("(O)hjeet", (peli.getLauta().getKokoX()+1)*sivu-80, (peli.getLauta().getKokoY()+2)*sivu-20);
-        g.drawString("Kierros " + kierros, 5, (peli.getLauta().getKokoY()+2)*sivu-20);
+        g.drawString("(O)hjeet", (peli.getLauta().getKokoX()+1)*sivu-80, (peli.getLauta().getKokoY()+2)*sivu-30);
+        g.drawString("Kierros " + kierros, 5, (peli.getLauta().getKokoY()+2)*sivu-30);
+        g.drawString("Pisteet: " + pisteet, 350, (peli.getLauta().getKokoY()+2)*sivu-30);
     }
     
     

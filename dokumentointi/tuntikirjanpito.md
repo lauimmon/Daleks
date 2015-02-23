@@ -34,4 +34,8 @@
 
 **18.2.2015:** 5,5 tuntia käyttöliittymän muokkausta ja uuden sekvenssikaavion teko
 
-**19.2.2015:** Neljä tuntia turhien metodien poistoa, testien muokkausta ja käyttöliittymän muokkausta
+**19.2.2015:** Viisi tuntia turhien metodien poistoa, testien muokkausta ja käyttöliittymän muokkausta
+
+**20.2.2015:** 40 min käyttöliittymän muokkausta
+
+**23.2.2015:** 1,5 tuntia pistelaskun lisäys ja pelin vaikeutus kierroksien mukaan

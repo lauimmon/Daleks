@@ -12,7 +12,7 @@ import daleks.kayttoliittyma.*;
  *
  * @author lauimmon
  */
-public class Main {
+public class Daleks {
 
     
     public static void main(String[] args) {

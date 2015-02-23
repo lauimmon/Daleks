@@ -14,9 +14,9 @@
 
 **29.1.2015:** 5 tuntia testien laajentamista. Pohdin miten liian suureksi paisunutta Pelilauta-luokkaa voisi hajottaa osiin, mutta yritykset eivät tuottaneet tulosta.
 
-**30.1.2015:** puoli tuntia koodikatselmointi-ohjelmaan tutustumista
+**30.1.2015:** Puoli tuntia koodikatselmointi-ohjelmaan tutustumista
 
-**31.1.2015:** puoli tuntia ohjeiden tekoa peliin
+**31.1.2015:** Puoli tuntia ohjeiden tekoa peliin
 
 **3.2.2015:** Viisi tuntia paketteihin jakoa ja uuden Peli-luokan tekoa sekä koodikatselmmoinnin kirjoittamista
 
@@ -30,3 +30,8 @@
 
 **13.2.2015:** Tunti sekvenssi- ja luokkakaavion tekoa
 
+**17.2.2015:** Puoli tuntia käyttöliittymän muokkausta
+
+**18.2.2015:** 5,5 tuntia käyttöliittymän muokkausta ja uuden sekvenssikaavion teko
+
+**19.2.2015:** Neljä tuntia turhien metodien poistoa, testien muokkausta ja käyttöliittymän muokkausta

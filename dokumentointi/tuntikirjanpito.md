@@ -39,3 +39,5 @@
 **20.2.2015:** 40 min käyttöliittymän muokkausta
 
 **23.2.2015:** 1,5 tuntia pistelaskun lisäys ja pelin vaikeutus kierroksien mukaan
+
+**24.2.2015:** Kaksi tuntia koodikatselmoinnin laatimista sekä teleportin toiminnan muokkaus sellaiseksi, että todennäköisyys teleportata dalekin viereen on minimaalinen

@@ -183,15 +183,27 @@ public class Peli {
      * Metodi ei siirrä pelaajaa jos teleportit ovat pelissä loppu.
      * Teleporttaaminen vähentää teleporttien määrä yhdellä.
      * 
+     * @return teleportattiinko pelaaja vai ei
      * @throws IllegalArgumentException kun teleportteja ei ole jäljellä
      */
     public boolean teleporttaaPelaaja() {
         if (teleportit > 0) {
             teleportit--;
             Random random = new Random();
+            int yrityskerta = 0;
             while (true) {
+                boolean suoritetaan = true;
                 Ruutu ruutu = new Ruutu(random.nextInt(lauta.getKokoX()), random.nextInt(lauta.getKokoY()));
-                if (mikaTyyppiRuudussa(ruutu).equals(Tyyppi.TYHJA)) {
+                List<Ruutu> ymparoivat = this.lauta.ymparoivatRuudut(ruutu);
+                for (Liikkuva hahmo : hahmot) {
+                    if (hahmo.getTyyppi().equals(Tyyppi.DALEK) && ymparoivat.contains(hahmo.getRuutu())) {
+                        if (yrityskerta < 500) {
+                            suoritetaan = false;
+                        }
+                        yrityskerta++;
+                    }
+                }
+                if (suoritetaan && mikaTyyppiRuudussa(ruutu).equals(Tyyppi.TYHJA)) {
                     getPelaaja().liiku(ruutu);
                     return true;
                 }
@@ -207,6 +219,7 @@ public class Peli {
      * Metodi ei räjäytä pommia, jos pommit ovat pelissä loppu.
      * Pommin räjäyttäminen vähentää pommien määrä yhdellä
      * 
+     * @return räjäytettiinkö pommi vai ei
      * @throws IllegalArgumentException kun pommeja ei ole jäljellä
      */
     public boolean rajaytaPommi() {

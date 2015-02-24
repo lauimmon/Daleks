@@ -63,7 +63,6 @@ public class Kayttoliittyma implements Runnable, KeyListener {
         
         while (true) {
             while (peliKaynnissa) {
-                System.out.println(dalekienMaara);
                 piirtoalusta.piirra();
                 odota(200);
                 if (pysyPaikoillaan) {

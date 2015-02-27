@@ -39,7 +39,7 @@ public class Kayttoliittyma implements Runnable, KeyListener {
      * pelilaudan leveydeksi 30 ja korkeudeksi 20 sekä
      * pommien ja teleporttien määräksi 1.
      * Asetetaan, että peli on käynnissä, pelaaja ei jää paikalleen,
-     * eikä pelaaja ole hävinnyt ti voittanut.
+     * eikä pelaaja ole hävinnyt tai voittanut.
      * Kierrokseksi asetetaan 1 ja pisteiksi 0.
      * 
      */
@@ -55,6 +55,13 @@ public class Kayttoliittyma implements Runnable, KeyListener {
         pisteet = 0;
     }
     
+    /**
+     * Metodissa luodaan käyttöliittymän komponentit ja päivitetään 
+     * jatkuvasti peli-ikkunan näkymää. Tästä poiketaan vain jos attribuuteissa
+     * pysyPaikoillaan, voittiko tai havisiko tapahtuu muutoksia. Jos
+     * pelaaja häviää tai voittaa, käyttäjälle ilmoitetaan tästä, päivitetään pisteet
+     * ja aloitetaan uusi kierros.
+     */
     @Override
     public void run() {
         frame = new JFrame("Daleks");
@@ -92,7 +99,7 @@ public class Kayttoliittyma implements Runnable, KeyListener {
                 ilmoitaUudestaKierroksesta();
                 uusiPeli(true);
             } else if (havisiko) {
-                pisteet += 50*(dalekienMaara-peli.elavienDalekienMaara());
+                pisteet += 25*(dalekienMaara-peli.elavienDalekienMaara());
                 piirtoalusta.setPisteet(pisteet);
                 piirtoalusta.piirra();
                 kysyUuudestaPelista();
@@ -107,6 +114,10 @@ public class Kayttoliittyma implements Runnable, KeyListener {
         frame.addKeyListener(this);
     }
 
+    /**
+     * Käyttäjältä kysytään haluaako tämä aloittaa uuden pelin hävittyään.
+     * Jos ei, ohjelman suoritus pysäytetään.
+     */
     private void kysyUuudestaPelista() {
         Object[] kyllaEi = {"Kyllä", "Ei"};
             
@@ -128,7 +139,7 @@ public class Kayttoliittyma implements Runnable, KeyListener {
      * dalekien, pommien ja teleporttien määrää lisätään. Jos aloitetaan
      * alin taso, dalekien, pommien ja teleporttien määrä palautetaan alkuperäiseen.
      * 
-     * @param uusiKierros false jos aloitetaan ensimmäinen kierros, true jos seuraava kierros, eli kierros + 1
+     * @param uusiKierros false jos aloitetaan ensimmäinen kierros, true jos tämänhetkistä korkeampi kierros
      */
     private void uusiPeli(boolean uusiKierros) {
         if (uusiKierros) {
@@ -157,6 +168,9 @@ public class Kayttoliittyma implements Runnable, KeyListener {
         }
     }
 
+    /**
+     * Toistaa laudan päivitystä niin kauan kuin pelaaja ei ole voittanut tai hävinnyt
+     */
     private void pysyPaikoillaanLoppuunAsti() {
         while (!(havisiko || voittiko)) {
             odota(600);
@@ -175,7 +189,6 @@ public class Kayttoliittyma implements Runnable, KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        boolean paivita = true;
         if (e.getKeyCode() == KeyEvent.VK_NUMPAD4 || e.getKeyCode() == KeyEvent.VK_A) 
             peli.liikutaPelaajaa(-1, 0);
         else if (e.getKeyCode() == KeyEvent.VK_NUMPAD8 || e.getKeyCode() == KeyEvent.VK_W)
@@ -193,22 +206,27 @@ public class Kayttoliittyma implements Runnable, KeyListener {
         else if (e.getKeyCode() == KeyEvent.VK_NUMPAD1 || e.getKeyCode() == KeyEvent.VK_Z)
             peli.liikutaPelaajaa(-1, 1);
         else if (e.getKeyCode() == KeyEvent.VK_NUMPAD5 || e.getKeyCode() == KeyEvent.VK_S) {}
-        
-        else if (e.getKeyCode() == KeyEvent.VK_R) 
-            paivita = peli.rajaytaPommi();
-        else if (e.getKeyCode() == KeyEvent.VK_T)
-            paivita = peli.teleporttaaPelaaja();
+        else if (e.getKeyCode() == KeyEvent.VK_R) {
+            if (!peli.rajaytaPommi()) return;
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_T) {
+            if (!peli.teleporttaaPelaaja()) return;
+        }
         else if (e.getKeyCode() == KeyEvent.VK_P) {
             pysyPaikoillaan = true;
-            paivita = false;
+            return;
         }
         else if (e.getKeyCode() == KeyEvent.VK_O) {
             tulostaOhjeet();
-            paivita = false;
-        } else paivita = false;
-        if (paivita) paivitaLauta();
+            return;
+        } else return;
+        paivitaLauta();
     }
 
+    /**
+     * Laudan päivittämiseen kuuluu dalekien siirtäminen pelaajaa päin
+     * sekä tarkistus ennen ja jälkeen, että onko pelaaja hävinnyt tai voittanut
+     */
     private void paivitaLauta() {
         havisikoPelaaja();
         if (havisiko) return;

@@ -38,6 +38,9 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         
+        g.setColor(new Color(160,160,160));
+        g.fillRect(0,0, sivu*peli.getLauta().getKokoX(), sivu*peli.getLauta().getKokoY());
+        
         g.setColor(Color.BLACK);
         g.drawRect(-1, -1, sivu*peli.getLauta().getKokoX()+1, sivu*peli.getLauta().getKokoY()+1);
         
@@ -54,7 +57,7 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
                 piirraKuollutDalek(g,sivu*l.getRuutu().getX(), sivu*l.getRuutu().getY());
             } else if (l.getTyyppi().equals(Tyyppi.PELAAJA)) {
                 g.setColor(Color.BLUE);
-                g.fillRect(sivu * l.getRuutu().getX(), sivu * l.getRuutu().getY(), sivu, sivu);
+                piirraPelaaja(g, sivu*l.getRuutu().getX(), sivu*l.getRuutu().getY());
             } else if (l.getTyyppi().equals(Tyyppi.KUOLLUTPELAAJA)) {
                 g.setColor(Color.RED);
                 g.fillRect(sivu * l.getRuutu().getX(), sivu * l.getRuutu().getY(), sivu, sivu);
@@ -191,5 +194,65 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
         for (int i = 0; i < 4; i++) {
             g.fillRect(x+16+i, y+14-i, 1, 2);
         }
+    }
+    
+    private void piirraPelaaja(Graphics g, int x, int y) {
+        // hiukset
+        g.setColor(new Color(102,51,0));
+        
+        g.fillRect(x+9, y+0, 1, 1);
+        g.fillRect(x+12, y+0, 1, 1);
+        g.fillRect(x+10, y+1, 4, 2);
+        g.fillRect(x+9, y+2, 1, 1);
+        g.fillRect(x+10, y+3, 1, 1);
+        g.fillRect(x+14, y+3, 1, 2);
+        
+        // kasvot
+        g.setColor(new Color(255,213,171));
+        g.fillRect(x+11, y+3, 3, 4);
+        g.fillRect(x+12, y+7, 1, 1);
+        
+        // kädet
+        g.fillRect(x+9, y+15, 1, 2);
+        g.fillRect(x+15, y+15, 1, 2);
+        
+        // kravatti
+        g.setColor(Color.red);
+        g.fillRect(x+12, y+8, 1, 4);
+        
+        // paita
+        g.setColor(Color.white);
+        g.fillRect(x+11, y+8, 1, 4);
+        g.fillRect(x+13, y+8, 1, 4);
+        g.fillRect(x+11, y+12, 3, 1);
+        
+        // housut
+        g.setColor(new Color(0,76,153));
+        g.fillRect(x+11, y+13, 3, 1);
+        g.fillRect(x+11, y+14, 1, 8);
+        g.fillRect(x+13, y+14, 1, 8);
+        g.setColor(new Color(0,51,102));
+        g.fillRect(x+12, y+14, 1, 8);
+        
+        // kengät
+        g.setColor(Color.red);
+        g.fillRect(x+9, y+22, 3, 1);
+        g.fillRect(x+13, y+22, 3, 1);
+        
+        //takki
+        g.setColor(new Color(172,117,61));
+        g.fillRect(x+10, y+8, 1, 14);
+        g.fillRect(x+14, y+8, 1, 14);
+            // hihat
+        g.setColor(new Color(196,134,72));
+        g.fillRect(x+9, y+9, 1, 6);
+        g.fillRect(x+15, y+9, 1, 6);
+            // helma
+        g.fillRect(x+9, y+17, 1, 5);
+        g.fillRect(x+8, y+18, 1, 5);
+        g.fillRect(x+7, y+20, 1, 3);
+        g.fillRect(x+15, y+17, 1, 5);
+        g.fillRect(x+16, y+18, 1, 5);
+        g.fillRect(x+17, y+20, 1, 3);
     }
 }

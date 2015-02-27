@@ -12,7 +12,8 @@ import java.awt.*;
 import javax.swing.JPanel;
 
 /**
- *
+ * Luokka piirtää sisällön JFrameen
+ * 
  * @author lauimmon
  */
 public class Piirtoalusta extends JPanel {
@@ -22,6 +23,14 @@ public class Piirtoalusta extends JPanel {
     private final int kierros;
     private int pisteet;
     
+    /**
+     * Konstruktorissa piirtoalustalle asetetaan Peli-olio ja asetetaan muut parametrit.
+     * 
+     * @param peli, Peli-olio, josta piirrettävät liikkuvat hahmot haetaan
+     * @param ruudunSivunPituus
+     * @param kierros
+     * @param pisteet, tämän hetkiset pisteet. Pisteitä voi päivittää myöhemmin setPisteet metodilla.
+     */
     public Piirtoalusta(Peli peli, int ruudunSivunPituus, int kierros, int pisteet) {
         this.peli = peli;
         this.sivu = ruudunSivunPituus;
@@ -33,6 +42,9 @@ public class Piirtoalusta extends JPanel {
         this.pisteet = pisteet;
     }
 
+    /**
+     * Metodi piirtää pelin tilanteen
+     */
     public void piirra() {
         repaint();
     }

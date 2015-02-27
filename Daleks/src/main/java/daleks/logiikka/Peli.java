@@ -16,7 +16,7 @@ import java.util.*;
  */
 public class Peli {
     
-    private Pelilauta lauta;
+    private final Pelilauta lauta;
     private List<Liikkuva> hahmot;
     private int pommit;
     private int teleportit;
@@ -26,11 +26,12 @@ public class Peli {
      * Pelaajan ja dalekien ruudut arvotaan.
      * Jos dalekienMaara on suurempi tai yhtä suuri kuin laudan ruutujen
      * määrä, lopetetaan dalekien luominen kun lauta on täynnä.
-     * Pommien ja teleporttien määrä asetetaan ykköseksi.
      * 
      * @param leveys pelille asetettavan laudan leveys
      * @param korkeus laudan korkeus
      * @param dalekienMaara eli kuinka monta dalekia peliin luodaan
+     * @param pommit pommien määrä
+     * @param teleportit teleporttien määrä
      */
     public Peli(int leveys, int korkeus, int dalekienMaara, int pommit, int teleportit) {
         lauta = new Pelilauta(leveys, korkeus);
@@ -319,6 +320,11 @@ public class Peli {
         return true;
     }
 
+    /**
+     * Metodi laskee elossa olevien dalekien maaran
+     * 
+     * @return elossa olevien dalekien määrä
+     */
     public int elavienDalekienMaara() {
         int maara = 0;
         for (Liikkuva hahmo : hahmot) {

@@ -318,9 +318,14 @@ public class Peli {
         }
         return true;
     }
-    
-    
 
-    
-    
+    public int elavienDalekienMaara() {
+        int maara = 0;
+        for (Liikkuva hahmo : hahmot) {
+            if (hahmo.getTyyppi().equals(Tyyppi.DALEK)) {
+                maara++;
+            }
+        }
+        return maara;
+    }
 }

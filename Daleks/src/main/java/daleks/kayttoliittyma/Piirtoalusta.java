@@ -15,12 +15,12 @@ import javax.swing.JPanel;
  *
  * @author lauimmon
  */
-public class Piirtoalusta extends JPanel implements Paivitettava {
+public class Piirtoalusta extends JPanel {
 
     private final Peli peli;
     private final int sivu;
     private final int kierros;
-    private final int pisteet;
+    private int pisteet;
     
     public Piirtoalusta(Peli peli, int ruudunSivunPituus, int kierros, int pisteet) {
         this.peli = peli;
@@ -29,7 +29,10 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
         this.pisteet = pisteet;
     }
 
-    @Override
+    public void setPisteet(int pisteet) {
+        this.pisteet = pisteet;
+    }
+
     public void piirra() {
         repaint();
     }

@@ -16,7 +16,8 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
- *
+ * Luokassa hallitaan käyttöliittymää ja käynnistetään peli.
+ * 
  * @author lauimmon
  */
 public class Kayttoliittyma implements Runnable, KeyListener {
@@ -33,6 +34,15 @@ public class Kayttoliittyma implements Runnable, KeyListener {
     private int kierros;
     private int pisteet;
     
+    /**
+     * Konstruktorissa asetetaan dalekien määräksi 20, 
+     * pelilaudan leveydeksi 30 ja korkeudeksi 20 sekä
+     * pommien ja teleporttien määräksi 1.
+     * Asetetaan, että peli on käynnissä, pelaaja ei jää paikalleen,
+     * eikä pelaaja ole hävinnyt ti voittanut.
+     * Kierrokseksi asetetaan 1 ja pisteiksi 0.
+     * 
+     */
     public Kayttoliittyma() {
         this.dalekienMaara = 20;
         this.peli= new Peli(30, 20, dalekienMaara, 1, 1);
@@ -62,6 +72,9 @@ public class Kayttoliittyma implements Runnable, KeyListener {
         frame.setVisible(true);
         
         while (true) {
+            peliKaynnissa = true;
+            voittiko = false;
+            havisiko = false;
             while (peliKaynnissa) {
                 piirtoalusta.piirra();
                 odota(200);
@@ -73,26 +86,52 @@ public class Kayttoliittyma implements Runnable, KeyListener {
                 }
             }
             if (voittiko) {
-                uusiPeli(voittiko);
-                voittiko = false;
-                peliKaynnissa = true;
+                pisteet += 50*dalekienMaara;
+                piirtoalusta.setPisteet(pisteet);
+                piirtoalusta.piirra();
+                ilmoitaUudestaKierroksesta();
+                uusiPeli(true);
             } else if (havisiko) {
-                uusiPeli(voittiko);
-                havisiko = false;
-                peliKaynnissa = true;
+                pisteet += 50*(dalekienMaara-peli.elavienDalekienMaara());
+                piirtoalusta.setPisteet(pisteet);
+                piirtoalusta.piirra();
+                kysyUuudestaPelista();
+                uusiPeli(false);
             }
         }
     }
     
-    public void luoKomponentit(Container container) {
+    private void luoKomponentit(Container container) {
         piirtoalusta = new Piirtoalusta(peli, sivunPituus, kierros, pisteet);
         container.add(piirtoalusta);
         frame.addKeyListener(this);
     }
+
+    private void kysyUuudestaPelista() {
+        Object[] kyllaEi = {"Kyllä", "Ei"};
+            
+        int vastaus = JOptionPane.showOptionDialog(frame, "Hävisit pelin!\n\nSait " + pisteet+" pistettä.\n\nUusi yritys?", "Daleks", 
+                JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, kyllaEi, kyllaEi[0]);
+        if (vastaus == 1) {
+            System.exit(0);
+        }
+    }
+
+    private void ilmoitaUudestaKierroksesta() {
+        JOptionPane.showMessageDialog(frame, "Voitit pelin!\n\nAloita seuraava kierros painamalla OK", "Daleks", 
+                    JOptionPane.INFORMATION_MESSAGE);
+    }
     
+    /**
+     * Metodi käynnistää uuden kierroksen, eli tekee uuden Peli-olion
+     * ja päivittää piirtoalustan. Jos siirrytään korkeammalle tasolle,
+     * dalekien, pommien ja teleporttien määrää lisätään. Jos aloitetaan
+     * alin taso, dalekien, pommien ja teleporttien määrä palautetaan alkuperäiseen.
+     * 
+     * @param uusiKierros false jos aloitetaan ensimmäinen kierros, true jos seuraava kierros, eli kierros + 1
+     */
     private void uusiPeli(boolean uusiKierros) {
         if (uusiKierros) {
-            pisteet += dalekienMaara*50;
             lisaaDalekienMaaraa();
             kierros++;
             peli = new Peli(peli.getLauta().getKokoX(), peli.getLauta().getKokoY(), dalekienMaara, peli.getPommit()+1, peli.getTeleportit()+1);
@@ -102,7 +141,6 @@ public class Kayttoliittyma implements Runnable, KeyListener {
             kierros = 1;
             peli = new Peli(peli.getLauta().getKokoX(), peli.getLauta().getKokoY(), dalekienMaara, 1, 1);
         }
-        
         piirtoalusta = new Piirtoalusta(peli, sivunPituus, kierros, pisteet);
         frame.getContentPane().add(piirtoalusta);
         frame.pack();
@@ -117,7 +155,6 @@ public class Kayttoliittyma implements Runnable, KeyListener {
         } else if (dalekienMaara < 78) {
             dalekienMaara += 3;
         }
-        
     }
 
     private void pysyPaikoillaanLoppuunAsti() {
@@ -139,40 +176,24 @@ public class Kayttoliittyma implements Runnable, KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         boolean paivita = true;
-        if (e.getKeyCode() == KeyEvent.VK_NUMPAD4) 
+        if (e.getKeyCode() == KeyEvent.VK_NUMPAD4 || e.getKeyCode() == KeyEvent.VK_A) 
             peli.liikutaPelaajaa(-1, 0);
-        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD8)
+        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD8 || e.getKeyCode() == KeyEvent.VK_W)
             peli.liikutaPelaajaa(0, -1);
-        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD2)
+        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD2 || e.getKeyCode() == KeyEvent.VK_X)
             peli.liikutaPelaajaa(0, 1);
-        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD6)
+        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD6 || e.getKeyCode() == KeyEvent.VK_D)
             peli.liikutaPelaajaa(1, 0);
-        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD7)
+        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD7 || e.getKeyCode() == KeyEvent.VK_Q)
             peli.liikutaPelaajaa(-1, -1);
-        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD9)
+        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD9 || e.getKeyCode() == KeyEvent.VK_E)
             peli.liikutaPelaajaa(1, -1);
-        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD3)
+        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD3 || e.getKeyCode() == KeyEvent.VK_C)
             peli.liikutaPelaajaa(1, 1);
-        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD1)
+        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD1 || e.getKeyCode() == KeyEvent.VK_Z)
             peli.liikutaPelaajaa(-1, 1);
-        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD5) {}
-        else if (e.getKeyCode() == KeyEvent.VK_A) 
-            peli.liikutaPelaajaa(-1, 0);
-        else if (e.getKeyCode() == KeyEvent.VK_W)
-            peli.liikutaPelaajaa(0, -1);
-        else if (e.getKeyCode() == KeyEvent.VK_X)
-            peli.liikutaPelaajaa(0, 1);
-        else if (e.getKeyCode() == KeyEvent.VK_D)
-            peli.liikutaPelaajaa(1, 0);
-        else if (e.getKeyCode() == KeyEvent.VK_Q)
-            peli.liikutaPelaajaa(-1, -1);
-        else if (e.getKeyCode() == KeyEvent.VK_E)
-            peli.liikutaPelaajaa(1, -1);
-        else if (e.getKeyCode() == KeyEvent.VK_C)
-            peli.liikutaPelaajaa(1, 1);
-        else if (e.getKeyCode() == KeyEvent.VK_Z)
-            peli.liikutaPelaajaa(-1, 1);
-        else if (e.getKeyCode() == KeyEvent.VK_S) {}
+        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD5 || e.getKeyCode() == KeyEvent.VK_S) {}
+        
         else if (e.getKeyCode() == KeyEvent.VK_R) 
             paivita = peli.rajaytaPommi();
         else if (e.getKeyCode() == KeyEvent.VK_T)
@@ -200,21 +221,12 @@ public class Kayttoliittyma implements Runnable, KeyListener {
 
     private void havisikoPelaaja() {
         if (peli.havisikoPelaaja()) {
-            Object[] kyllaEi = {"Kyllä", "Ei"};
-            
-            int vastaus = JOptionPane.showOptionDialog(frame, "Hävisit pelin!\n\nUusi yritys?", "Daleks", 
-                    JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, kyllaEi, kyllaEi[0]);
-            if (vastaus == 1) {
-                System.exit(0);
-            }
             havisiko = true;
         }
     }
 
     private void voittikoPelaaja() {
         if (peli.voittikoPelaaja()) {
-            JOptionPane.showMessageDialog(frame, "Voitit pelin!\n\nAloita seuraava kierros painamalla OK", "Daleks", 
-                    JOptionPane.INFORMATION_MESSAGE);
             voittiko = true;
         }
     }

@@ -9,16 +9,14 @@ package daleks.daleks;
 import daleks.kayttoliittyma.*;
 
 /**
- *
+ * Käynnistää käyttöliittymän
+ * 
  * @author lauimmon
  */
 public class Main {
 
     
     public static void main(String[] args) {
-        int korkeus = 20;
-        int leveys = 30;
-        int dalekienMaara = 50;  // min 20 max 80
         Kayttoliittyma kali = new Kayttoliittyma();
         kali.run();
     }

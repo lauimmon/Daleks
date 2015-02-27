@@ -213,6 +213,7 @@ public class Kayttoliittyma implements Runnable, KeyListener {
         havisikoPelaaja();
         if (havisiko) return;
         peli.liikutaDalekejaPelaajaaPain();
+        piirtoalusta.piirra();
         havisikoPelaaja();
         if (havisiko) return;
         voittikoPelaaja();

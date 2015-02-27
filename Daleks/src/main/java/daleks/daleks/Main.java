@@ -14,11 +14,9 @@ import daleks.kayttoliittyma.*;
  * @author lauimmon
  */
 public class Main {
-
     
     public static void main(String[] args) {
         Kayttoliittyma kali = new Kayttoliittyma();
         kali.run();
     }
-    
 }

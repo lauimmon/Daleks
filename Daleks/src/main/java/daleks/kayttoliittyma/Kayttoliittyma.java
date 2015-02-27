@@ -45,7 +45,7 @@ public class Kayttoliittyma implements Runnable, KeyListener {
      */
     public Kayttoliittyma() {
         this.dalekienMaara = 20;
-        this.peli= new Peli(30, 20, dalekienMaara, 1, 1);
+        this.peli = new Peli(30, 20, dalekienMaara, 1, 1);
         this.sivunPituus = 24;
         peliKaynnissa = true;
         pysyPaikoillaan = false;
@@ -65,8 +65,8 @@ public class Kayttoliittyma implements Runnable, KeyListener {
     @Override
     public void run() {
         frame = new JFrame("Daleks");
-        int korkeus = (peli.getLauta().getKokoY()+2)*sivunPituus+10;
-        int leveys = (peli.getLauta().getKokoX()+1)*sivunPituus-20;
+        int korkeus = (peli.getLauta().getKokoY() + 2) * sivunPituus + 10;
+        int leveys = (peli.getLauta().getKokoX() + 1) * sivunPituus - 20;
        
         frame.setPreferredSize(new Dimension(leveys, korkeus));
         frame.setResizable(false);
@@ -93,13 +93,13 @@ public class Kayttoliittyma implements Runnable, KeyListener {
                 }
             }
             if (voittiko) {
-                pisteet += 50*dalekienMaara;
+                pisteet += 50 * dalekienMaara;
                 piirtoalusta.setPisteet(pisteet);
                 piirtoalusta.piirra();
                 ilmoitaUudestaKierroksesta();
                 uusiPeli(true);
             } else if (havisiko) {
-                pisteet += 25*(dalekienMaara-peli.elavienDalekienMaara());
+                pisteet += 25 * (dalekienMaara - peli.elavienDalekienMaara());
                 piirtoalusta.setPisteet(pisteet);
                 piirtoalusta.piirra();
                 kysyUuudestaPelista();
@@ -121,7 +121,7 @@ public class Kayttoliittyma implements Runnable, KeyListener {
     private void kysyUuudestaPelista() {
         Object[] kyllaEi = {"Kyllä", "Ei"};
             
-        int vastaus = JOptionPane.showOptionDialog(frame, "Hävisit pelin!\n\nSait " + pisteet+" pistettä.\n\nUusi yritys?", "Daleks", 
+        int vastaus = JOptionPane.showOptionDialog(frame, "Hävisit pelin!\n\nSait " + pisteet + " pistettä.\n\nUusi yritys?", "Daleks", 
                 JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, kyllaEi, kyllaEi[0]);
         if (vastaus == 1) {
             System.exit(0);
@@ -145,7 +145,7 @@ public class Kayttoliittyma implements Runnable, KeyListener {
         if (uusiKierros) {
             lisaaDalekienMaaraa();
             kierros++;
-            peli = new Peli(peli.getLauta().getKokoX(), peli.getLauta().getKokoY(), dalekienMaara, peli.getPommit()+1, peli.getTeleportit()+1);
+            peli = new Peli(peli.getLauta().getKokoX(), peli.getLauta().getKokoY(), dalekienMaara, peli.getPommit() + 1, peli.getTeleportit() + 1);
         } else {
             pisteet = 0;
             dalekienMaara = 20;
@@ -186,7 +186,7 @@ public class Kayttoliittyma implements Runnable, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
     }
-
+    
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_NUMPAD4 || e.getKeyCode() == KeyEvent.VK_A) 
@@ -205,7 +205,7 @@ public class Kayttoliittyma implements Runnable, KeyListener {
             peli.liikutaPelaajaa(1, 1);
         else if (e.getKeyCode() == KeyEvent.VK_NUMPAD1 || e.getKeyCode() == KeyEvent.VK_Z)
             peli.liikutaPelaajaa(-1, 1);
-        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD5 || e.getKeyCode() == KeyEvent.VK_S) {}
+        else if (e.getKeyCode() == KeyEvent.VK_NUMPAD5 || e.getKeyCode() == KeyEvent.VK_S) { }
         else if (e.getKeyCode() == KeyEvent.VK_R) {
             if (!peli.rajaytaPommi()) return;
         }

@@ -46,7 +46,7 @@ public class Pelilauta {
      * @return palauttaa true, jos ruutu on laudalla, false jos ei
      */
     public boolean onkoRuutuLaudalla(Ruutu ruutu) {
-         return ruutu.getX() < kokoX &&  ruutu.getY() < kokoY
+        return ruutu.getX() < kokoX &&  ruutu.getY() < kokoY
                 && ruutu.getX() >= 0 && ruutu.getY() >= 0;
     }
 
@@ -60,7 +60,7 @@ public class Pelilauta {
         List<Ruutu> ruudut = new ArrayList<Ruutu>();
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
-                Ruutu ruutu1 = new Ruutu(ruutu.getX()+i, ruutu.getY()+j);
+                Ruutu ruutu1 = new Ruutu(ruutu.getX() + i, ruutu.getY() + j);
                 if (!(i == 0 && j == 0) && onkoRuutuLaudalla(ruutu1)) {
                     ruudut.add(ruutu1);
                 }

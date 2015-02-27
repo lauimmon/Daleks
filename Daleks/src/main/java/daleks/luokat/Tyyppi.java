@@ -21,11 +21,14 @@ public enum Tyyppi {
     public String toString() {
         if (this.equals(DALEK)) {
             return "@";
-        } if (this.equals(KUOLLUTDALEK)) {
+        } 
+        if (this.equals(KUOLLUTDALEK)) {
             return "#";
-        } if (this.equals(PELAAJA)) {
+        } 
+        if (this.equals(PELAAJA)) {
             return "P";
-        } if (this.equals(KUOLLUTPELAAJA)) {
+        } 
+        if (this.equals(KUOLLUTPELAAJA)) {
             return "+";
         }
         return ".";

@@ -41,7 +41,7 @@ public class Peli {
         
         Random random = new Random();
         lisaaHahmo(new Pelaaja(new Ruutu(random.nextInt(lauta.getKokoX()), random.nextInt(lauta.getKokoY()))));
-        while (hahmot.size() != Math.min(dalekienMaara + 1, lauta.getKokoX()*lauta.getKokoY())) {
+        while (hahmot.size() != Math.min(dalekienMaara + 1, lauta.getKokoX() * lauta.getKokoY())) {
             lisaaHahmo(new Dalek(new Ruutu(random.nextInt(lauta.getKokoX()), random.nextInt(lauta.getKokoY()))));
         }
     }
@@ -153,7 +153,7 @@ public class Peli {
      * @param x, miten monta ruutua pelaajaa siirretään korkeussuunnassa
      * @param y, miten monta ruutua pelaajaa siirretään leveyssuunnassa
      */
-    public void liikutaPelaajaa(int x, int y){
+    public void liikutaPelaajaa(int x, int y) {
         Liikkuva pelaaja = getPelaaja();
         Ruutu ruutu = new Ruutu(pelaaja.getRuutu().getX() + x, pelaaja.getRuutu().getY() + y);
         if (lauta.onkoRuutuLaudalla(ruutu) && !mikaTyyppiRuudussa(ruutu).equals(Tyyppi.KUOLLUTDALEK)) {
@@ -274,7 +274,7 @@ public class Peli {
      */
     private void tapaTormanneetDalekit() {
         for (int i = 0; i < hahmot.size(); i++) {
-            for (int j = i+1; j < hahmot.size(); j++) {
+            for (int j = i + 1; j < hahmot.size(); j++) {
                 if (hahmot.get(i).getRuutu().equals(hahmot.get(j).getRuutu()) && 
                         !hahmot.get(i).getTyyppi().equals(Tyyppi.PELAAJA) && !hahmot.get(j).getTyyppi().equals(Tyyppi.PELAAJA) &&
                         !hahmot.get(i).getTyyppi().equals(Tyyppi.KUOLLUTPELAAJA) && !hahmot.get(j).getTyyppi().equals(Tyyppi.KUOLLUTPELAAJA)) {

@@ -44,4 +44,4 @@
 
 **26.2.2015:** Puoli tuntia pienten muokkausten tekoa käyttöliittymään
 
-**27.2.2015:** Viisi tuntia javadocin täydennystä, käyttöliittymän muokkausta, käyttöohjeiden ja rakenteen kuvauksen teko, ym. dokumentointien päivitykset
+**27.2.2015:** Seitsemän tuntia javadocin täydennystä, käyttöliittymän ja piirtoalustan muokkausta, käyttöohjeiden ja rakenteen kuvauksen teko, ym. dokumentointien päivitykset

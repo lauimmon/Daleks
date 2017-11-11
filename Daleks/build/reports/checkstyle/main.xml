@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="6.10.1">
+<file name="C:\Laura\Koulu\Ohtu\Daleks\Daleks\src\main\java\daleks\daleks\Main.java">
+</file>
+<file name="C:\Laura\Koulu\Ohtu\Daleks\Daleks\src\main\java\daleks\kayttoliittyma\Kayttoliittyma.java">
+<error line="65" column="5" severity="error" message="Method length is 44 lines (max allowed is 15)." source="com.puppycrawl.tools.checkstyle.checks.sizes.MethodLengthCheck"/>
+<error line="144" column="5" severity="error" message="Method length is 16 lines (max allowed is 15)." source="com.puppycrawl.tools.checkstyle.checks.sizes.MethodLengthCheck"/>
+<error line="190" column="5" severity="error" message="Method length is 34 lines (max allowed is 15)." source="com.puppycrawl.tools.checkstyle.checks.sizes.MethodLengthCheck"/>
+</file>
+<file name="C:\Laura\Koulu\Ohtu\Daleks\Daleks\src\main\java\daleks\kayttoliittyma\Piirtoalusta.java">
+<error line="52" column="5" severity="error" message="Method length is 33 lines (max allowed is 15)." source="com.puppycrawl.tools.checkstyle.checks.sizes.MethodLengthCheck"/>
+<error line="88" column="5" severity="error" message="Method length is 42 lines (max allowed is 15)." source="com.puppycrawl.tools.checkstyle.checks.sizes.MethodLengthCheck"/>
+<error line="131" column="5" severity="error" message="Method length is 42 lines (max allowed is 15)." source="com.puppycrawl.tools.checkstyle.checks.sizes.MethodLengthCheck"/>
+<error line="174" column="5" severity="error" message="Method length is 39 lines (max allowed is 15)." source="com.puppycrawl.tools.checkstyle.checks.sizes.MethodLengthCheck"/>
+<error line="214" column="5" severity="error" message="Method length is 59 lines (max allowed is 15)." source="com.puppycrawl.tools.checkstyle.checks.sizes.MethodLengthCheck"/>
+</file>
+<file name="C:\Laura\Koulu\Ohtu\Daleks\Daleks\src\main\java\daleks\logiikka\Peli.java">
+<error line="190" column="5" severity="error" message="Method length is 26 lines (max allowed is 15)." source="com.puppycrawl.tools.checkstyle.checks.sizes.MethodLengthCheck"/>
+<error line="226" column="5" severity="error" message="Method length is 18 lines (max allowed is 15)." source="com.puppycrawl.tools.checkstyle.checks.sizes.MethodLengthCheck"/>
+<error line="252" column="5" severity="error" message="Method length is 17 lines (max allowed is 15)." source="com.puppycrawl.tools.checkstyle.checks.sizes.MethodLengthCheck"/>
+</file>
+<file name="C:\Laura\Koulu\Ohtu\Daleks\Daleks\src\main\java\daleks\luokat\Dalek.java">
+</file>
+<file name="C:\Laura\Koulu\Ohtu\Daleks\Daleks\src\main\java\daleks\luokat\Liikkuva.java">
+</file>
+<file name="C:\Laura\Koulu\Ohtu\Daleks\Daleks\src\main\java\daleks\luokat\Pelaaja.java">
+</file>
+<file name="C:\Laura\Koulu\Ohtu\Daleks\Daleks\src\main\java\daleks\luokat\Pelilauta.java">
+</file>
+<file name="C:\Laura\Koulu\Ohtu\Daleks\Daleks\src\main\java\daleks\luokat\Ruutu.java">
+<error line="80" column="5" severity="error" message="Method length is 16 lines (max allowed is 15)." source="com.puppycrawl.tools.checkstyle.checks.sizes.MethodLengthCheck"/>
+</file>
+<file name="C:\Laura\Koulu\Ohtu\Daleks\Daleks\src\main\java\daleks\luokat\Tyyppi.java">
+</file>
+</checkstyle>
